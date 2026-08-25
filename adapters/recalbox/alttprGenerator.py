@@ -112,5 +112,18 @@ class AlttprGenerator:
         ensure("-system", "snes"); ensure("-rom", seed)
         ensure("-emulator", "libretro"); ensure("-core", core)
 
-        cmd = ["python", "/usr/bin/emulatorlauncher.pyc"] + out_args
-        return Command(videomode=system.VideoMode, array=cmd)
+        cmd = [
+            "/usr/bin/env",
+            "XDG_RUNTIME_DIR=/run/user/0",
+            "PULSE_SERVER=unix:/run/user/0/pulse/native",
+            "python", "/usr/bin/emulatorlauncher.pyc",
+        ] + out_args
+        # Recalbox 10 launches the custom generator without XDG_RUNTIME_DIR.
+        # The nested SNES configgen/RetroArch process therefore cannot locate
+        # PulseAudio and silently continues without game audio. Supply the root
+        # user's runtime/socket explicitly; runner merges this with os.environ.
+        env = {
+            "XDG_RUNTIME_DIR": "/run/user/0",
+            "PULSE_SERVER": "unix:/run/user/0/pulse/native",
+        }
+        return Command(videomode=system.VideoMode, array=cmd, env=env)

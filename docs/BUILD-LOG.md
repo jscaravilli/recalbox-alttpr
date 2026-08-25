@@ -141,6 +141,12 @@ session). Reliable method:
   Items, Enemies/Bosses, Advanced Gameplay, and Cosmetics/Output. Navigation
   skips section headers. All 66 rows and 757 row/value combinations resolve to
   curated help; generic fallback text was removed.
+- **Game audio fix**: the custom ALTTPR generator launched the nested SNES
+  configgen without `XDG_RUNTIME_DIR`, so RetroArch could not find the running
+  PulseAudio socket and continued silently. `alttprGenerator.py` now passes and
+  embeds `/run/user/0` plus `unix:/run/user/0/pulse/native`. Verified with an
+  actual nested SNES launch: RetroArch created a live Pulse sink-input on the
+  HDMI sink.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device
