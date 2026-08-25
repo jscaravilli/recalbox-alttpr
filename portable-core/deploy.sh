@@ -11,10 +11,14 @@ SCP="scp"
 
 echo "== creating target dirs =="
 $SSH "mkdir -p /recalbox/share/alttpr/bin/words /recalbox/share/alttpr/es/gamelist-art \
+      /recalbox/share/alttpr/tracker \
       /recalbox/share/roms/alttpr/SEEDS /recalbox/share/userscripts"
 
 echo "== copying engine bin =="
 $SCP -r "$REPO"/portable-core/bin/* "root@${PI}:/recalbox/share/alttpr/bin/"
+
+echo "== copying phone autotracker web app =="
+$SCP -r "$REPO"/portable-core/tracker/* "root@${PI}:/recalbox/share/alttpr/tracker/"
 
 echo "== copying es integration =="
 $SCP "$REPO"/adapters/recalbox/alttprGenerator.py "root@${PI}:/recalbox/share/alttpr/es/"

@@ -111,6 +111,9 @@ session). Reliable method:
 - **MSU runtime verified**: Snes9x reported `ROM+RAM+BAT+MSU-1` and opened the
   selected `.msu` plus all PCM files. New MSU seeds also enable DR's
   `msu_resume` patch.
+- **Autotracker completion**: the bridge and HTTP services were already running
+  on ports 23074 and 8080, but the web root was empty. The committed 154-file
+  tracker app is now part of `deploy.sh` and deployed to the Pi.
 - **Timer and preview follow-up**: Stopwatch remains the default with Disabled
   second. Deterministic fixed-seed tests prove Stopwatch changes ROM bytes.
   All 513 sprites now have previews; the 27 forbidden upstream preview URLs are
