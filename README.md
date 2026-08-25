@@ -18,7 +18,9 @@ and captures a **golden image** so the whole console can be re-flashed in minute
 
 - Raspberry Pi 5 (8 GB), aarch64
 - 256 GB A2 / U3 / V30 microSD (Samsung PRO Plus / SanDisk Extreme Pro)
-- Base ROM: *Zelda no Densetsu - Kamigami no Triforce (Japan) v1.0* (not stored here)
+- Base ROM: *Zelda no Densetsu - Kamigami no Triforce (Japan) v1.0* (not stored
+  here; installed root-only and immutable at
+  `/recalbox/share/system/.alttpr-private/base/alttp-jp10.sfc`)
 
 ## Layout
 

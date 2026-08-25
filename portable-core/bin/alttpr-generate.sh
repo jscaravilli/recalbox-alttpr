@@ -11,7 +11,7 @@ set -uo pipefail
 ENGINE=/recalbox/share/alttpr
 DR="$ENGINE/ALttPDoorRandomizer-OverworldShuffle"
 DEPS="$ENGINE/pydeps/site"
-BASE="$ENGINE/base/alttp-jp10.sfc"
+BASE=/recalbox/share/system/.alttpr-private/base/alttp-jp10.sfc
 BIN="$ENGINE/bin"
 
 ROOT=/recalbox/share/roms/alttpr

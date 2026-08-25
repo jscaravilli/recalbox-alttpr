@@ -66,13 +66,26 @@ share), so your SSH client will see a changed host key — expected.
 3. installs DR's deps (`aenum fast-enum python-bps-continued colorama aioconsole
    websockets pyyaml`) into `/recalbox/share/alttpr/pydeps/site`.
 
-Then place the base ROM at `/recalbox/share/alttpr/base/alttp-jp10.sfc`.
+Install the base ROM in a hidden, root-only location on the ext4 share:
+
+```sh
+PRIVATE=/recalbox/share/system/.alttpr-private
+DEST=$PRIVATE/base/alttp-jp10.sfc
+mkdir -p "$PRIVATE/base"
+chmod 700 "$PRIVATE" "$PRIVATE/base"
+install -o root -g root -m 0400 alttp-jp10.sfc "$DEST"
+md5sum "$DEST"  # must be 03a63945398191337e896e5771f77173
+chattr +i "$DEST"
+```
+
+The ROM is intentionally outside the engine and ROM-browser trees, visible only
+through an SSH/root session. It is never committed.
 
 Smoke test:
 ```sh
 PYTHONPATH=/recalbox/share/alttpr/pydeps/site \
   python3 /recalbox/share/alttpr/ALttPDoorRandomizer-OverworldShuffle/DungeonRandomizer.py \
-  --rom /recalbox/share/alttpr/base/alttp-jp10.sfc --mode open --goal ganon \
+  --rom /recalbox/share/system/.alttpr-private/base/alttp-jp10.sfc --mode open --goal ganon \
   --swords random --create_rom --spoiler full --outputpath /tmp/t --outputname test
 ```
 
