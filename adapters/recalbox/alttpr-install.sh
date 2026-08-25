@@ -143,11 +143,37 @@ except OSError:
     old = ""
 
 seed_blocks = []
+seed_paths = set()
 for block in re.findall(r"\s*<game(?:\s[^>]*)?>.*?</game>", old, re.S):
-    if re.search(r"<path>(?:\./)?SEEDS/[^<]+\.sfc</path>", block):
+    match = re.search(r"<path>(?:\./)?(SEEDS/[^<]+\.sfc)</path>", block)
+    if match and os.path.isfile(os.path.join(os.path.dirname(gl),
+                                             match.group(1))):
         block = re.sub(r"<image>.*?</image>",
                        "<image>./.art/seed.png</image>", block, flags=re.S)
         seed_blocks.append(block.strip() + "\n")
+        seed_paths.add(match.group(1))
+
+# Add physical seeds missing from the gamelist; stale rows were dropped above.
+seeds_dir = os.path.join(os.path.dirname(gl), "SEEDS")
+for filename in sorted(os.listdir(seeds_dir)):
+    if not filename.endswith(".sfc"):
+        continue
+    path = "SEEDS/" + filename
+    if path in seed_paths:
+        continue
+    stem = filename[:-4]
+    parts = stem.split("_")
+    mode = parts[1] if len(parts) > 1 else "seed"
+    date = parts[-1] if len(parts) > 2 else ""
+    nickname = parts[-2] if len(parts) > 2 else stem
+    nickname = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", nickname)
+    seed_blocks.append(
+        "  <game>\n"
+        f"    <path>{path}</path>\n"
+        f"    <name>ALTTPR {mode} - {date} ({nickname})</name>\n"
+        "    <image>./.art/seed.png</image>\n"
+        "    <desc>Generated A Link to the Past Randomizer seed.</desc>\n"
+        "  </game>\n")
 
 entries = [
     (f"{pfx}Generate Custom Seed.alttpr", f"{pfx}Generate Custom Seed",
@@ -182,6 +208,16 @@ with open(gl, "w", encoding="utf-8") as f:
     f.write("</gameList>\n")
 PY
 
+# Recalbox merges every mounted storage root. The old USB share may still carry
+# an obsolete ALTTPR tree, which duplicates the action tiles and seed library.
+# The authoritative tree is the new ext4 SHARE; remove only stale external
+# ALTTPR trees. This also self-heals if Recalbox recreates the directory later.
+for EXT in /recalbox/share/externals/*/recalbox/roms/alttpr \
+           /recalbox/share/externals/*/roms/alttpr; do
+  [ -e "$EXT" ] || continue
+  rm -rf "$EXT" 2>/dev/null && say "removed duplicate external ALTTPR tree: $EXT"
+done
+
 # --- 5. retroarch: flush SRAM during play; no savestate autoload --------------
 RACFG=/recalbox/share/system/configs/retroarch/retroarchcustom.cfg
 if [ -f "$RACFG" ]; then
@@ -190,13 +226,14 @@ fi
 
 say "alttpr integration installed/verified"
 
-# --- 6. theme: put the ALTTPR logo on the carousel ----------------------------
-# recalbox-next v10 resolves the system carousel logo from
-#   data/arts/systems_logos/${system.name}.png  (+ -eu/-jp/-us variants)
-# and includes _views/_partials/systems/${system.name}.xml. The theme lives on
-# the overlay rootfs (may not persist an unclean shutdown), so we reapply the art
-# every boot from the persistent copy on the share.
+# --- 6. themes: logo, sprite montage, and project information -----------------
+# Both bundled themes live on the overlay rootfs, so reapply their customizations
+# every boot from persistent assets on the ext4 share.
 LOGO_SRC="$ENGINE/es/alttpr-logo-carousel.png"
+MONTAGE_SRC="$ENGINE/es/alttpr-consolegame.png"
+INFO_SRC="$ENGINE/es/alttpr-info-en.txt"
+
+# Recalbox 10's unified recalbox-next theme.
 for THEME in \
   /recalbox/share_init/system/.emulationstation/themes/recalbox-next \
   /recalbox/share/themes/recalbox-next ; do
@@ -204,8 +241,20 @@ for THEME in \
   if [ -f "$LOGO_SRC" ]; then
     for v in "" "-eu" "-jp" "-us"; do
       cp "$LOGO_SRC" "$THEME/data/arts/systems_logos/alttpr${v}.png" 2>/dev/null
+      chmod 644 "$THEME/data/arts/systems_logos/alttpr${v}.png" 2>/dev/null
     done
     say "installed alttpr carousel logo in $THEME"
+  fi
+  ASSETS="$THEME/data/arts/systems_assets"
+  if [ -f "$MONTAGE_SRC" ] && [ -d "$ASSETS" ]; then
+    cp "$MONTAGE_SRC" "$ASSETS/alttpr-consolegame.png"
+    chmod 644 "$ASSETS/alttpr-consolegame.png"
+  fi
+  if [ -f "$INFO_SRC" ] && [ -d "$THEME/data/txt" ]; then
+    cp "$INFO_SRC" "$THEME/data/txt/alttpr-en.txt"
+    cp "$INFO_SRC" "$THEME/data/txt/alttpr-fr.txt"
+    chmod 644 "$THEME/data/txt/alttpr-en.txt" \
+              "$THEME/data/txt/alttpr-fr.txt"
   fi
   # Define the system logo explicitly. Included theme paths are resolved relative
   # to the included XML file, so use ${root}; "./data/..." incorrectly resolves
@@ -220,22 +269,60 @@ for THEME in \
 			path.JP="${root}/data/arts/systems_logos/alttpr-jp.png"
 			path.US="${root}/data/arts/systems_logos/alttpr-us.png"
 		/>
+		<markdown name="info100" extra="true" color="ffffff" />
+		<image name="consolegame" extra="true">
+			<path>${root}/data/arts/systems_assets/alttpr-consolegame.png</path>
+			<path.EU>${root}/data/arts/systems_assets/alttpr-consolegame.png</path.EU>
+			<path.JP>${root}/data/arts/systems_assets/alttpr-consolegame.png</path.JP>
+			<path.US>${root}/data/arts/systems_assets/alttpr-consolegame.png</path.US>
+		</image>
+		<image name="consolegamecontroller" extra="true">
+			<pos>2 2</pos>
+		</image>
+		<image name="controller" extra="true">
+			<pos>2 2</pos>
+		</image>
 	</view>
 </theme>
 XML
   say "wrote alttpr theme partial (explicit logo) in $THEME"
-  # side console art: reuse snes consolegame svgs so the detail view isn't blank
-  ASSETS="$THEME/data/arts/systems_assets"
-  if [ -d "$ASSETS" ]; then
-    for suf in consolegame eu-consolegame jp-consolegame us-consolegame \
-               controls eu-console jp-console us-console; do
-      [ -f "$ASSETS/snes-${suf}.svg" ] && [ ! -f "$ASSETS/alttpr-${suf}.svg" ] && \
-        cp "$ASSETS/snes-${suf}.svg" "$ASSETS/alttpr-${suf}.svg" 2>/dev/null
-    done
-    # iconset (carousel small icon)
-    for suf in icon_empty icon_filled; do
-      [ -f "$ASSETS/snes-${suf}.svg" ] && [ ! -f "$ASSETS/alttpr-${suf}.svg" ] && \
-        cp "$ASSETS/snes-${suf}.svg" "$ASSETS/alttpr-${suf}.svg" 2>/dev/null
-    done
+done
+
+# Recalbox-next-v9 uses one folder per system. Clone SNES as the structural
+# baseline, then replace its logo/console art and metadata with ALTTPR content.
+for THEME in \
+  /recalbox/share_init/system/.emulationstation/themes/recalbox-next-v9 \
+  /recalbox/share/themes/recalbox-next-v9 ; do
+  [ -d "$THEME/snes" ] || continue
+  if [ -x "$ENGINE/es/build_theme.sh" ] && [ -f "$LOGO_SRC" ] && \
+     [ -f "$MONTAGE_SRC" ]; then
+    bash "$ENGINE/es/build_theme.sh" "$THEME" "$LOGO_SRC" "$MONTAGE_SRC" \
+      >>"$LOG" 2>&1
   fi
+  CUSTOM="$THEME/alttpr/custom.xml"
+  [ -f "$CUSTOM" ] || continue
+  python3 - "$CUSTOM" <<'PY' 2>/dev/null || true
+import re, sys
+p = sys.argv[1]
+d = open(p, encoding="utf-8").read()
+info = [
+    "Original game : Nintendo, 1991",
+    "Randomizer engine : codemann8 / ALttPDoorRandomizer",
+    "Based on : Aerinon's Door Randomizer + ALttPR community",
+    "Recalbox integration : jscaravilli",
+    "Runtime : Native Python 3.11 on Raspberry Pi 5",
+    "Modes : Items, dungeons, doors, entrances, overworld",
+    "Features : Spoilers, custom sprites, MSU-1, autotracker",
+    "Storage : Single ext4 microSD",
+    "Workflow : Configure locally, generate, then play",
+    "Start with : Generate Custom Seed",
+]
+for index, text in enumerate(info, 1):
+    pattern = (r'(<text name="info%d" extra="true">\s*<text>).*?(</text>)'
+               % index)
+    d = re.sub(pattern, lambda m: m.group(1) + text + m.group(2),
+               d, count=1, flags=re.S)
+open(p, "w", encoding="utf-8").write(d)
+PY
+  say "built ALTTPR system view in recalbox-next-v9"
 done

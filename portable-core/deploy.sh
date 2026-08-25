@@ -19,6 +19,12 @@ $SCP -r "$REPO"/portable-core/bin/* "root@${PI}:/recalbox/share/alttpr/bin/"
 echo "== copying es integration =="
 $SCP "$REPO"/adapters/recalbox/alttprGenerator.py "root@${PI}:/recalbox/share/alttpr/es/"
 $SCP "$REPO"/adapters/recalbox/alttpr-install.sh  "root@${PI}:/recalbox/share/alttpr/es/"
+$SCP "$REPO"/adapters/recalbox/build_theme.sh \
+     "$REPO"/adapters/recalbox/assets/alttpr-logo.png \
+     "$REPO"/adapters/recalbox/assets/alttpr-logo-carousel.png \
+     "$REPO"/adapters/recalbox/assets/alttpr-consolegame.png \
+     "$REPO"/adapters/recalbox/assets/alttpr-info-en.txt \
+     "root@${PI}:/recalbox/share/alttpr/es/"
 $SCP "$REPO"/adapters/recalbox/assets/gamelist/box.png \
      "$REPO"/adapters/recalbox/assets/gamelist/seed.png \
      "root@${PI}:/recalbox/share/alttpr/es/gamelist-art/"

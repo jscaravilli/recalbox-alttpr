@@ -1,0 +1,19 @@
+**A Link to the Past Randomizer**
+
+Every seed reshuffles Nintendo's 1991 classic into a new puzzle while preserving
+the original SNES adventure.
+
+__**Project**__
+- Original game: Nintendo
+- Randomizer engine: codemann8's ALttPDoorRandomizer
+- Based on: Aerinon's Door Randomizer and the ALttPR community
+- Recalbox integration: jscaravilli
+
+__**This build**__
+- Native Python 3.11 seed generation
+- Item, dungeon, door, entrance, and overworld shuffle support
+- Controller-driven configuration and seed library
+- Spoiler viewer, custom sprites, MSU-1 music, and phone autotracker
+
+Choose **Generate Custom Seed** to configure a run, create it locally, and launch
+straight into the game.

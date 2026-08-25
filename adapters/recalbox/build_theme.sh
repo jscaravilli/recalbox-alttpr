@@ -40,7 +40,13 @@ if have_spr:
         r=(' region="%s"'%reg) if reg else ''
         path='./data/%sconsolegame.png'%((reg+'/') if reg else '')
         imgs+='<image name="consolegame" extra="true"%s><path>%s</path></image>'%(r,path)
-override='<view name="system, basic, detailed, gameclip">%s</view>'%imgs
+# ALTTPR uses the sprite montage as its right-hand identity art; hide the
+# inherited SNES controller so it does not compete with the montage.
+hidden=''
+for reg in ('','us','eu','jp'):
+    r=(' region="%s"'%reg) if reg else ''
+    hidden+='<image name="controller" extra="true"%s><pos>2 2</pos></image>'%r
+override='<view name="system, basic, detailed, gameclip">%s%s</view>'%(imgs,hidden)
 m=re.search(r"</formatVersion>", d)
 if m:
     d=d[:m.end()]+override+d[m.end():]

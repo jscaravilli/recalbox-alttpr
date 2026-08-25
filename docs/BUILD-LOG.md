@@ -82,6 +82,13 @@ session). Reliable method:
   use `KMSDRM`, not v9's lowercase `kmsdrm`. Custom menu default generation
   produced a real 2 MiB ROM + text spoiler. Spoiler browser supports DR
   `.spoiler.txt` and legacy `.spoiler.json`.
+- **Both bundled themes polished**: `recalbox-next` and `recalbox-next-v9`
+  receive the committed ALTTPR logo, the user-supplied transparent sprite
+  montage, and project/game information. The v9 adapter builds a native
+  `alttpr/` system folder from its SNES structural baseline; the modern adapter
+  installs unified assets/markdown and overrides all regional image paths.
+  Framebuffer-verified on both themes. The installer also removes stale external
+  `roms/alttpr` trees so Recalbox does not merge duplicate action tiles.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device
