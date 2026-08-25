@@ -142,7 +142,7 @@ say "alttpr integration installed/verified"
 # and includes _views/_partials/systems/${system.name}.xml. The theme lives on
 # the overlay rootfs (may not persist an unclean shutdown), so we reapply the art
 # every boot from the persistent copy on the share.
-LOGO_SRC="$ENGINE/es/alttpr-logo.png"
+LOGO_SRC="$ENGINE/es/alttpr-logo-carousel.png"
 for THEME in \
   /recalbox/share_init/system/.emulationstation/themes/recalbox-next \
   /recalbox/share/themes/recalbox-next ; do
@@ -153,21 +153,18 @@ for THEME in \
     done
     say "installed alttpr carousel logo in $THEME"
   fi
-  # minimal system partial so the ${system.name}.xml include resolves, and define
-  # an explicit logo image for the system detail view. NOTE: the carousel *strip*
-  # logo is drawn from ES's internal ${system.logo}, which only populates for
-  # systems ES knows — a brand-new custom system shows its fullname as text on the
-  # strip regardless of this partial. This partial still gives the detail view the
-  # ALTTPR logo.
+  # Define the system logo explicitly. Included theme paths are resolved relative
+  # to the included XML file, so use ${root}; "./data/..." incorrectly resolves
+  # under _views/_partials/systems and makes SystemView fall back to fullname text.
   SPART="$THEME/_views/_partials/systems/alttpr.xml"
   cat > "$SPART" <<'XML'
 <theme>
 	<view name="system">
 		<image name="logo"
-			path="./data/arts/systems_logos/alttpr.png"
-			path.EU="./data/arts/systems_logos/alttpr-eu.png"
-			path.JP="./data/arts/systems_logos/alttpr-jp.png"
-			path.US="./data/arts/systems_logos/alttpr-us.png"
+			path="${root}/data/arts/systems_logos/alttpr.png"
+			path.EU="${root}/data/arts/systems_logos/alttpr-eu.png"
+			path.JP="${root}/data/arts/systems_logos/alttpr-jp.png"
+			path.US="${root}/data/arts/systems_logos/alttpr-us.png"
 		/>
 	</view>
 </theme>
