@@ -1,0 +1,7 @@
+# Shell/Python scripts and text data MUST stay LF — they run on Linux (Recalbox).
+# CRLF breaks shebang parsing and `sed`/bash on the Pi.
+*.sh   text eol=lf
+*.py   text eol=lf
+*.txt  text eol=lf
+*.conf text eol=lf
+*.xml  text eol=lf
