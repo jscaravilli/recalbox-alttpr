@@ -83,9 +83,16 @@ session). Reliable method:
 - **Recalbox 10 theme system differs from v9**: `recalbox-next` uses unified
   `_views/_partials/systems/<sys>.xml` + `data/arts/<sys>` instead of per-system
   folders. The old `build_theme.sh` (clone the `snes` folder) does NOT apply.
-  Current systemlist uses `theme="snes"` so the ALTTPR system shows functionally
-  with the SNES logo/art. A custom ALTTPR carousel logo on v10 needs a new
-  systems partial + iconset + art entries — deferred as polish (not a blocker).
+- **Carousel strip logo for a NEW custom system**: verified via themes.log that
+  the carousel strip logo is drawn from ES's *internal* `${system.logo}`, which is
+  populated only for systems ES knows (Favorites/Ports get their strip logo this
+  way despite an empty theme-partial include). A brand-new system name ("alttpr")
+  has no internal logo mapping, so the strip shows the fullname as TEXT — and no
+  theme file overrides the strip for an unknown system. Options: (a) accept the
+  text label (functional), (b) patch ES's internal system/logo table (binary/
+  source-level, involved), (c) rename the system to a known one (wrong identity).
+  Logo assets are sized correctly (254x90) and installed; the detail-view logo
+  partial is valid. Carousel-strip logo deferred as an ES-internals limitation.
 
 - Recalbox only serves the *latest* image per board; 9.2.3-Pulstar (live Pi)
   isn't downloadable, so the rebuild targets 10.0.8.

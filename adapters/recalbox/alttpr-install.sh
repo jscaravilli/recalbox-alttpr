@@ -82,7 +82,7 @@ import sys
 p = sys.argv[1]
 xml = open(p, encoding="utf-8").read()
 entry = '''  <system uuid="a17e0000-0000-4000-8000-000000000001" name="alttpr" fullname="ALTTPR - Link to the Past Randomizer">
-    <descriptor path="%ROOT%/alttpr" theme="snes" extensions=".alttpr .sfc .smc" icon="" downloader="0"/>
+    <descriptor path="%ROOT%/alttpr" theme="alttpr" extensions=".alttpr .sfc .smc" icon="" downloader="0"/>
     <scraper screenscraper="4"/>
     <properties type="console" pad="mandatory" keyboard="no" mouse="no" lightgun="no" releasedate="1991-11" manufacturer="Nintendo" retroachievements="0" crt.multiresolution="0" crt.multiregion="1" ignoredfiles=""/>
     <emulatorList>
@@ -98,6 +98,18 @@ if 'name="alttpr"' not in xml:
     print("added alttpr system to systemlist")
 PY
   say "added alttpr system to systemlist.xml"
+else
+  # ensure the theme attribute is 'alttpr' (align with logo resolution)
+  sed -i 's#\(name="alttpr"[^>]*\)\n#\1#' "$USERLIST" 2>/dev/null || true
+  python3 - "$USERLIST" <<'PY' 2>/dev/null || true
+import sys, re
+p = sys.argv[1]
+d = open(p, encoding="utf-8").read()
+d2 = re.sub(r'(<descriptor path="%ROOT%/alttpr"[^>]*?theme=")snes(")', r'\1alttpr\2', d)
+if d2 != d:
+    open(p, "w", encoding="utf-8").write(d2)
+    print("updated alttpr theme attr -> alttpr")
+PY
 fi
 
 # --- 4. create the ROM tiles (launcher .alttpr files) -------------------------
@@ -123,3 +135,56 @@ if [ -f "$RACFG" ]; then
 fi
 
 say "alttpr integration installed/verified"
+
+# --- 6. theme: put the ALTTPR logo on the carousel ----------------------------
+# recalbox-next v10 resolves the system carousel logo from
+#   data/arts/systems_logos/${system.name}.png  (+ -eu/-jp/-us variants)
+# and includes _views/_partials/systems/${system.name}.xml. The theme lives on
+# the overlay rootfs (may not persist an unclean shutdown), so we reapply the art
+# every boot from the persistent copy on the share.
+LOGO_SRC="$ENGINE/es/alttpr-logo.png"
+for THEME in \
+  /recalbox/share_init/system/.emulationstation/themes/recalbox-next \
+  /recalbox/share/themes/recalbox-next ; do
+  [ -d "$THEME/data/arts/systems_logos" ] || continue
+  if [ -f "$LOGO_SRC" ]; then
+    for v in "" "-eu" "-jp" "-us"; do
+      cp "$LOGO_SRC" "$THEME/data/arts/systems_logos/alttpr${v}.png" 2>/dev/null
+    done
+    say "installed alttpr carousel logo in $THEME"
+  fi
+  # minimal system partial so the ${system.name}.xml include resolves, and define
+  # an explicit logo image for the system detail view. NOTE: the carousel *strip*
+  # logo is drawn from ES's internal ${system.logo}, which only populates for
+  # systems ES knows — a brand-new custom system shows its fullname as text on the
+  # strip regardless of this partial. This partial still gives the detail view the
+  # ALTTPR logo.
+  SPART="$THEME/_views/_partials/systems/alttpr.xml"
+  cat > "$SPART" <<'XML'
+<theme>
+	<view name="system">
+		<image name="logo"
+			path="./data/arts/systems_logos/alttpr.png"
+			path.EU="./data/arts/systems_logos/alttpr-eu.png"
+			path.JP="./data/arts/systems_logos/alttpr-jp.png"
+			path.US="./data/arts/systems_logos/alttpr-us.png"
+		/>
+	</view>
+</theme>
+XML
+  say "wrote alttpr theme partial (explicit logo) in $THEME"
+  # side console art: reuse snes consolegame svgs so the detail view isn't blank
+  ASSETS="$THEME/data/arts/systems_assets"
+  if [ -d "$ASSETS" ]; then
+    for suf in consolegame eu-consolegame jp-consolegame us-consolegame \
+               controls eu-console jp-console us-console; do
+      [ -f "$ASSETS/snes-${suf}.svg" ] && [ ! -f "$ASSETS/alttpr-${suf}.svg" ] && \
+        cp "$ASSETS/snes-${suf}.svg" "$ASSETS/alttpr-${suf}.svg" 2>/dev/null
+    done
+    # iconset (carousel small icon)
+    for suf in icon_empty icon_filled; do
+      [ -f "$ASSETS/snes-${suf}.svg" ] && [ ! -f "$ASSETS/alttpr-${suf}.svg" ] && \
+        cp "$ASSETS/snes-${suf}.svg" "$ASSETS/alttpr-${suf}.svg" 2>/dev/null
+    done
+  fi
+done
