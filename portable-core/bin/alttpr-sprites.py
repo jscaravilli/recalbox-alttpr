@@ -22,8 +22,8 @@ import sys
 import urllib.request
 
 ENGINE = "/recalbox/share/alttpr"
-DEF_DIR = ENGINE + "/app/vendor/z3/enemizer_linux/sprites"
-DEF_MANIFEST = ENGINE + "/bin/sprites.json"
+DEF_DIR = ENGINE + "/sprites"
+DEF_MANIFEST = ENGINE + "/bin/data/sprites.json"
 DEF_PREVIEW_DIR = ENGINE + "/bin/sprite-previews"
 DEF_URL = "https://alttpr.com/sprites"
 

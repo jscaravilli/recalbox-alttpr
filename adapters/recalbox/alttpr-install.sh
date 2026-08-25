@@ -226,6 +226,17 @@ fi
 
 say "alttpr integration installed/verified"
 
+# Populate the official sprite library on a fresh install. The catalog snapshot
+# is committed for offline manifest rebuilds; online runs fetch missing current
+# sprites/previews. Guarded so normal self-healing boots do not hit the network.
+SPRITE_COUNT="$(find "$ENGINE/sprites" -maxdepth 1 -type f -name '*.zspr' \
+  2>/dev/null | wc -l)"
+if [ "${SPRITE_COUNT:-0}" -lt 500 ] && \
+   [ -x "$ENGINE/bin/alttpr-sprites.py" ]; then
+  python3 "$ENGINE/bin/alttpr-sprites.py" >>"$LOG" 2>&1 || \
+    say "sprite population failed; cached/default sprites remain available"
+fi
+
 # --- 6. themes: logo, sprite montage, and project information -----------------
 # Both bundled themes live on the overlay rootfs, so reapply their customizations
 # every boot from persistent assets on the ext4 share.

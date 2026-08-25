@@ -113,14 +113,22 @@ Then run `bash /recalbox/share/alttpr/es/alttpr-install.sh` once. It:
 the rootfs hook self-heals even though rootfs overlay changes may not survive an
 unclean shutdown.
 
-## 5. Endgame hook (freeze fix)
+## 5. Install sprites and curated MSU packs
+
+Run `portable-core/install-content.sh` on the Pi after deployment. It downloads
+the current official `.zspr` library from `alttpr.com/sprites`, uses the committed
+catalog snapshot if the API is unavailable, and installs only the curated MSU
+selection in `portable-core/bin/data/msu-packs.json`. The pinned official ARM64
+`7zz` extractor supports ZIP, 7Z, and RAR packs.
+
+## 6. Endgame hook (freeze fix)
 
 `adapters/recalbox/userscripts/alttpr-refresh.sh` runs on ES `endgame`: a
 DETACHED, time-bounded `sync` (never a bare blocking `sync` — that froze the
 frontend when the old NVMe dropped off the bus), plus the gamelist refresh
 worker when a new seed was generated.
 
-## 6. Golden image
+## 7. Golden image
 
 Once verified, power off and image the whole card (all 3 partitions) to a `.img`
 for one-step re-flash / cloning. See docs/BUILD-LOG.md.

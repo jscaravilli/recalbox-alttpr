@@ -43,7 +43,7 @@ case "$MODE" in
     KEYSHUFFLE=none BIGKEYSHUFFLE=none MAPSHUFFLE=none COMPASSSHUFFLE=none
     CRYSTALS_GANON=7 CRYSTALS_GT=7 SPRITE="(default)" HEARTCOLOR=red
     OW_SHUFFLE=vanilla OW_LAYOUT=vanilla OW_FLUTESHUFFLE=vanilla DOOR_SHUFFLE=vanilla
-    SHUFFLE=vanilla NICKNAME="" TIMER=none POTTERY=none
+    SHUFFLE=vanilla NICKNAME="" TIMER=stopwatch POTTERY=none
     HINTS=on QUICKSWAP=true SPOILER=on MSU=Default
     # shellcheck disable=SC1090
     [ -f "$CHOICES" ] && . "$CHOICES"
@@ -65,7 +65,7 @@ case "$MODE" in
     else
       EXTRA="$EXTRA --spoiler none"
     fi
-    [ -n "$TIMER" ] && [ "$TIMER" != "none" ] && EXTRA="$EXTRA --timer $TIMER"
+    [ "$TIMER" = "stopwatch" ] && EXTRA="$EXTRA --timer display"
     [ -n "$HEARTCOLOR" ] && [ "$HEARTCOLOR" != "red" ] && EXTRA="$EXTRA --heartcolor $HEARTCOLOR"
     if [ -n "$SPRITE" ] && [ "$SPRITE" != "(default)" ]; then
       SPR="$ENGINE/sprites/$SPRITE.zspr"
@@ -114,6 +114,35 @@ FINALBASE="$(basename "$FINAL" .sfc)"
 SPOILERSRC="$(ls -1 "$STAGE"/*_Spoiler.txt 2>/dev/null | head -1)"
 [ -f "$SPOILERSRC" ] && mv "$SPOILERSRC" "$DEST/${FINALBASE}.spoiler.txt"
 rm -rf "$STAGE"
+
+# --- attach selected MSU-1 pack ----------------------------------------------
+# Packs are normalized under msu/<slug>/ with a runtime manifest. Since the
+# share is ext4, attach tracks as symlinks instead of copying ~1 GiB per seed.
+MSU="${MSU:-Default}"
+if [ -n "$MSU" ] && [ "$MSU" != "Default" ]; then
+  MANIFEST="$ENGINE/msu/packs.json"
+  if [ -f "$MANIFEST" ]; then
+    PACKINFO="$(python3 - "$MANIFEST" "$MSU" <<'PY' 2>/dev/null
+import json, sys
+for p in json.load(open(sys.argv[1], encoding="utf-8")):
+    if p.get("name") == sys.argv[2]:
+        print(p.get("dir", ""))
+        print(p.get("basename", ""))
+        break
+PY
+)"
+    PACKDIR="$(printf '%s\n' "$PACKINFO" | sed -n 1p)"
+    PACKBASE="$(printf '%s\n' "$PACKINFO" | sed -n 2p)"
+    if [ -d "$PACKDIR" ] && [ -n "$PACKBASE" ]; then
+      for SRC in "$PACKDIR/$PACKBASE".msu "$PACKDIR/$PACKBASE"-*.pcm; do
+        [ -e "$SRC" ] || continue
+        SUFFIX="$(basename "$SRC")"
+        SUFFIX="${SUFFIX#$PACKBASE}"
+        ln -sf "$SRC" "$DEST/${FINALBASE}${SUFFIX}"
+      done
+    fi
+  fi
+fi
 
 # --- register the seed for the ES gamelist (root gamelist + durable pending) --
 GL="$ROOT/gamelist.xml"

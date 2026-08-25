@@ -82,11 +82,9 @@ def load_sprite_manifest():
             fn = e.get("file", "")
             if present and (fn + ".zspr") not in present:
                 continue  # skip entries whose .zspr isn't on disk
-            # only offer sprites that have a preview image on disk (drop the
-            # handful with no official preview so every pick shows an image)
             prev = e.get("preview", "")
-            if not prev or not os.path.isfile(os.path.join(PREVIEW_DIR, prev)):
-                continue
+            if prev and not os.path.isfile(os.path.join(PREVIEW_DIR, prev)):
+                prev = ""
             nm = e.get("name") or fn
             names.append(nm)
             meta[nm] = {"file": fn,
@@ -177,9 +175,7 @@ def build_options(sprite_names=None, msu_names=None):
          ["none", "keys", "dungeon", "cave", "cavekeys", "reduced",
           "clustered", "nonempty", "lottery"], 0),
         ("QUICKSWAP", "Quickswap (L/R)", ["true", "false"], 0),
-        ("TIMER", "HUD Timer",
-         ["none", "display", "timed", "timed-ohko", "ohko",
-          "timed-countdown"], 0),
+        ("TIMER", "HUD Timer", ["stopwatch"], 0),
         ("SPRITE", "Link Sprite", sprites, 0),
         ("HEARTCOLOR", "Heart Color", ["red", "blue", "green", "yellow",
                                        "random"], 0),

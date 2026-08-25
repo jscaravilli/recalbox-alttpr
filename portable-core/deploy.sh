@@ -32,12 +32,14 @@ $SCP "$REPO"/adapters/recalbox/assets/gamelist/box.png \
 echo "== copying boot hook + endgame userscript =="
 $SCP "$REPO"/adapters/recalbox/custom.sh "root@${PI}:/recalbox/share/system/custom.sh"
 $SCP "$REPO"/adapters/recalbox/userscripts/alttpr-refresh.sh "root@${PI}:/recalbox/share/userscripts/"
+$SCP "$REPO"/portable-core/install-content.sh "root@${PI}:/recalbox/share/alttpr/install-content.sh"
 
 echo "== normalize line endings + perms, then install =="
 $SSH "cd /recalbox/share/alttpr; \
       find bin es -type f \( -name '*.sh' -o -name '*.py' \) -exec sed -i 's/\r\$//' {} +; \
       sed -i 's/\r\$//' /recalbox/share/system/custom.sh /recalbox/share/userscripts/alttpr-refresh.sh; \
       chmod +x bin/*.sh bin/*.py es/*.sh es/*.py /recalbox/share/system/custom.sh /recalbox/share/userscripts/alttpr-refresh.sh; \
+      chmod +x /recalbox/share/alttpr/install-content.sh; \
       bash /recalbox/share/alttpr/es/alttpr-install.sh"
 
 echo "== done. Restart EmulationStation on the Pi to see the ALTTPR system. =="

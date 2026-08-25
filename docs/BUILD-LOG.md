@@ -89,6 +89,13 @@ session). Reliable method:
   installs unified assets/markdown and overrides all regional image paths.
   Framebuffer-verified on both themes. The installer also removes stale external
   `roms/alttpr` trees so Recalbox does not merge duplicate action tiles.
+- **Optional content restored**: 513 official sprites are selectable (486 have
+  recovered previews). The only HUD timer choice is Stopwatch, mapped to DR's
+  `--timer display` / native `clock_mode = stopwatch`. Ten curated MSU packs
+  plus Default are installed and alphabetized; generation was validated with a
+  selected sprite, stopwatch, and 61 linked MSU files. `Zelda & Chill` is not
+  installed because its public archive contains recipes only and explicitly
+  requires the separately purchased GameChops albums.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device

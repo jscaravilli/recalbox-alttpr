@@ -24,6 +24,7 @@ Idempotent: a pack whose msu/<slug>/ already has tracks is skipped unless
 """
 import argparse
 import html as htmlmod
+import hashlib
 import json
 import os
 import re
@@ -34,13 +35,16 @@ import urllib.parse
 import urllib.request
 import http.cookiejar
 import zipfile
+import tarfile
 
 ENGINE = "/recalbox/share/alttpr"
-SELECTION = ENGINE + "/bin/msu-packs.json"
+SELECTION = ENGINE + "/bin/data/msu-packs.json"
 MSU_DIR = ENGINE + "/msu"
 MANIFEST = MSU_DIR + "/packs.json"
 DL_DIR = ENGINE + "/_msu_dl"
-SEVENZR = "7zr"   # busybox/p7zip standalone extractor present on the Pi
+SEVENZR = ENGINE + "/bin/7zz"
+SEVENZZ_URL = "https://www.7-zip.org/a/7z2602-linux-arm64.tar.xz"
+SEVENZZ_SHA256 = "70ea6cc737ae1495ea2d7eb20ef3120fe579bd3f1a83a9d2362b62ec5bde2bba"
 
 
 # --- helpers -----------------------------------------------------------------
@@ -68,6 +72,40 @@ def stream(op, url, dst, data=None):
             f.write(c)
             total += len(c)
     return total, r.headers.get("Content-Type", "")
+
+
+def ensure_7zz():
+    """Install the pinned official ARM64 7-Zip standalone binary.
+
+    Recalbox's bundled 7zr handles 7z only; 7zz also extracts RAR archives.
+    """
+    if os.path.isfile(SEVENZR) and os.access(SEVENZR, os.X_OK):
+        return
+    archive = os.path.join(DL_DIR, "7zz-arm64.tar.xz")
+    os.makedirs(DL_DIR, exist_ok=True)
+    op = opener()
+    stream(op, SEVENZZ_URL, archive)
+    digest = hashlib.sha256(open(archive, "rb").read()).hexdigest()
+    if digest != SEVENZZ_SHA256:
+        raise RuntimeError("7zz archive checksum mismatch")
+    try:
+        with tarfile.open(archive, "r:xz") as tf:
+            member = next((m for m in tf.getmembers()
+                           if os.path.basename(m.name) == "7zz" and m.isfile()),
+                          None)
+            if member is None:
+                raise RuntimeError("7zz missing from official archive")
+            src = tf.extractfile(member)
+            with open(SEVENZR, "wb") as dst:
+                shutil.copyfileobj(src, dst)
+    except (ImportError, tarfile.ReadError, tarfile.CompressionError):
+        # Recalbox Python omits lzma, but BusyBox tar + /usr/bin/xz support -J.
+        rc = subprocess.call(["tar", "-xJf", archive, "-C", DL_DIR, "7zz"])
+        staged = os.path.join(DL_DIR, "7zz")
+        if rc != 0 or not os.path.isfile(staged):
+            raise RuntimeError("could not extract official 7zz archive")
+        shutil.move(staged, SEVENZR)
+    os.chmod(SEVENZR, 0o755)
 
 
 # --- per-host download -------------------------------------------------------
@@ -160,14 +198,12 @@ def extract(path, out_dir):
         with zipfile.ZipFile(path) as z:
             z.extractall(out_dir)
         return True
-    if kind == "7z":
+    if kind in ("7z", "rar"):
+        ensure_7zz()
         rc = subprocess.call([SEVENZR, "x", "-y", "-o" + out_dir, path],
                              stdout=subprocess.DEVNULL,
                              stderr=subprocess.DEVNULL)
         return rc == 0
-    if kind == "rar":
-        sys.stderr.write("  RAR not supported on device; extract elsewhere\n")
-        return False
     return False
 
 
@@ -229,6 +265,24 @@ def install_pack(pack, force=False):
     if not extract(arc, ex):
         raise RuntimeError("extract failed (format %s)" % sniff(arc))
     found = find_msu_tree(ex)
+    if not found or not found[1]:
+        # Source-audio packs ship MP3/FLAC + an msupcm++ recipe. Build the PCM
+        # payload natively because their included converter is a Windows exe.
+        recipes = []
+        for dp, _dn, fns in os.walk(ex):
+            for fn in fns:
+                if fn.lower().endswith(".json"):
+                    recipes.append(os.path.join(dp, fn))
+        builder = ENGINE + "/bin/alttpr-build-msupcm.py"
+        for recipe in recipes:
+            try:
+                data = json.load(open(recipe, encoding="utf-8"))
+            except Exception:
+                continue
+            if not data.get("tracks") or not data.get("output_prefix"):
+                continue
+            subprocess.call(["python3", builder, recipe])
+        found = find_msu_tree(ex)
     if not found or not found[1]:
         raise RuntimeError("no .pcm tracks found after extract")
     msu_path, pcms, base = found
@@ -308,7 +362,8 @@ def main():
             d = os.path.join(MSU_DIR, slug(p["name"]))
             has = (os.path.isdir(d)
                    and any(f.lower().endswith(".pcm") for f in os.listdir(d)))
-            print("[%s] %-45s %s" % ("x" if has else " ", p["name"], p["host"]))
+            status = "x" if has else ("!" if p.get("requires_album") else " ")
+            print("[%s] %-45s %s" % (status, p["name"], p["host"]))
         return 0
 
     if args.manifest_only:
@@ -326,6 +381,10 @@ def main():
     ok = 0
     fail = []
     for p in targets:
+        if p.get("requires_album"):
+            print("%-45s manual: %s" %
+                  (p["name"], p.get("note", "source audio required")))
+            continue
         try:
             res = install_pack(p, force=args.force)
             print("%-45s %s" % (p["name"], res))
