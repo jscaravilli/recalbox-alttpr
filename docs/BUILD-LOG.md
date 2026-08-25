@@ -40,12 +40,38 @@ read-only audio.
 - [x] Flash SD (Raspberry Pi Imager GUI; scripted raw writes blocked by Windows)
 - [x] Back up live saves/seeds/config to PC (`live-saves-seeds.tgz`, 30 MB)
 - [x] Remove NVMe (user)
-- [ ] Boot Pi on new card; SSH in
-- [ ] Convert share to ext4; restore saves/seeds
-- [ ] Install app; swap PHP/box64 -> DungeonRandomizer.py (Python 3.7-3.10 vs Pi 3.11)
-- [ ] Adapt ES integration hooks to Recalbox 10 (ES-next); validate
-- [ ] Verify seed gen / MSU / tracker / saves end-to-end
+- [x] Boot Pi on new card; SSH in (192.168.68.79, Wi-Fi)
+- [x] Convert share to ext4 (RAM-share method; DEV <uuid> auto-detect; survives reboot)
+- [x] Install DR + deps on ext4 share; VALIDATED seed generation on Python 3.11
+- [ ] Wire DR into Recalbox 10 configgen (rootfs is READ-ONLY — needs overlay path)
+- [ ] Port KEEP scripts: menu, MSU attach, tracker, gamelist glue; rewrite generate.sh for DR
+- [ ] Verify seed gen / MSU / tracker / saves end-to-end in ES
 - [ ] Capture golden .img
+
+## VALIDATED (engine swap proven)
+
+On Recalbox 10.0.8 / Python 3.11.8, ext4 share:
+- DR deps (aenum, fast-enum, python-bps-continued, colorama, aioconsole,
+  websockets, pyyaml) pip-installed to `/recalbox/share/alttpr/pydeps/site`
+  (pip bootstrapped via get-pip; rootfs site-packages is read-only).
+- `DungeonRandomizer.py --rom base --mode open --goal ganon --swords random
+  --create_rom --spoiler full` produced a 2 MB patched playable ROM +
+  41 KB spoiler in ~12s. Native item/dungeon/boss/enemy/overworld shuffle —
+  NO box64, NO PHP, NO EnemizerCLI. Base ROM md5 03a63945... (JAP 1.0).
+
+## ext4 conversion method (what worked)
+
+Live-unmount of the share fails (system holds it; killing holders kills the SSH
+session). Reliable method:
+1. Set `sharedevice=RAM` in /boot/recalbox-boot.conf; reboot -> share is tmpfs,
+   p2 is free (only auto-mounted once as external /externals/mmc0).
+2. `umount` that single point; `mkfs.ext4 -F -L SHARE /dev/mmcblk0p2`.
+3. Set `sharedevice=DEV <uuid>` (DEV mode auto-detects ext4 via blkid; INTERNAL
+   mode hardcodes an exfat mount and would fail on ext4). New UUID
+   754e5c83-88d1-4bd1-a8a7-5482826c290b.
+4. Reboot -> `/recalbox/share` mounts ext4 (rw,noatime, NO sync). Symlinks +
+   exec confirmed working. `reboot` hangs on this build; use `reboot -f` or a
+   hard power cycle (safe after sync).
 
 ## Notes / gotchas
 
