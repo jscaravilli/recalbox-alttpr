@@ -10,7 +10,7 @@ SSH="ssh root@${PI}"
 SCP="scp"
 
 echo "== creating target dirs =="
-$SSH "mkdir -p /recalbox/share/alttpr/bin/words /recalbox/share/alttpr/es \
+$SSH "mkdir -p /recalbox/share/alttpr/bin/words /recalbox/share/alttpr/es/gamelist-art \
       /recalbox/share/roms/alttpr/SEEDS /recalbox/share/userscripts"
 
 echo "== copying engine bin =="
@@ -19,6 +19,9 @@ $SCP -r "$REPO"/portable-core/bin/* "root@${PI}:/recalbox/share/alttpr/bin/"
 echo "== copying es integration =="
 $SCP "$REPO"/adapters/recalbox/alttprGenerator.py "root@${PI}:/recalbox/share/alttpr/es/"
 $SCP "$REPO"/adapters/recalbox/alttpr-install.sh  "root@${PI}:/recalbox/share/alttpr/es/"
+$SCP "$REPO"/adapters/recalbox/assets/gamelist/box.png \
+     "$REPO"/adapters/recalbox/assets/gamelist/seed.png \
+     "root@${PI}:/recalbox/share/alttpr/es/gamelist-art/"
 
 echo "== copying boot hook + endgame userscript =="
 $SCP "$REPO"/adapters/recalbox/custom.sh "root@${PI}:/recalbox/share/system/custom.sh"

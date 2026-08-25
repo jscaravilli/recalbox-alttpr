@@ -44,6 +44,7 @@ case "$MODE" in
     CRYSTALS_GANON=7 CRYSTALS_GT=7 SPRITE="(default)" HEARTCOLOR=red
     OW_SHUFFLE=vanilla OW_LAYOUT=vanilla OW_FLUTESHUFFLE=vanilla DOOR_SHUFFLE=vanilla
     SHUFFLE=vanilla NICKNAME="" TIMER=none POTTERY=none
+    HINTS=on QUICKSWAP=true SPOILER=on MSU=Default
     # shellcheck disable=SC1090
     [ -f "$CHOICES" ] && . "$CHOICES"
     FLAGS="--mode $MODE_V --goal $GOAL --swords $SWORDS --difficulty $DIFFICULTY \
@@ -56,6 +57,14 @@ case "$MODE" in
 --crystals_ganon $CRYSTALS_GANON --crystals_gt $CRYSTALS_GT \
 --ow_shuffle $OW_SHUFFLE --ow_layout $OW_LAYOUT --ow_fluteshuffle $OW_FLUTESHUFFLE \
 --door_shuffle $DOOR_SHUFFLE --shuffle $SHUFFLE --pottery $POTTERY"
+    EXTRA="--create_rom"
+    [ "$HINTS" = "on" ] && FLAGS="$FLAGS --hints"
+    [ "$QUICKSWAP" = "true" ] && EXTRA="$EXTRA --quickswap"
+    if [ "$SPOILER" = "on" ]; then
+      EXTRA="$EXTRA --spoiler full"
+    else
+      EXTRA="$EXTRA --spoiler none"
+    fi
     [ -n "$TIMER" ] && [ "$TIMER" != "none" ] && EXTRA="$EXTRA --timer $TIMER"
     [ -n "$HEARTCOLOR" ] && [ "$HEARTCOLOR" != "red" ] && EXTRA="$EXTRA --heartcolor $HEARTCOLOR"
     if [ -n "$SPRITE" ] && [ "$SPRITE" != "(default)" ]; then

@@ -43,8 +43,8 @@ read-only audio.
 - [x] Boot Pi on new card; SSH in (192.168.68.79, Wi-Fi)
 - [x] Convert share to ext4 (RAM-share method; DEV <uuid> auto-detect; survives reboot)
 - [x] Install DR + deps on ext4 share; VALIDATED seed generation on Python 3.11
-- [ ] Wire DR into Recalbox 10 configgen (rootfs is READ-ONLY — needs overlay path)
-- [ ] Port KEEP scripts: menu, MSU attach, tracker, gamelist glue; rewrite generate.sh for DR
+- [x] Wire DR into Recalbox 10 configgen (self-healed through `custom.sh`)
+- [x] Restore polished menus + curated ES layout; map baseline options to DR
 - [ ] Verify seed gen / MSU / tracker / saves end-to-end in ES
 - [ ] Capture golden .img
 
@@ -74,6 +74,14 @@ session). Reliable method:
    hard power cycle (safe after sync).
 
 ## Notes / gotchas
+
+- **Menus restored and validated**: recovered the original `box.png`/`seed.png`
+  from the old USB share, restored the three-action + `SEEDS` layout, deployed
+  the fullscreen custom/cleanup/spoiler pygame tools, and mapped the baseline
+  option payload to Python DR. Recalbox 10's SDL driver name is case-sensitive:
+  use `KMSDRM`, not v9's lowercase `kmsdrm`. Custom menu default generation
+  produced a real 2 MiB ROM + text spoiler. Spoiler browser supports DR
+  `.spoiler.txt` and legacy `.spoiler.json`.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device

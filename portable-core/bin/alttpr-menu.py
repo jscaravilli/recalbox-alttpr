@@ -14,7 +14,7 @@ import glob
 import time
 import subprocess
 
-os.environ.setdefault("SDL_VIDEODRIVER", "kmsdrm")
+os.environ["SDL_VIDEODRIVER"] = "KMSDRM"
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
 os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 
@@ -23,8 +23,8 @@ import pygame  # noqa: E402
 ENGINE = "/recalbox/share/alttpr"
 GENERATE = ENGINE + "/bin/alttpr-generate.sh"
 NAMEGEN = ENGINE + "/bin/alttpr-name.py"
-SPRITE_DIR = ENGINE + "/app/vendor/z3/enemizer_linux/sprites"
-SPRITE_MANIFEST = ENGINE + "/bin/sprites.json"
+SPRITE_DIR = ENGINE + "/sprites"
+SPRITE_MANIFEST = ENGINE + "/bin/data/sprites.json"
 PREVIEW_DIR = ENGINE + "/bin/sprite-previews"
 MSU_MANIFEST = ENGINE + "/msu/packs.json"
 CHOICES = "/tmp/alttpr_choices.env"
@@ -137,24 +137,9 @@ def load_msu_manifest():
 # --- option model ------------------------------------------------------------
 # Each option: (key, label, [values], default_index)
 #
-# SUPPORTED vs NOT SUPPORTED (offline CLI reality)
-# ------------------------------------------------
-# These options map 1:1 onto flags the offline randomizer CLI (artisan
-# alttp:randomize) actually accepts. The web service at alttpr.com exposes a few
-# modes the bundled CLI does NOT wire up — do not add menu rows for them, they
-# will silently do nothing or error:
-#
-#   * Entrance Randomizer (ER)  — NOT AVAILABLE. Randomize.php hardcodes
-#       'entrances' => 'none' and there is no --entrances flag. The
-#       EntranceRandomizer.php class exists in the app but only the web
-#       controller drives it; the CLI never calls it.
-#   * Overworld/door shuffle, mystery/festive seeds, plandomizer — web-only.
-#   * MSU-1 music, palette shuffle, heart color/speed, reduce-flashing, SFX
-#       shuffle — these are POST-GENERATION cosmetic tweaks the website applies
-#       to an already-built ROM, not generation flags. Not modeled here (a couple
-#       are reachable via --heartcolor/--heartbeep if ever needed).
-#
-# Everything below IS a real CLI flag (see alttpr-generate.sh for the mapping).
+# These rows map directly to the Python Door Randomizer CLI. New DR-specific
+# entrance/door/overworld options are added in a separate menu expansion; this
+# first pass restores the proven controller UI with a clean baseline option set.
 def build_options(sprite_names=None, msu_names=None):
     # Row order and the default (index 0) for each row are curated in
     # docs/option-help.md; keep this list in sync with that doc's block order
@@ -163,33 +148,41 @@ def build_options(sprite_names=None, msu_names=None):
     sprites = sprite_names if sprite_names is not None else sprite_options()
     msus = msu_names if msu_names is not None else load_msu_manifest()[0]
     opts = [
-        ("STATE", "Game State", ["standard", "open", "inverted", "retro"], 0),
-        ("GOAL", "Goal", ["ganon", "fast_ganon", "dungeons", "pedestal",
-                           "ganonhunt", "triforce-hunt"], 0),
-        ("CRYSTALS_TOWER", "Crystals Required for GT",
+        ("MODE_V", "Game State", ["standard", "open", "inverted", "retro"], 0),
+        ("GOAL", "Goal", ["ganon", "crystals", "dungeons", "pedestal",
+                           "ganonhunt", "triforcehunt", "trinity",
+                           "completionist"], 0),
+        ("CRYSTALS_GT", "Crystals Required for GT",
          ["7", "6", "5", "4", "3", "2", "1", "0", "random"], 0),
         ("CRYSTALS_GANON", "Ganon Vulnerable",
          ["7", "6", "5", "4", "3", "2", "1", "0", "random"], 0),
-        ("WEAPONS", "Swords", ["randomized", "assured", "vanilla", "swordless"], 0),
-        ("ITEM_POOL", "Item Pool", ["normal", "hard", "expert"], 0),
+        ("SWORDS", "Swords", ["random", "assured", "vanilla", "swordless"], 0),
+        ("DIFFICULTY", "Item Pool", ["normal", "hard", "expert"], 0),
         ("ITEM_FUNCTIONALITY", "Item Function", ["normal", "hard", "expert"], 0),
-        ("GLITCHES", "Glitches Logic", ["none", "overworld_glitches",
-                                        "hybrid_major_glitches", "major_glitches",
-                                        "no_logic"], 0),
-        ("ITEM_PLACEMENT", "Item Placement", ["basic", "advanced"], 0),
-        ("DUNGEON_ITEMS", "Dungeon Items", ["standard", "mc", "mcs", "full"], 0),
+        ("LOGIC", "Glitches Logic", ["noglitches", "minorglitches",
+                                      "owglitches", "hybridglitches",
+                                      "nologic"], 0),
+        ("ALGORITHM", "Item Placement",
+         ["balanced", "vanilla_fill", "major_only", "dungeon_only",
+          "district"], 0),
         ("ACCESSIBILITY", "Accessibility", ["items", "locations", "none"], 0),
         ("HINTS", "Hints", ["on", "off"], 0),
-        ("BOSS_SHUFFLE", "Boss Shuffle", ["none", "simple", "full", "random"], 0),
-        ("ENEMY_SHUFFLE", "Enemy Shuffle", ["none", "shuffled", "random"], 0),
+        ("SHUFFLEBOSSES", "Boss Shuffle",
+         ["none", "simple", "unique", "full", "random"], 0),
+        ("SHUFFLEENEMIES", "Enemy Shuffle", ["none", "shuffled"], 0),
         ("ENEMY_DAMAGE", "Enemy Damage", ["default", "shuffled", "random"], 0),
-        ("ENEMY_HEALTH", "Enemy Health", ["default", "easy", "hard", "expert"], 0),
-        ("POT_SHUFFLE", "Pot Shuffle", ["off", "on"], 0),
+        ("ENEMY_HEALTH", "Enemy Health",
+         ["default", "easy", "normal", "hard", "expert"], 0),
+        ("POTTERY", "Pot Shuffle",
+         ["none", "keys", "dungeon", "cave", "cavekeys", "reduced",
+          "clustered", "nonempty", "lottery"], 0),
         ("QUICKSWAP", "Quickswap (L/R)", ["true", "false"], 0),
-        ("TIMER", "HUD Timer", ["stopwatch", "off"], 0),
+        ("TIMER", "HUD Timer",
+         ["none", "display", "timed", "timed-ohko", "ohko",
+          "timed-countdown"], 0),
         ("SPRITE", "Link Sprite", sprites, 0),
-        ("HEART_COLOR", "Heart Color", ["red", "blue", "green", "yellow",
-                                        "random"], 0),
+        ("HEARTCOLOR", "Heart Color", ["red", "blue", "green", "yellow",
+                                       "random"], 0),
         ("MSU", "MSU Music Pack", msus, 0),
         ("SPOILER", "Spoiler Log", ["on", "off"], 0),
     ]
@@ -199,7 +192,7 @@ def build_options(sprite_names=None, msu_names=None):
 def load_help():
     """Load option-help.json (key -> {value: text, or "_row": text})."""
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "option-help.json")
+                        "data", "option-help.json")
     try:
         import json
         with open(path, encoding="utf-8") as f:
@@ -414,8 +407,8 @@ class Menu:
         if self.sel == self.n:
             return ("__generate__", "Generate & Play",
                     "Create the seed using the options on the left and boot "
-                    "straight into it. This can take ~20s when enemizer "
-                    "options are enabled.")
+                    "straight into it. Native Python generation usually "
+                    "finishes in 10–30 seconds.")
         if self.sel >= self.n + 1:
             return ("__cancel__", "Cancel",
                     "Exit without generating a seed and return to the game "
@@ -456,10 +449,43 @@ class Menu:
                 bits.append("Cosmetic audio only — no effect on logic or gameplay.")
                 text = "\n".join(bits)
             return ("MSU=%s" % val, "%s: %s" % (label, val), text)
-        block = self.help.get(key, {})
-        text = block.get(val)
+        # Reuse the curated old help copy after renaming PHP-era keys to their
+        # Python DR equivalents.
+        aliases = {
+            "MODE_V": ("STATE", {}),
+            "CRYSTALS_GT": ("CRYSTALS_TOWER", {}),
+            "SWORDS": ("WEAPONS", {"random": "randomized"}),
+            "DIFFICULTY": ("ITEM_POOL", {}),
+            "LOGIC": ("GLITCHES", {
+                "noglitches": "none",
+                "minorglitches": "none",
+                "owglitches": "overworld_glitches",
+                "hybridglitches": "hybrid_major_glitches",
+                "nologic": "no_logic",
+            }),
+            "ALGORITHM": ("ITEM_PLACEMENT", {
+                "balanced": "advanced",
+                "vanilla_fill": "basic",
+            }),
+            "SHUFFLEBOSSES": ("BOSS_SHUFFLE", {}),
+            "SHUFFLEENEMIES": ("ENEMY_SHUFFLE", {}),
+            "POTTERY": ("POT_SHUFFLE", {
+                "none": "off",
+                "keys": "on", "dungeon": "on", "cave": "on",
+                "cavekeys": "on", "reduced": "on", "clustered": "on",
+                "nonempty": "on", "lottery": "on",
+            }),
+            "HEARTCOLOR": ("HEART_COLOR", {}),
+        }
+        help_key, value_aliases = aliases.get(key, (key, {}))
+        help_val = value_aliases.get(val, val)
+        block = self.help.get(help_key, {})
+        text = block.get(help_val)
         if text is None:
             text = block.get("_row", "")
+        if not text:
+            text = ("Python Door Randomizer option. Use Left/Right to choose "
+                    "a value; the selected value is passed directly to DR.")
         title = "%s: %s" % (label, val)
         return ("%s=%s" % (key, val), title, text)
 
@@ -710,7 +736,8 @@ class Menu:
         seed = ""
         out_lines = []
         while proc.poll() is None:
-            self.progress("This can take ~20s with enemizer", time.time() - start)
+            self.progress("Generating with Python Door Randomizer",
+                          time.time() - start)
             # keep SDL responsive
             pygame.event.pump()
             self.clock.tick(12)

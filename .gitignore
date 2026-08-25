@@ -6,6 +6,8 @@
 *.sfc
 *.srm
 *.state*
+__pycache__/
+*.py[cod]
 build/*.log
 live-backup/
 adminq/

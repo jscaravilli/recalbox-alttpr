@@ -52,7 +52,7 @@ process() {
   dir=$(dirname "$f")
   base=$(basename "$f" .sfc)
   rm -f "$f" 2>/dev/null
-  rm -f "$dir/${base}.spoiler.json" 2>/dev/null
+  rm -f "$dir/${base}.spoiler.json" "$dir/${base}.spoiler.txt" 2>/dev/null
   # remove any attached MSU-1 symlinks for this seed (<base>.msu + <base>-N.pcm)
   rm -f "$dir/${base}.msu" 2>/dev/null
   for pcm in "$dir/${base}"-*.pcm; do

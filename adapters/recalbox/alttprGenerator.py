@@ -23,7 +23,7 @@ class AlttprGenerator:
 
     def _run_pygame(self, script):
         env = dict(os.environ)
-        env.setdefault("SDL_VIDEODRIVER", "kmsdrm")
+        env["SDL_VIDEODRIVER"] = "KMSDRM"
         env.setdefault("SDL_AUDIODRIVER", "dummy")
         env["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
         try:

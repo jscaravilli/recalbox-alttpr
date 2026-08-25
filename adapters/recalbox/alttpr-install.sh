@@ -112,21 +112,75 @@ if d2 != d:
 PY
 fi
 
-# --- 4. create the ROM tiles (launcher .alttpr files) -------------------------
-mkdir -p "$ROOT/SEEDS"
-make_tile() { # <filename> <mode-line>
-  local f="$ROOT/$1" mode="$2"
-  [ -f "$f" ] || printf '%s\n' "$mode" > "$f"
-}
-make_tile "Generate Custom Seed.alttpr" "custom"
-make_tile "Open Ganon.alttpr"           "open"
-make_tile "Standard Ganon.alttpr"       "standard"
-make_tile "Fast Ganon.alttpr"           "fast_ganon"
-make_tile "Keysanity.alttpr"            "keysanity"
-make_tile "Pedestal.alttpr"             "pedestal"
-make_tile "Inverted.alttpr"             "inverted"
-make_tile "Clean Old Seeds.alttpr"      "cleanup"
-make_tile "View Spoiler.alttpr"         "spoiler"
+# --- 4. restore the curated ALTTPR menu --------------------------------------
+# Keep the system root intentionally small: three action tiles plus one SEEDS
+# folder. Seed configuration belongs in the fullscreen pygame menu, not in a
+# wall of raw preset launchers.
+PFX="ƒ "
+SEEDS="$ROOT/SEEDS"
+ART="$ROOT/.art"
+mkdir -p "$SEEDS" "$ART"
+
+rm -f "$ROOT"/*.alttpr 2>/dev/null
+printf '%s\n' custom  > "$ROOT/${PFX}Generate Custom Seed.alttpr"
+printf '%s\n' spoiler > "$ROOT/${PFX}View Spoiler Logs.alttpr"
+printf '%s\n' cleanup > "$ROOT/${PFX}Clean Old Seeds.alttpr"
+
+# Original curated artwork recovered from the prior Recalbox installation.
+ARTSRC="$ENGINE/es/gamelist-art"
+[ -f "$ARTSRC/box.png" ]  && cp -f "$ARTSRC/box.png"  "$ART/box.png"
+[ -f "$ARTSRC/seed.png" ] && cp -f "$ARTSRC/seed.png" "$ART/seed.png"
+chmod 644 "$ART"/*.png 2>/dev/null || true
+
+# Rebuild only the menu-level records while preserving generated seed records
+# (including play count/last-played metadata) from the existing gamelist.
+python3 - "$ROOT/gamelist.xml" "$PFX" <<'PY' 2>/dev/null || true
+import os, re, sys
+gl, pfx = sys.argv[1], sys.argv[2]
+try:
+    old = open(gl, encoding="utf-8").read()
+except OSError:
+    old = ""
+
+seed_blocks = []
+for block in re.findall(r"\s*<game(?:\s[^>]*)?>.*?</game>", old, re.S):
+    if re.search(r"<path>(?:\./)?SEEDS/[^<]+\.sfc</path>", block):
+        block = re.sub(r"<image>.*?</image>",
+                       "<image>./.art/seed.png</image>", block, flags=re.S)
+        seed_blocks.append(block.strip() + "\n")
+
+entries = [
+    (f"{pfx}Generate Custom Seed.alttpr", f"{pfx}Generate Custom Seed",
+     "Configure a Python Door Randomizer seed in the controller-driven menu, "
+     "then generate and play it immediately."),
+    (f"{pfx}View Spoiler Logs.alttpr", f"{pfx}View Spoiler Logs",
+     "Browse spoiler logs for generated seeds on the TV."),
+    (f"{pfx}Clean Old Seeds.alttpr", f"{pfx}Clean Old Seeds",
+     "Delete old generated seeds after an on-screen confirmation. Saves remain."),
+]
+blocks = []
+for path, name, desc in entries:
+    blocks.append(
+        "  <game>\n"
+        f"    <path>{path}</path>\n"
+        f"    <name>{name}</name>\n"
+        "    <image>./.art/box.png</image>\n"
+        f"    <desc>{desc}</desc>\n"
+        "  </game>\n")
+blocks.append(
+    "  <folder>\n"
+    "    <path>SEEDS</path>\n"
+    "    <name>SEEDS</name>\n"
+    "    <image>./.art/box.png</image>\n"
+    "    <desc>All generated ALTTPR seeds. Pick one to play.</desc>\n"
+    "  </folder>\n")
+
+with open(gl, "w", encoding="utf-8") as f:
+    f.write('<?xml version="1.0"?>\n<gameList>\n')
+    f.writelines(blocks)
+    f.writelines(seed_blocks)
+    f.write("</gameList>\n")
+PY
 
 # --- 5. retroarch: flush SRAM during play; no savestate autoload --------------
 RACFG=/recalbox/share/system/configs/retroarch/retroarchcustom.cfg

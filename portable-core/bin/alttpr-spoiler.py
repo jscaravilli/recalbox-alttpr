@@ -3,9 +3,8 @@
 
 Launched by the configgen alttpr generator when the "Spoiler Logs" tile is
 selected (the .alttpr file's first line is "spoiler"). Scans the ALTTPR ROM tree
-for <seed>.spoiler.json files, lets the user pick one with the controller, and
-renders a human-readable, scrollable view (regions/dungeons -> location: item,
-shops, bosses, and the step-by-step playthrough).
+for Python DR <seed>.spoiler.txt files (and legacy .spoiler.json files), lets
+the user pick one with the controller, and renders a scrollable view.
 
 Controls:  Up/Down scroll  *  L/R or PgUp/PgDn page  *  A select  *  B back/exit
 """
@@ -15,7 +14,7 @@ import sys
 import glob
 import json
 
-os.environ.setdefault("SDL_VIDEODRIVER", "kmsdrm")
+os.environ["SDL_VIDEODRIVER"] = "KMSDRM"
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
 os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 
@@ -68,7 +67,10 @@ def humanize_loc(raw):
 
 def seed_label(path):
     base = os.path.basename(path)
-    base = base[:-len(".spoiler.json")] if base.endswith(".spoiler.json") else base
+    for suffix in (".spoiler.json", ".spoiler.txt"):
+        if base.endswith(suffix):
+            base = base[:-len(suffix)]
+            break
     # alttpr_none_open_ganon_<hash>_<date>
     parts = base.split("_")
     hash_ = parts[-2] if len(parts) >= 2 else base
@@ -351,11 +353,31 @@ class Viewer:
 
     # --- spoiler renderer ----------------------------------------------------
     def show(self, path):
-        try:
-            data = json.load(open(path, encoding="utf-8"))
-        except Exception as e:
-            data = {"meta": {"error": str(e)}}
-        lines = build_lines(data)
+        if path.endswith(".spoiler.txt"):
+            try:
+                raw = open(path, encoding="utf-8",
+                           errors="replace").readlines()
+                lines = []
+                for raw_line in raw:
+                    text = raw_line.rstrip()
+                    stripped = text.strip()
+                    if not stripped:
+                        lines.append(("", "blank"))
+                    elif stripped.endswith(":") and len(stripped) < 80:
+                        lines.append((stripped[:-1].upper(), "title"))
+                    elif stripped.startswith(("Playthrough", "Bosses",
+                                              "Locations", "Settings")):
+                        lines.append((stripped.upper(), "title"))
+                    else:
+                        lines.append((text.expandtabs(4), "kv"))
+            except Exception as e:
+                lines = [("Could not read spoiler: %s" % e, "kv")]
+        else:
+            try:
+                data = json.load(open(path, encoding="utf-8"))
+            except Exception as e:
+                data = {"meta": {"error": str(e)}}
+            lines = build_lines(data)
         top = int(self.H * 0.13)
         line_h = int(self.H * 0.042)
         visible = max(8, int((self.H - top - int(self.H * 0.04)) / line_h))
@@ -434,9 +456,11 @@ class Viewer:
     def run(self):
         import time
         while True:
-            # all spoilers live in the single SEEDS/ folder now; group by the mode
-            # parsed from the filename (alttpr_<glitches>_<state>_<goal>_<code>_...)
-            paths = glob.glob(os.path.join(ROMROOT, "SEEDS", "*.spoiler.json"))
+            # All spoilers live in SEEDS/. Python DR filenames created by our
+            # wrapper are alttpr_<mode>_<nickname>_<date>.spoiler.txt.
+            paths = glob.glob(os.path.join(ROMROOT, "SEEDS", "*.spoiler.txt"))
+            paths += glob.glob(os.path.join(ROMROOT, "SEEDS",
+                                            "*.spoiler.json"))
             if not paths:
                 self.message("No spoiler logs yet. Generate a seed with "
                              "Spoiler Log = on.")
@@ -444,7 +468,12 @@ class Viewer:
             folders = {}
             for p in paths:
                 parts = os.path.basename(p).split("_")
-                mode = parts[2] if len(parts) > 2 else "seeds"  # <state> token
+                if p.endswith(".spoiler.txt"):
+                    mode = parts[1] if len(parts) > 1 else "seeds"
+                else:
+                    # Legacy PHP filenames:
+                    # alttpr_<glitches>_<state>_<goal>_<nickname>_<date>
+                    mode = parts[2] if len(parts) > 2 else "seeds"
                 folders.setdefault(mode, []).append(p)
             names = sorted(folders.keys())
 

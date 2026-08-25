@@ -18,7 +18,7 @@ import os
 import sys
 import subprocess
 
-os.environ.setdefault("SDL_VIDEODRIVER", "kmsdrm")
+os.environ["SDL_VIDEODRIVER"] = "KMSDRM"
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
 os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 
