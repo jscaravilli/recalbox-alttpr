@@ -332,15 +332,15 @@ p = sys.argv[1]
 d = open(p, encoding="utf-8").read()
 info = [
     "WHAT IS ALTTPR?",
-    "ALTTPR reshuffles items and progression in",
-    "Nintendo's 1991 SNES adventure.",
-    "Each seed becomes a new puzzle with a unique",
-    "route to victory.",
-    "This build also shuffles dungeons, doors,",
-    "entrances, and the overworld.",
-    "Configure locally, generate, then play.",
-    "Live tracker:",
-    "recalbox.local:8080/itemtracker.html",
+    "ALTTPR reshuffles items and progression in Nintendo's 1991",
+    "SNES adventure, creating a new puzzle and route to victory.",
+    "",
+    "Customize enemies, bosses, entrances, dungeon layouts, and more.",
+    "",
+    "Engine : codemann8's ALttPDoorRandomizer",
+    "Features : 513 sprites, MSU-1 music, and live autotracking",
+    "",
+    "Tracker : QR or recalbox.local:8080/itemtracker.html",
 ]
 for index, text in enumerate(info, 1):
     pattern = (r'(<text name="info%d" extra="true">\s*<text>).*?(</text>)'

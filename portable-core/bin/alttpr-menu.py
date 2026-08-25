@@ -145,7 +145,12 @@ def build_options(sprite_names=None, msu_names=None):
     # option-help.json (generated from the same doc).
     sprites = sprite_names if sprite_names is not None else sprite_options()
     msus = msu_names if msu_names is not None else load_msu_manifest()[0]
+    def section(title, description):
+        return ("__SECTION__" + title, title, [description], 0)
     opts = [
+        section("SEED RULES",
+                "Core world state, win condition, crystal requirements, logic, "
+                "and accessibility."),
         ("MODE_V", "Game State", ["standard", "open", "inverted", "retro"], 0),
         ("GOAL", "Goal", ["ganon", "crystals", "dungeons", "pedestal",
                            "ganonhunt", "triforcehunt", "trinity",
@@ -154,6 +159,9 @@ def build_options(sprite_names=None, msu_names=None):
          ["7", "6", "5", "4", "3", "2", "1", "0", "random"], 0),
         ("CRYSTALS_GANON", "Ganon Vulnerable",
          ["7", "6", "5", "4", "3", "2", "1", "0", "random"], 0),
+        section("ITEMS & PROGRESSION",
+                "Equipment behavior, item placement, progression rules, shops, "
+                "followers, and drops."),
         ("SWORDS", "Swords", ["random", "assured", "vanilla", "swordless"], 0),
         ("FLUTE_MODE", "Starting Flute", ["normal", "active"], 0),
         ("BOW_MODE", "Bow Mode",
@@ -174,12 +182,18 @@ def build_options(sprite_names=None, msu_names=None):
         ("KEYDROPSHUFFLE", "Shuffle Key Drops", ["off", "on"], 0),
         ("DROPSHUFFLE", "Enemy Drop Shuffle",
          ["none", "keys", "underworld"], 0),
+        section("ENTRANCE RANDOMIZER",
+                "Shuffle where caves, houses, and dungeons lead. This changes "
+                "connections between the overworld and interior locations."),
         ("MIXED_TRAVEL", "Mixed World Travel",
          ["prevent", "allow", "force"], 0),
         ("ENTRANCE_SHUFFLE", "Entrance Shuffle",
          ["vanilla", "simple", "restricted", "full", "lite", "lean",
           "district", "swapped", "crossed", "insanity", "dungeonsfull",
           "dungeonssimple"], 0),
+        section("DUNGEON DOOR RANDOMIZER",
+                "Shuffle room-to-room door connections inside dungeons, with "
+                "controls for intensity, door types, traps, and key logic."),
         ("DOOR_SHUFFLE", "Door Shuffle",
          ["vanilla", "basic", "partitioned", "crossed"], 0),
         ("INTENSITY", "Door Intensity", ["1", "2", "3", "random"], 0),
@@ -191,6 +205,9 @@ def build_options(sprite_names=None, msu_names=None):
          ["strict", "partial", "dangerous"], 0),
         ("DECOUPLEDOORS", "Decouple Doors", ["off", "on"], 0),
         ("DOOR_SELF_LOOPS", "Door Self-Loops", ["off", "on"], 0),
+        section("OVERWORLD & FLUTE",
+                "Shuffle overworld transitions, terrain structure, world "
+                "crossings, whirlpools, and flute landing spots."),
         ("OW_SHUFFLE", "Overworld Shuffle",
          ["vanilla", "parallel", "full"], 0),
         ("OW_LAYOUT", "Overworld Layout", ["vanilla", "grid", "wild"], 0),
@@ -203,6 +220,9 @@ def build_options(sprite_names=None, msu_names=None):
         ("OW_KEEPSIMILAR", "Keep Similar Terrain", ["off", "on"], 0),
         ("OW_MIXED", "Mixed-World Entrances", ["off", "on"], 0),
         ("OW_WHIRLPOOL", "Whirlpool Shuffle", ["off", "on"], 0),
+        section("DUNGEON ITEMS",
+                "Control where maps, compasses, keys, prizes, counters, and "
+                "boss-restricted items can appear."),
         ("MAPSHUFFLE", "Map Shuffle", ["none", "nearby", "wild"], 0),
         ("COMPASSSHUFFLE", "Compass Shuffle",
          ["none", "nearby", "wild"], 0),
@@ -216,6 +236,9 @@ def build_options(sprite_names=None, msu_names=None):
          ["default", "off", "on", "pickup"], 0),
         ("RESTRICT_BOSS_ITEMS", "Restrict Boss Items",
          ["none", "mapcompass", "dungeon"], 0),
+        section("ENEMIES & BOSSES",
+                "Randomize bosses, enemies, combat damage/health, enemy logic, "
+                "and pot contents."),
         ("SHUFFLEBOSSES", "Boss Shuffle",
          ["none", "simple", "unique", "full", "random"], 0),
         ("SHUFFLEENEMIES", "Enemy Shuffle", ["none", "shuffled"], 0),
@@ -227,6 +250,9 @@ def build_options(sprite_names=None, msu_names=None):
           "clustered", "nonempty", "lottery"], 0),
         ("ANY_ENEMY_LOGIC", "Enemy Logic",
          ["none", "allow_drops", "allow_all"], 0),
+        section("ADVANCED GAMEPLAY",
+                "Special dungeon behavior, linked drops, map aids, starting "
+                "mobility, take-any caves, and house/tavern shuffles."),
         ("SKULLWOODS", "Skull Woods Doors",
          ["original", "restricted", "loose", "followlinked"], 0),
         ("LINKED_DROPS", "Linked Drops",
@@ -239,6 +265,9 @@ def build_options(sprite_names=None, msu_names=None):
         ("MIRRORSCROLL", "Mirror Scroll", ["off", "on"], 0),
         ("BOMBBAG", "Bomb Bag", ["off", "on"], 0),
         ("TAKE_ANY", "Take-Any Caves", ["none", "random", "fixed"], 0),
+        section("COSMETICS & OUTPUT",
+                "Visual/audio accessibility, controls, Stopwatch, character "
+                "sprite, music pack, and spoiler output."),
         ("REDUCE_FLASHING", "Reduce Flashing", ["off", "on"], 0),
         ("SHUFFLE_SFX", "Shuffle Sound Effects", ["off", "on"], 0),
         ("QUICKSWAP", "Quickswap (L/R)", ["true", "false"], 0),
@@ -262,6 +291,108 @@ def load_help():
             return json.load(f)
     except Exception:
         return {}
+
+
+ROW_HELP = {
+    "MODE_V": "Controls the starting world state and opening sequence.",
+    "GOAL": "Selects the condition required to finish the seed.",
+    "CRYSTALS_GT": "Sets how many crystals open Ganon's Tower.",
+    "CRYSTALS_GANON": "Sets how many crystals make Ganon vulnerable.",
+    "SWORDS": "Controls how swords enter the item pool and starting logic.",
+    "FLUTE_MODE": "Controls whether the flute starts inactive or already activated.",
+    "BOW_MODE": "Controls bow progression and Silver Arrow availability.",
+    "DIFFICULTY": "Changes item-pool generosity, health, and resource availability.",
+    "ITEM_FUNCTIONALITY": "Changes how strongly selected items behave in combat.",
+    "LOGIC": "Defines which movement glitches the placement logic may require.",
+    "ALGORITHM": "Chooses the strategy used to distribute progression items.",
+    "PROGRESSIVE": "Controls whether equipment upgrades appear progressively.",
+    "ACCESSIBILITY": "Sets how much of the world logic guarantees can be reached.",
+    "HINTS": "Enables or disables in-game hint text.",
+    "SHUFFLE_FOLLOWERS": "Adds follower-related interactions to the shuffled pool.",
+    "SHOPSANITY": "Moves shop inventory into the randomized location pool.",
+    "KEYDROPSHUFFLE": "Shuffles keys normally dropped by enemies or objects.",
+    "DROPSHUFFLE": "Controls which enemy and underworld drops are shuffled.",
+    "MIXED_TRAVEL": "Controls travel between Light and Dark World entrance pools.",
+    "ENTRANCE_SHUFFLE": "Rewires where overworld caves, houses, and dungeons lead.",
+    "DOOR_SHUFFLE": "Rewires room-to-room connections inside dungeons.",
+    "INTENSITY": "Sets how aggressively dungeon rooms are rearranged.",
+    "DOOR_TYPE_MODE": "Controls which door types participate in door shuffle.",
+    "TRAP_DOOR_MODE": "Controls how shutter and one-way doors behave.",
+    "KEY_LOGIC_ALGORITHM": "Sets how conservatively the generator validates key usage.",
+    "DECOUPLEDOORS": "Allows paired doors to lead to independent destinations.",
+    "DOOR_SELF_LOOPS": "Allows a shuffled door path to loop back into itself.",
+    "OW_SHUFFLE": "Rewires transitions between overworld screens.",
+    "OW_LAYOUT": "Changes the large-scale arrangement of overworld tiles.",
+    "OW_CROSSED": "Controls how Light and Dark World transitions cross.",
+    "OW_FLUTESHUFFLE": "Randomizes the destinations of flute landing spots.",
+    "OW_UNPARALLEL": "Lets corresponding Light/Dark World screens differ.",
+    "OW_TERRAIN": "Shuffles terrain and traversal features between screens.",
+    "OW_KEEPSIMILAR": "Biases shuffled screens toward similar terrain types.",
+    "OW_MIXED": "Allows entrances to cross between Light and Dark World.",
+    "OW_WHIRLPOOL": "Randomizes whirlpool connections.",
+    "MAPSHUFFLE": "Controls where dungeon maps may be placed.",
+    "COMPASSSHUFFLE": "Controls where dungeon compasses may be placed.",
+    "KEYSHUFFLE": "Controls where dungeon small keys may be placed.",
+    "BIGKEYSHUFFLE": "Controls where dungeon big keys may be placed.",
+    "PRIZESHUFFLE": "Controls where crystals and pendants may be awarded.",
+    "DUNGEON_COUNTERS": "Controls when remaining dungeon-item counts are shown.",
+    "RESTRICT_BOSS_ITEMS": "Keeps selected dungeon items away from boss rewards.",
+    "SHUFFLEBOSSES": "Randomizes which bosses appear in each dungeon.",
+    "SHUFFLEENEMIES": "Randomizes normal enemy placements.",
+    "ENEMY_DAMAGE": "Changes or randomizes damage dealt by enemies.",
+    "ENEMY_HEALTH": "Changes enemy health values.",
+    "POTTERY": "Controls which pot contents and pot locations are shuffled.",
+    "ANY_ENEMY_LOGIC": "Controls how shuffled enemy drops affect progression logic.",
+    "SKULLWOODS": "Changes how Skull Woods' unusual door network is linked.",
+    "LINKED_DROPS": "Controls whether related enemy-drop locations share results.",
+    "OVERWORLD_MAP": "Changes the information displayed by the overworld map.",
+    "SHUFFLELINKS": "Shuffles the Link's House start/return locations.",
+    "SHUFFLETAVERN": "Adds the Kakariko tavern entrance to applicable shuffles.",
+    "PSEUDOBOOTS": "Allows logic to simulate limited boots-like movement.",
+    "MIRRORSCROLL": "Enables mirror-assisted screen scrolling techniques.",
+    "BOMBBAG": "Uses bomb capacity upgrades instead of standard bomb carrying.",
+    "TAKE_ANY": "Adds Zelda-1-style take-any caves to the world.",
+    "REDUCE_FLASHING": "Reduces intense flashing effects for accessibility.",
+    "SHUFFLE_SFX": "Randomizes in-game sound-effect assignments.",
+    "QUICKSWAP": "Lets L/R cycle items without opening the inventory.",
+    "TIMER": "Controls the in-game HUD Stopwatch.",
+    "HEARTCOLOR": "Changes Link's heart-meter color.",
+    "SPOILER": "Controls whether a detailed text spoiler is written.",
+}
+
+VALUE_HELP = {
+    "vanilla": "Leaves this system unchanged.",
+    "none": "Disables this shuffle or restriction.",
+    "off": "Disables this feature.",
+    "on": "Enables this feature.",
+    "random": "Chooses a supported value randomly for each seed.",
+    "simple": "Uses a conservative shuffle with fewer surprising connections.",
+    "restricted": "Shuffles broadly while preserving additional structural rules.",
+    "full": "Uses the broadest standard shuffle pool.",
+    "basic": "Shuffles dungeon rooms within the basic door ruleset.",
+    "partitioned": "Builds shuffled dungeon sections as constrained partitions.",
+    "crossed": "Allows connections to cross larger logical boundaries.",
+    "strict": "Uses the safest, most conservative key-logic validation.",
+    "partial": "Allows moderately aggressive key layouts.",
+    "dangerous": "Allows the most aggressive key layouts; expert setting.",
+    "parallel": "Shuffles screens while keeping Light/Dark World correspondence.",
+    "grid": "Arranges overworld tiles into a randomized grid.",
+    "wild": "Allows placement across the broadest applicable pool.",
+    "balanced": "Uses the recommended balanced behavior.",
+    "nearby": "Allows placement outside the home dungeon but within a nearby pool.",
+    "universal": "Uses keys that can open compatible locks across dungeons.",
+    "pickup": "Shows the counter after its enabling item is collected.",
+    "shuffled": "Randomizes this property among compatible choices.",
+    "allow_drops": "Logic may require items dropped by shuffled enemies.",
+    "allow_all": "Logic may require any supported shuffled-enemy interaction.",
+    "linked": "Related drop locations share their randomized result.",
+    "independent": "Related drop locations randomize separately.",
+    "prevent": "Prevents mixed-world travel in this shuffle.",
+    "allow": "Allows mixed-world travel when the shuffle creates it.",
+    "force": "Forces mixed-world travel to be part of the layout.",
+    "stopwatch": "Shows a count-up HUD clock; the DB=$7E freeze fix is applied.",
+    "disabled": "Generates without an on-screen timer.",
+}
 
 
 class Menu:
@@ -317,7 +448,8 @@ class Menu:
         self.msu_names, self.msu_meta = load_msu_manifest()
         self.options = build_options(self.sprite_names, self.msu_names)
         self.values = [o[3] for o in self.options]
-        self.sel = 0                 # start focused on the top option row
+        self.sel = next(i for i, option in enumerate(self.options)
+                        if not option[0].startswith("__SECTION__"))
         # two virtual action rows follow the options: Generate & Play, Cancel
         self.n = len(self.options)
         self.scroll = 0
@@ -433,21 +565,37 @@ class Menu:
         return action
 
     # --- state changes -------------------------------------------------------
+    def _is_section(self, index):
+        return (index < self.n and
+                self.options[index][0].startswith("__SECTION__"))
+
+    def _move_rows(self, direction, count=1):
+        rows = self.n + 2
+        target = self.sel
+        moved = 0
+        while moved < count:
+            target = (target + direction) % rows
+            if not self._is_section(target):
+                moved += 1
+        self.sel = target
+
     def apply(self, action):
         rows = self.n + 2   # option rows + Generate & Play + Cancel
         if action == "up":
-            self.sel = (self.sel - 1) % rows
+            self._move_rows(-1)
         elif action == "down":
-            self.sel = (self.sel + 1) % rows
+            self._move_rows(1)
         elif action == "pageup":
-            self.sel = max(0, self.sel - 6)
+            self._move_rows(-1, 6)
         elif action == "pagedown":
-            self.sel = min(rows - 1, self.sel + 6)
-        elif action in ("left", "right") and self.sel < self.n:
+            self._move_rows(1, 6)
+        elif (action in ("left", "right") and self.sel < self.n and
+              not self._is_section(self.sel)):
             key, label, vals, _ = self.options[self.sel]
             step = -1 if action == "left" else 1
             self.values[self.sel] = (self.values[self.sel] + step) % len(vals)
-        elif action in ("fastleft", "fastright") and self.sel < self.n:
+        elif (action in ("fastleft", "fastright") and self.sel < self.n and
+              not self._is_section(self.sel)):
             # jump by 10 for fast scrubbing of long lists (e.g. 500+ sprites)
             key, label, vals, _ = self.options[self.sel]
             step = -10 if action == "fastleft" else 10
@@ -478,6 +626,8 @@ class Menu:
                     "list. Nothing is created.")
         key, label, vals, _ = self.options[self.sel]
         val = vals[self.values[self.sel]]
+        if key.startswith("__SECTION__"):
+            return (key, label, val)
         # Sprite rows: build help from the manifest (author + tags) instead of
         # the static option-help.json, so every sprite gets a useful blurb.
         if key == "SPRITE":
@@ -548,8 +698,12 @@ class Menu:
         if text is None:
             text = block.get("_row", "")
         if not text:
-            text = ("Python Door Randomizer option. Use Left/Right to choose "
-                    "a value; the selected value is passed directly to DR.")
+            text = ROW_HELP.get(key, "")
+            detail = VALUE_HELP.get(val)
+            if detail:
+                text += ("\n\nSelected value: " + detail)
+        if not text:
+            raise KeyError("missing help text for %s=%s" % (key, val))
         title = "%s: %s" % (label, val)
         return ("%s=%s" % (key, val), title, text)
 
@@ -713,6 +867,13 @@ class Menu:
                 continue
             key, lbl, vals, _ = self.options[i]
             val = vals[self.values[i]]
+            if key.startswith("__SECTION__"):
+                pygame.draw.line(self.screen, HILITE,
+                                 (x - 6, y + row_h - 9),
+                                 (x + list_w - 22, y + row_h - 9), 2)
+                self.screen.blit(self.font_sm.render(lbl, True, ACCENT),
+                                 (x, y + 4))
+                continue
             if selected:
                 pygame.draw.rect(self.screen, HILITE,
                                  (x - 12, y - 4, list_w, row_h - 6),
@@ -774,6 +935,8 @@ class Menu:
     def write_choices(self):
         lines = []
         for i, (key, lbl, vals, _) in enumerate(self.options):
+            if key.startswith("__SECTION__"):
+                continue
             val = vals[self.values[i]]
             # Sprite: write the .zspr basename generate.sh expects, not the
             # friendly display name. "(default)" passes through unchanged.

@@ -158,6 +158,16 @@ done
 mv "$NEW" "$FINAL"
 FINALBASE="$(basename "$FINAL" .sfc)"
 
+# The current DR base patch retains the HUD timer Data Bank bug from the old
+# engine at relocated addresses. Install the verified DB=$7E trampoline whenever
+# Stopwatch is selected; Disabled seeds are a no-op.
+python3 "$BIN/alttpr-timerpatch.py" "$FINAL" || {
+  rm -f "$FINAL"
+  echo "ERROR: Stopwatch safety patch failed."
+  echo "SEED:"
+  exit 1
+}
+
 # preserve the spoiler next to the seed, renamed to match
 SPOILERSRC="$(ls -1 "$STAGE"/*_Spoiler.txt 2>/dev/null | head -1)"
 [ -f "$SPOILERSRC" ] && mv "$SPOILERSRC" "$DEST/${FINALBASE}.spoiler.txt"

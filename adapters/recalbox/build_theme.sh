@@ -46,7 +46,10 @@ hidden=''
 for reg in ('','us','eu','jp'):
     r=(' region="%s"'%reg) if reg else ''
     hidden+='<image name="controller" extra="true"%s><pos>2 2</pos></image>'%r
-override='<view name="system, basic, detailed, gameclip">%s%s</view>'%(imgs,hidden)
+info_names=', '.join('info%d'%i for i in range(1, 13))
+compact=('<scrolltext name="%s" extra="true">'
+         '<fontSize>0.018</fontSize></scrolltext>')%info_names
+override='<view name="system, basic, detailed, gameclip">%s%s%s</view>'%(imgs,hidden,compact)
 m=re.search(r"</formatVersion>", d)
 if m:
     d=d[:m.end()]+override+d[m.end():]

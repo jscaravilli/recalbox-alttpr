@@ -25,11 +25,14 @@ not shell out to an x86 EnemizerCLI for any enemy/boss option.
 - `bootstrap.sh` storage chooser — no storage decision left; collapses to a
   plain copy-in installer.
 
-## LIKELY DROP — PHP-CLI workarounds (verify vs DR output)
+## PHP-CLI workarounds
 - `alttpr-hashfix.py` — worked around the PHP CLI stamping identical file-select
   icons; DR emits a proper per-seed hash. Likely unneeded.
-- `alttpr-timerpatch.py` — patched a Data Bank freeze in the PHP base-patch HUD
-  timer. DR timer handling differs. Likely drop or rework. Timer is optional.
+- `alttpr-timerpatch.py` — KEEP, reworked for the current Python-DR base patch.
+  The same DB bug remains at relocated addresses. The current patch retargets
+  `$20:DB75` to a verified-free DB=$7E trampoline at `$20:E000`, then calls the
+  relocated timer routine at `$20:D85B`. Stopwatch seeds are patched after
+  generation; Disabled seeds remain untouched.
 
 ## KEEP — engine-independent
 - `alttpr-menu.py` (pygame UI) — KEEP; remap option flags to DR CLI names

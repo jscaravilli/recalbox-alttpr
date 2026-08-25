@@ -130,6 +130,17 @@ session). Reliable method:
   second. Deterministic fixed-seed tests prove Stopwatch changes ROM bytes.
   All 513 sprites now have previews; the 27 forbidden upstream preview URLs are
   rendered locally from their ZSPR standing frame using the stdlib PNG writer.
+- **Stopwatch freeze root cause restored**: Python DR relocated but retained the
+  old base-patch Data Bank bug. Current Stopwatch ROMs mixed long WRAM reads with
+  absolute `$BExx` writes in the routine at `$20:D85B`; with a non-$7E DB, its
+  divide/subtract loop never updates WRAM and freezes. `alttpr-timerpatch.py`
+  now retargets caller `$20:DB75` to a DB=$7E trampoline in verified-free
+  `$20:E000`. Existing Stopwatch seeds were patched; Disabled ROMs are no-ops.
+- **Custom menu organization/help**: nine nonselectable sections organize Seed
+  Rules, Items & Progression, Entrances, Dungeon Doors, Overworld/Flute, Dungeon
+  Items, Enemies/Bosses, Advanced Gameplay, and Cosmetics/Output. Navigation
+  skips section headers. All 66 rows and 757 row/value combinations resolve to
+  curated help; generic fallback text was removed.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device
