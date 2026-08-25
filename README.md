@@ -36,6 +36,9 @@ The on-console menu exposes Python DR's item, entrance, door, dungeon, overworld
 flute-spot, enemy, sprite, timer, and MSU options. Recalbox 10's native file
 watcher owns library refreshes; the ALTTPR endgame hook never restarts ES.
 
+The phone autotracker uses one permanent URL and follows the ROM currently loaded
+in RetroArch: `http://recalbox.local:8080/itemtracker.html`.
+
 ## Base image
 
 - Recalbox **10.0.8** for rpi5_64 (`recalbox-rpi5_64.img.xz`, SHA1

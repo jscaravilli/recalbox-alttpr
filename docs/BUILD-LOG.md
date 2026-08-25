@@ -114,6 +114,14 @@ session). Reliable method:
 - **Autotracker completion**: the bridge and HTTP services were already running
   on ports 23074 and 8080, but the web root was empty. The committed 154-file
   tracker app is now part of `deploy.sh` and deployed to the Pi.
+- **Static live-tracker URL**:
+  `http://recalbox.local:8080/itemtracker.html` is shown in both system themes.
+  The page connects to the bridge on the serving host and polls `/seedinfo`.
+  The server supports the Python-DR filename format and reads mode/logic/goal
+  from the active seed's text spoiler. Verified through Recalbox's exact
+  RetroArch launch config: it reported Bobbing Hootenanny / standard / ganon.
+  Tracker process management now matches exact `/proc` script arguments instead
+  of broad `pgrep -f`, which previously confused invoking shells with services.
 - **Timer and preview follow-up**: Stopwatch remains the default with Disabled
   second. Deterministic fixed-seed tests prove Stopwatch changes ROM bytes.
   All 513 sprites now have previews; the 27 forbidden upstream preview URLs are

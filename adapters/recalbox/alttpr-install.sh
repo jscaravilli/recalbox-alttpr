@@ -338,7 +338,7 @@ info = [
     "Runtime : Native Python 3.11 on Raspberry Pi 5",
     "Modes : Items, dungeons, doors, entrances, overworld",
     "Features : Spoilers, custom sprites, MSU-1, autotracker",
-    "Storage : Single ext4 microSD",
+    "Tracker : recalbox.local:8080/itemtracker.html",
     "Workflow : Configure locally, generate, then play",
     "Start with : Generate Custom Seed",
 ]

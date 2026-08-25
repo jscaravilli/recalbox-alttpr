@@ -76,6 +76,7 @@ def ra_status():
 
 def parse_seed(base):
     """Parse an ALTTPR seed basename into nickname/state/goal/date."""
+    base = os.path.basename(base)
     if base.endswith(".sfc") or base.endswith(".smc"):
         base = base[:-4]
     toks = base.split("_")
@@ -85,8 +86,19 @@ def parse_seed(base):
     if _DATE_RE.match(toks[-1]):
         date = toks[-1]
         toks = toks[:-1]
-    if len(toks) < 4:
+    if len(toks) < 3:
         return None
+    # Python-DR wrapper format: alttpr_<mode>_<Nickname>_<MMDDYYYY>
+    if len(toks) == 3:
+        return {
+            "glitch": "",
+            "state": toks[1],
+            "goal": "",
+            "nickname": toks[2],
+            "date": date,
+        }
+    # Legacy PHP format:
+    # alttpr_<glitch>_<state>_<goal...>_<Nickname>_<MMDDYYYY>
     info = {
         "glitch": toks[1],
         "state": toks[2],
@@ -95,6 +107,27 @@ def parse_seed(base):
         "date": date,
     }
     return info
+
+
+def read_spoiler_metadata(content):
+    """Read mode/logic/goal from the generated DR text spoiler, if present."""
+    base = os.path.basename(content)
+    if base.lower().endswith((".sfc", ".smc")):
+        base = base[:-4]
+    for directory in SEEDS_DIRS:
+        path = os.path.join(directory, base + ".spoiler.txt")
+        if not os.path.isfile(path):
+            continue
+        result = {}
+        try:
+            for line in open(path, encoding="utf-8", errors="replace"):
+                match = re.match(r"^(Mode|Logic|Goal):\s+(.+?)\s*$", line)
+                if match:
+                    result[match.group(1).lower()] = match.group(2)
+        except OSError:
+            pass
+        return result
+    return {}
 
 
 def seedinfo():
@@ -109,6 +142,11 @@ def seedinfo():
     core = fields[0] if fields else ""
     content = fields[1] if len(fields) > 1 else ""
     info = parse_seed(content) or {}
+    spoiler = read_spoiler_metadata(content)
+    if spoiler:
+        info["state"] = spoiler.get("mode", info.get("state", ""))
+        info["glitch"] = spoiler.get("logic", info.get("glitch", ""))
+        info["goal"] = spoiler.get("goal", info.get("goal", ""))
     info["running"] = True
     info["core"] = core
     info["content"] = content

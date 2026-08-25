@@ -11,17 +11,25 @@ SERVE_LOG=$LOGDIR/alttpr-tracker-serve.log
 BRIDGE_LOG=$LOGDIR/alttpr-tracker-bridge.log
 mkdir -p "$LOGDIR"
 
+find_pid() {
+  for proc in /proc/[0-9]*; do
+    [ -r "$proc/cmdline" ] || continue
+    script="$(tr '\0' '\n' < "$proc/cmdline" | sed -n 2p)"
+    [ "${script##*/}" = "$1" ] && echo "${proc##*/}"
+  done
+}
+
 kill_match() {
-  for p in $(pgrep -f "$1"); do kill "$p" 2>/dev/null; done
+  for pid in $(find_pid "$1"); do kill "$pid" 2>/dev/null; done
 }
 
 start() {
   # bridge (WebSocket :23074 -> RetroArch UDP :55355)
-  if ! pgrep -f "alttpr-tracker-bridge.py" >/dev/null 2>&1; then
+  if [ -z "$(find_pid alttpr-tracker-bridge.py | head -1)" ]; then
     setsid python3 "$BIN/alttpr-tracker-bridge.py" >"$BRIDGE_LOG" 2>&1 < /dev/null &
   fi
   # web server (:8080, serves $TRACKER + /seedinfo)
-  if ! pgrep -f "alttpr-tracker-serve.py" >/dev/null 2>&1; then
+  if [ -z "$(find_pid alttpr-tracker-serve.py | head -1)" ]; then
     setsid python3 "$BIN/alttpr-tracker-serve.py" --dir "$TRACKER" --port 8080 >"$SERVE_LOG" 2>&1 < /dev/null &
   fi
   sleep 1
@@ -35,8 +43,8 @@ stop() {
 }
 
 status() {
-  b=$(pgrep -f alttpr-tracker-bridge.py | head -1)
-  s=$(pgrep -f alttpr-tracker-serve.py | head -1)
+  b=$(find_pid alttpr-tracker-bridge.py | head -1)
+  s=$(find_pid alttpr-tracker-serve.py | head -1)
   echo "bridge: ${b:-DOWN}   server: ${s:-DOWN}"
 }
 

@@ -15,5 +15,8 @@ __**This build**__
 - Controller-driven configuration and seed library
 - Spoiler viewer, custom sprites, MSU-1 music, and phone autotracker
 
+__**Live tracker**__
+http://recalbox.local:8080/itemtracker.html
+
 Choose **Generate Custom Seed** to configure a run, create it locally, and launch
 straight into the game.
