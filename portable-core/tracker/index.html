@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ALTTP Randomizer Tracker</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  font-family: Arial, sans-serif;
+  max-width: 420px; margin: 10px auto; padding: 10px;
+  background: #0d0d0d; color: #ccc;
+}
+h1 { text-align: center; color: #4dff88; font-size: 22px; margin-bottom: 24px; letter-spacing: 1px; }
+.section {
+  background: #1a1a1a; border: 1px solid #2a2a2a;
+  border-radius: 6px; padding: 10px; margin-bottom: 8px;
+}
+.section h2 { margin: 0 0 12px; color: #7ab8f5; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+.row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.row label { color: #666; font-size: 12px; min-width: 80px; }
+input, select {
+  background: #111; color: #ccc; border: 1px solid #333;
+  border-radius: 4px; padding: 5px 8px; font-size: 12px; flex: 1;
+}
+input:focus, select:focus { outline: none; border-color: #4dff88; }
+.info { color: #444; font-size: 10px; margin-top: 2px; margin-bottom: 10px; padding-left: 90px; }
+.btn-row { display: flex; gap: 10px; margin-top: 8px; }
+.launch-btn {
+  flex: 1; padding: 12px;
+  font-size: 14px; font-weight: bold; cursor: pointer;
+  border: none; border-radius: 6px; transition: background 0.2s;
+}
+#btn-items { background: #1a4a2a; color: #4dff88; border: 1px solid #2a7a3a; }
+#btn-items:hover { background: #2a6a3a; }
+#btn-map   { background: #1a2e4a; color: #7ab8f5; border: 1px solid #2a4e7a; }
+#btn-map:hover   { background: #2a4a6a; }
+#btn-both  { background: #3a2a00; color: #ffd700; border: 1px solid #7a5a00; }
+#btn-both:hover  { background: #5a4000; }
+#btn-timer { background: #2a0a3a; color: #c084fc; border: 1px solid #6a2a9a; }
+#btn-timer:hover { background: #4a1a6a; }
+.divider { border: none; border-top: 1px solid #222; margin: 4px 0 12px; }
+.user-guide-btn {
+  flex: 1; padding: 8px;
+  font-size: 12px; font-weight: bold; cursor: pointer;
+  border: 1px solid #333; border-radius: 6px; transition: background 0.2s;
+  background: #1a1a1a; color: #888;
+}
+.user-guide-btn:hover { background: #2a2a2a; color: #ccc; }
+
+/* ── Yes/No toggle slider (compact, thumb flush left/right, no inline text) ── */
+.toggle-row { display: flex; align-items: center; gap: 8px; }
+.row label.toggle-switch {
+  position: relative; display: inline-block;
+  width: 32px; height: 18px; min-width: 32px; flex: 0 0 auto;
+}
+.toggle-switch input {
+  opacity: 0; width: 0; height: 0; position: absolute;
+  padding: 0; margin: 0; border: none; background: none; flex: none;
+}
+.toggle-slider {
+  position: absolute; cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #444; border: 1px solid #555;
+  border-radius: 18px; transition: background 0.15s, border-color 0.15s;
+  box-sizing: border-box;
+}
+.toggle-slider::before {
+  content: ""; position: absolute;
+  height: 14px; width: 14px; left: 1px; top: 1px;
+  background: #ccc; border-radius: 50%;
+  transition: transform 0.15s, background 0.15s;
+}
+.toggle-switch input:checked + .toggle-slider {
+  background: #2255dd; border-color: #2255dd;
+}
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(14px);
+  background: #fff;
+}
+.toggle-switch input:focus-visible + .toggle-slider {
+  outline: 2px solid #4dff88; outline-offset: 2px;
+}
+.toggle-label-text { font-size: 11px; font-weight: bold; color: #888; min-width: 20px; }
+.toggle-switch input:checked ~ .toggle-label-text,
+.toggle-label-text.active { color: #ccc; }
+
+/* ── Toggles + Presets side-by-side layout ── */
+.toggles-presets-wrap { display: flex; align-items: flex-start; gap: 16px; }
+.toggles-col { display: flex; flex-direction: column; flex: 0 0 auto; }
+.presets-col {
+  flex: 1; display: flex; flex-direction: column; gap: 6px;
+  padding: 8px 10px; margin-top: 2px;
+  background: #151515; border: 1px solid #262626; border-radius: 5px;
+}
+.presets-label {
+  font-size: 11px; color: #666; text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 2px;
+}
+#preset-select { width: 100%; }
+.preset-btn {
+  width: 100%; padding: 6px 8px; font-size: 12px; font-weight: bold;
+  cursor: pointer; background: #2a2a14; color: #ffd700;
+  border: 1px solid #5a5a1a; border-radius: 4px;
+  transition: background 0.15s;
+}
+.preset-btn:hover { background: #4a4a20; }
+.preset-btn-save {
+  background: #16241a; color: #7ab8f5;
+  border: 1px solid #2a4e7a; font-size: 11px;
+}
+.preset-btn-save:hover { background: #1f3550; }
+.preset-btn-delete {
+  background: #2e1a1a; color: #f57a7a;
+  border: 1px solid #7a2a2a; font-size: 11px;
+}
+.preset-btn-delete:hover { background: #3f1f1f; }
+
+/* ── Preset name modal ── */
+#preset-modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65); z-index: 999;
+  align-items: center; justify-content: center;
+}
+#preset-modal-overlay.open { display: flex; }
+#preset-modal {
+  background: #1a1a1a; border: 1px solid #444; border-radius: 6px;
+  padding: 16px; width: 240px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+#preset-modal label { font-size: 12px; color: #999; }
+#preset-modal-input {
+  background: #111; color: #ccc; border: 1px solid #444;
+  border-radius: 4px; padding: 6px 8px; font-size: 13px; width: 100%;
+  box-sizing: border-box;
+}
+#preset-modal-input:focus { outline: none; border-color: #4dff88; }
+.preset-modal-btns { display: flex; gap: 8px; }
+.preset-modal-btns button {
+  flex: 1; padding: 6px; font-size: 12px; border-radius: 4px;
+  cursor: pointer; border: 1px solid #555;
+}
+#preset-modal-ok  { background: #16241a; color: #4dff88; border-color: #2a7a4e; }
+#preset-modal-ok:hover  { background: #1f3a28; }
+#preset-modal-cancel { background: #1a1a1a; color: #888; }
+#preset-modal-cancel:hover { background: #2a2a2a; }
+
+/* ── Settings gear button ── */
+#app-settings-btn {
+  position: fixed; top: 10px; right: 10px;
+  background: #1a1a1a; border: 1px solid #333; color: #666;
+  border-radius: 50%; width: 28px; height: 28px;
+  font-size: 15px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: color 0.15s, border-color 0.15s;
+  z-index: 100;
+}
+#app-settings-btn:hover { color: #aaa; border-color: #555; }
+
+/* ── App settings panel ── */
+#app-settings-panel {
+  display: none;
+  position: fixed; top: 44px; right: 10px;
+  background: #1a1a1a; border: 1px solid #333;
+  border-radius: 6px; padding: 12px 14px;
+  min-width: 220px; z-index: 99;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+}
+#app-settings-panel.open { display: block; }
+#app-settings-panel h4 {
+  margin: 0 0 10px; font-size: 11px; color: #555;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.app-settings-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px; font-size: 12px; color: #999;
+}
+#check-update-btn {
+  flex: 1; padding: 6px 10px; font-size: 12px; cursor: pointer;
+  background: #1a2e4a; color: #7ab8f5;
+  border: 1px solid #2a4e7a; border-radius: 4px;
+  transition: background 0.15s;
+}
+#check-update-btn:hover { background: #2a4a6a; }
+#check-update-btn:disabled { opacity: 0.5; cursor: default; }
+#update-panel-status {
+  font-size: 10px; color: #666; margin-top: 2px;
+}
+.app-settings-divider {
+  border: none; border-top: 1px solid #2a2a2a; margin: 10px 0;
+}
+.app-settings-section-label {
+  font-size: 11px; color: #555; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 8px;
+}
+.app-settings-row label {
+  color: #666; font-size: 12px; min-width: 40px;
+}
+.app-settings-row input {
+  background: #111; color: #ccc; border: 1px solid #333;
+  border-radius: 4px; padding: 5px 8px; font-size: 12px; flex: 1;
+}
+.app-settings-row input:focus { outline: none; border-color: #4dff88; }
+.app-settings-info {
+  color: #444; font-size: 10px; margin: -2px 0 8px;
+}
+
+/* ── Update notification bar ── */
+#update-bar {
+  display: none;
+  background: #1a2e1a; border: 1px solid #2a5a2a;
+  border-radius: 4px; padding: 7px 10px;
+  margin-bottom: 10px;
+  font-size: 12px; color: #4dff88;
+  align-items: center; gap: 8px;
+}
+#update-bar.visible { display: flex; }
+#update-bar.error   { background: #2e1a1a; border-color: #5a2a2a; color: #ff7777; }
+#install-update-btn {
+  margin-left: auto; padding: 4px 10px;
+  background: #2a5a2a; color: #4dff88;
+  border: 1px solid #4dff88; border-radius: 4px;
+  font-size: 11px; cursor: pointer; white-space: nowrap;
+}
+#install-update-btn:hover { background: #3a7a3a; }
+</style>
+</head>
+<body>
+
+<!-- Settings gear -->
+<button id="app-settings-btn" title="App Settings" onclick="toggleAppSettings()">⚙</button>
+
+<!-- App settings panel -->
+<div id="app-settings-panel">
+  <h4>App Settings</h4>
+  <div class="app-settings-row">
+    <button id="check-update-btn" onclick="manualCheckUpdate()">Check for Updates</button>
+  </div>
+  <div id="update-panel-status"></div>
+
+  <hr class="app-settings-divider">
+  <div class="app-settings-section-label">Connection</div>
+  <div class="app-settings-row">
+    <label>Host</label>
+    <input id="ws-host" type="text" value="localhost" placeholder="localhost">
+  </div>
+  <div class="app-settings-row">
+    <label>Port</label>
+    <input id="ws-port" type="text" value="23074" placeholder="23074">
+  </div>
+  <div class="app-settings-info">QUSB2SNES / SNI — default port 23074</div>
+</div>
+
+<!-- Update notification bar (shown when update available/ready) -->
+<div id="update-bar">
+  <span id="update-bar-msg">Checking for updates…</span>
+</div>
+
+<h1>⚔ ALTTP Tracker</h1>
+  <p style="text-align: center;">
+  <small>Version 1.1.14</small>
+</p>
+<div class="section">
+  <h2>Display</h2>
+  <div class="row">
+    <label>Item Scale</label>
+    <select id="item-scale">
+      <option value="0.7">70%</option>
+      <option value="0.8">80%</option>
+      <option value="0.9">90%</option>
+      <option value="1.0" selected>100%</option>
+      <option value="1.1">110%</option>
+      <option value="1.2">120%</option>
+      <option value="1.3">130%</option>
+      <option value="1.4">140%</option>
+      <option value="1.5">150%</option>
+      <option value="1.6">160%</option>
+      <option value="1.7">170%</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Tracker BG</label>
+    <select id="tracker-bg">
+      <option value="black"       selected>Black</option>
+      <option value="grey"               >Grey</option>
+      <option value="white"              >White</option>
+      <option value="transparent"        >Transparent</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Map Scale</label>
+    <select id="map-zoom">
+      <option value="70">70%</option>
+      <option value="75">75%</option>
+      <option value="80">80%</option>
+      <option value="85">85%</option>
+      <option value="90">90%</option>
+      <option value="95">95%</option>
+      <option value="100" selected>100%</option>
+      <option value="105">105%</option>
+      <option value="110">110%</option>
+      <option value="115">115%</option>
+      <option value="120">120%</option>
+      <option value="125">125%</option>
+      <option value="130">130%</option>
+      <option value="135">135%</option>
+      <option value="140">140%</option>
+      <option value="145">145%</option>
+      <option value="150">150%</option>
+    </select>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Settings</h2>
+  <div class="row">
+    <label>Dungeon Item Shuffle</label>
+    <select id="dungeonitems-select" style="flex:1;">
+      <option value="standard">Standard</option>
+      <option value="mapcompass">Map/Compass</option>
+      <option value="mapcompasskeys">Map/Compass/Small Keys</option>
+      <option value="keysanity">Key Sanity</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Ganon's Tower Requirement</label>
+    <select id="gt-crystals">
+      <option value="7" selected>7</option>
+      <option value="6">6</option>
+      <option value="5">5</option>
+      <option value="4">4</option>
+      <option value="3">3</option>
+      <option value="2">2</option>
+      <option value="1">1</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>World State Mode</label>
+    <select id="gamemode-select">
+      <option value="standard" selected>Standard</option>
+      <option value="open">Open</option>
+      <option value="inverted">Inverted</option>
+    </select>
+  </div>
+  <div class="toggles-presets-wrap">
+  <div class="toggles-col">
+  <div class="row toggle-row">
+    <label>Entrance Shuffle</label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="entranceshuffle-toggle">
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label-text" id="entranceshuffle-toggle-label">No</span>
+  </div>
+  <div class="row toggle-row">
+    <label>Boss Shuffle</label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="bossshuffle-toggle" checked>
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label-text" id="bossshuffle-toggle-label">Yes</span>
+  </div>
+  <div class="row toggle-row">
+    <label>Enemizer</label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="enemizer-toggle" checked>
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label-text" id="enemizer-toggle-label">Yes</span>
+  </div>
+  <div class="row toggle-row">
+    <label>Swordless</label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="swordless-toggle">
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label-text" id="swordless-toggle-label">No</span>
+  </div>
+  </div>
+
+  <div class="presets-col">
+    <label class="presets-label">Preset</label>
+    <select id="preset-select">
+      <option value="lordseed" selected>Lord Seed</option>
+      <option value="standard">Standard</option>
+      <option value="openstandard">Open Standard</option>
+      <option value="standardkeysanity">Standard KeySanity</option>
+      <option value="openkeysanity">Open KeySanity</option>
+      <option value="crosskeys">CrossKeys</option>
+    </select>
+    <button type="button" class="preset-btn" id="preset-apply-btn" onclick="applyPreset()">Preset</button>
+    <button type="button" class="preset-btn preset-btn-save" id="preset-save-btn" onclick="saveCustomPreset()">Save Preset</button>
+    <button type="button" class="preset-btn preset-btn-delete" id="preset-delete-btn" onclick="deleteCustomPreset()" style="display:none">Delete Preset</button>
+  </div>
+  </div>
+</div>
+
+<!-- Preset name modal -->
+<div id="preset-modal-overlay">
+  <div id="preset-modal">
+    <label for="preset-modal-input">Name this preset:</label>
+    <input id="preset-modal-input" type="text" maxlength="40" autocomplete="off">
+    <div class="preset-modal-btns">
+      <button id="preset-modal-ok" onclick="presetModalConfirm()">Save</button>
+      <button id="preset-modal-cancel" onclick="presetModalClose()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="btn-row">
+  <button class="launch-btn" id="btn-items" onclick="launchItems()">Items Only</button>
+  <button class="launch-btn" id="btn-map"   onclick="launchMap()">Map Only</button>
+  <button class="launch-btn" id="btn-both"  onclick="launchBoth()">Launch Both</button>
+</div>
+
+<div class="section" style="margin-top:8px;">
+  <h2>Timer</h2>
+  <div class="row">
+    <label>Number Color</label>
+    <select id="timer-color" style="flex:1;">
+      <option value="blue"   selected>Blue</option>
+      <option value="green"         >Green</option>
+      <option value="red"           >Red</option>
+      <option value="orange"        >Orange</option>
+      <option value="purple"        >Purple</option>
+      <option value="yellow"        >Yellow</option>
+      <option value="pink"          >Pink</option>
+      <option value="custom"        >Custom</option>
+    </select>
+    <input type="color" id="timer-color-custom" value="#3498db"
+           title="Used when Number Color is set to Custom"
+           style="flex:0 0 auto;width:32px;height:24px;padding:0;border:1px solid #333;background:transparent;cursor:pointer;">
+  </div>
+  <div class="row">
+    <label>Background</label>
+    <select id="timer-bg" style="flex:1;">
+      <option value="black"       selected>Black</option>
+      <option value="grey"               >Grey</option>
+      <option value="white"              >White</option>
+      <option value="transparent"        >Transparent</option>
+      <option value="custom"             >Custom</option>
+    </select>
+    <input type="color" id="timer-bg-custom" value="#222222"
+           title="Used when Background is set to Custom"
+           style="flex:0 0 auto;width:32px;height:24px;padding:0;border:1px solid #333;background:transparent;cursor:pointer;">
+  </div>
+  <div class="btn-row" style="margin-top:8px;">
+    <button class="launch-btn" id="btn-timer" onclick="launchTimer()">⏱ Automatic Timer</button>
+  </div>
+  <div class="info" style="padding-left:15px;margin-top:6px;color:#8353d5;font-style:italic;;">⚠ Pause will only work while the game is in a menu. (See User Guide)</div>
+</div>
+
+<div class="btn-row" style="margin-top:8px;">
+  <button class="user-guide-btn" id="btn-user-guide" onclick="openUserGuide()">📖 User Guide</button>
+</div>
+
+
+<script>
+var IS_ELECTRON = !!(window.electronAPI && window.electronAPI.isElectron);
+
+// Wire a checkbox-toggle to its adjacent Yes/No text label.
+function wireToggleLabel(toggleId, labelId) {
+  var toggle = document.getElementById(toggleId);
+  var label  = document.getElementById(labelId);
+  if (!toggle || !label) return;
+  function sync() { label.textContent = toggle.checked ? 'Yes' : 'No'; }
+  toggle.addEventListener('change', sync);
+  sync();
+}
+['entranceshuffle','bossshuffle','enemizer','swordless'].forEach(function(name) {
+  wireToggleLabel(name + '-toggle', name + '-toggle-label');
+});
+
+function getSettings() {
+  var esToggle = document.getElementById('entranceshuffle-toggle');
+  return {
+    wsHost:     document.getElementById('ws-host').value     || 'localhost',
+    wsPort:     document.getElementById('ws-port').value     || '23074',
+    scale:      document.getElementById('item-scale').value  || '1.0',
+    zoom:       document.getElementById('map-zoom').value    || '100',
+    layout:     localStorage.getItem('alttp-map-layout')     || 'horizontal',
+    enemizer:   document.getElementById('enemizer-toggle') && document.getElementById('enemizer-toggle').checked ? 'yes' : 'no',
+    bossshuffle: document.getElementById('bossshuffle-toggle') && document.getElementById('bossshuffle-toggle').checked ? 'yes' : 'no',
+    gtCrystals: document.getElementById('gt-crystals').value || '7',
+    gamemode:      document.getElementById('gamemode-select') ? document.getElementById('gamemode-select').value : 'standard',
+    dungeonItems:  document.getElementById('dungeonitems-select') ? document.getElementById('dungeonitems-select').value : 'standard',
+    trackerBg:  document.getElementById('tracker-bg') ? document.getElementById('tracker-bg').value : 'black',
+    swordless:  document.getElementById('swordless-toggle') && document.getElementById('swordless-toggle').checked ? 'yes' : 'no',
+    entranceShuffle: esToggle && esToggle.checked ? 'on' : 'none',
+  };
+}
+
+function save() {
+  var s = getSettings();
+  localStorage.setItem('alttp-ws-host',     s.wsHost);
+  localStorage.setItem('alttp-ws-port',     s.wsPort);
+  localStorage.setItem('alttp-item-scale',  s.scale);
+  localStorage.setItem('alttp-map-zoom',    s.zoom);
+  localStorage.setItem('alttp-enemizer',    s.enemizer);
+  localStorage.setItem('alttp-bossshuffle', s.bossshuffle);
+  localStorage.setItem('alttp-gt-crystals', s.gtCrystals);
+  localStorage.setItem('alttp-gamemode', s.gamemode);
+  localStorage.setItem('alttp-dungeon-items', s.dungeonItems);
+  localStorage.setItem('alttp-tracker-bg', document.getElementById('tracker-bg') ? document.getElementById('tracker-bg').value : 'black');
+  localStorage.setItem('alttp-timer-color', document.getElementById('timer-color') ? document.getElementById('timer-color').value : 'blue');
+  localStorage.setItem('alttp-timer-bg', document.getElementById('timer-bg') ? document.getElementById('timer-bg').value : 'black');
+  if (document.getElementById('timer-color-custom')) localStorage.setItem('alttp-timer-color-custom', document.getElementById('timer-color-custom').value);
+  if (document.getElementById('timer-bg-custom'))    localStorage.setItem('alttp-timer-bg-custom',    document.getElementById('timer-bg-custom').value);
+  localStorage.setItem('alttp-swordless', s.swordless);
+  localStorage.setItem('alttp-entrance-shuffle', s.entranceShuffle === 'none' ? 'no' : 'yes');
+  localStorage.setItem('alttp-entrance-shuffle-mode', s.entranceShuffle);
+}
+
+function mapUrl(s) {
+  var entFlag = (s.entranceShuffle === 'none') ? 'no' : 'yes';
+  return 'map.html?zoom=' + s.zoom + '&enemizer=' + s.enemizer + '&gtcrystals=' + s.gtCrystals + '&gamemode=' + s.gamemode + '&dungeonitems=' + s.dungeonItems + '&swordless=' + s.swordless + '&bossshuffle=' + s.bossshuffle + '&entranceshuffle=' + entFlag + '&entrancemode=' + s.entranceShuffle;
+}
+
+function launchItems() {
+  save();
+  var s = getSettings();
+  if (IS_ELECTRON) {
+    window.electronAPI.launch({ which: 'items', ...s });
+  } else {
+    var tbg = document.getElementById('tracker-bg') ? document.getElementById('tracker-bg').value : 'black';
+    var di = s.dungeonItems || 'standard';
+    window.open('itemtracker.html?scale=' + s.scale + '&bg=' + tbg + '&dungeonitems=' + di + '&bossshuffle=' + s.bossshuffle, 'alttp-items', 'width=500,height=390,resizable=yes');
+  }
+}
+
+function launchMap() {
+  save();
+  var s    = getSettings();
+  if (IS_ELECTRON) {
+    window.electronAPI.launch({ which: 'map', ...s });
+  } else {
+    var size = Math.round(512 * parseInt(s.zoom) / 100);
+    var w = s.layout === 'vertical' ? size + 20 : size * 2 + 32;
+    var h = size + 92;
+    window.open(mapUrl(s), 'alttp-map', 'width=' + w + ',height=' + h + ',resizable=yes');
+  }
+}
+
+function launchTimer() {
+  save();
+  var s = getSettings();
+  var tc = document.getElementById('timer-color').value || 'blue';
+  var tbg = document.getElementById('timer-bg').value || 'black';
+  if (IS_ELECTRON) {
+    window.electronAPI.launch({ which: 'timer', timerColor: tc, timerBg: tbg, ...s });
+  } else {
+    window.open('timer.html?wshost=' + s.wsHost + '&wsport=' + s.wsPort + '&color=' + tc + '&bg=' + tbg, 'alttp-timer', 'width=300,height=220,resizable=yes');
+  }
+}
+
+function launchBoth() {
+  save();
+  var s = getSettings();
+  if (IS_ELECTRON) {
+    window.electronAPI.launch({ which: 'both', ...s });
+  } else {
+    var size = Math.round(512 * parseInt(s.zoom) / 100);
+    var mapW = s.layout === 'vertical' ? size + 20 : size * 2 + 32;
+    var mapH = size + 92;
+    var tbg = document.getElementById('tracker-bg') ? document.getElementById('tracker-bg').value : 'black';
+    var di = s.dungeonItems || 'standard';
+    window.open('itemtracker.html?scale=' + s.scale + '&bg=' + tbg + '&dungeonitems=' + di + '&bossshuffle=' + s.bossshuffle, 'alttp-items', 'width=500,height=390,resizable=yes');
+    window.open(mapUrl(s), 'alttp-map', 'width=' + mapW + ',height=' + mapH + ',resizable=yes');
+  }
+}
+
+
+// ── Restore saved values — in Electron pull from electron-store, fallback to localStorage
+window.addEventListener('DOMContentLoaded', async function() {
+  populatePresetDropdown();
+  var saved = {};
+  if (IS_ELECTRON) {
+    saved = await window.electronAPI.loadSettings();
+  }
+  var fields = {
+    'ws-host':           saved.wsHost        || localStorage.getItem('alttp-ws-host'),
+    'ws-port':           saved.wsPort        || localStorage.getItem('alttp-ws-port'),
+    'item-scale':        saved.scale         || localStorage.getItem('alttp-item-scale'),
+    'map-zoom':          saved.zoom          || localStorage.getItem('alttp-map-zoom'),
+    'gt-crystals':       saved.gtCrystals    || localStorage.getItem('alttp-gt-crystals'),
+    'gamemode-select':   saved.gamemode      || localStorage.getItem('alttp-gamemode'),
+    'dungeonitems-select': saved.dungeonItems || localStorage.getItem('alttp-dungeon-items'),
+    'timer-color':       saved.timerColor    || localStorage.getItem('alttp-timer-color'),
+    'timer-bg':          saved.timerBg       || localStorage.getItem('alttp-timer-bg'),
+    'tracker-bg':        saved.trackerBg     || localStorage.getItem('alttp-tracker-bg'),
+  };
+  for (var id in fields) {
+    var el = document.getElementById(id);
+    if (el && fields[id]) el.value = fields[id];
+  }
+  var enemizer = saved.enemizer || localStorage.getItem('alttp-enemizer') || 'yes';
+  var enemizerToggle = document.getElementById('enemizer-toggle');
+  if (enemizerToggle) enemizerToggle.checked = (enemizer === 'yes');
+  var bsv = saved.bossshuffle || localStorage.getItem('alttp-bossshuffle') || 'yes';
+  var bossshuffleToggle = document.getElementById('bossshuffle-toggle');
+  if (bossshuffleToggle) bossshuffleToggle.checked = (bsv === 'yes');
+  var gm = saved.gamemode || localStorage.getItem('alttp-gamemode') || 'standard';
+  var gmsel = document.getElementById('gamemode-select');
+  if (gmsel) gmsel.value = gm;
+  var di = saved.dungeonItems || localStorage.getItem('alttp-dungeon-items') || 'standard';
+  var disel = document.getElementById('dungeonitems-select');
+  if (disel) disel.value = di;
+  var slVal = saved.swordless || localStorage.getItem('alttp-swordless') || 'no';
+  var swordlessToggle = document.getElementById('swordless-toggle');
+  if (swordlessToggle) swordlessToggle.checked = (slVal === 'yes');
+
+  var esVal = saved.entranceShuffle || localStorage.getItem('alttp-entrance-shuffle-mode') || 'none';
+  var esToggleEl = document.getElementById('entranceshuffle-toggle');
+  if (esToggleEl) esToggleEl.checked = (esVal !== 'none');
+
+  // Re-sync the Yes/No text labels now that toggle states were restored.
+  ['entranceshuffle','bossshuffle','enemizer','swordless'].forEach(function(name) {
+    var t = document.getElementById(name + '-toggle');
+    var l = document.getElementById(name + '-toggle-label');
+    if (t && l) l.textContent = t.checked ? 'Yes' : 'No';
+  });
+
+  // Restore the two custom color pickers used by the timer's Custom options
+  var tcCust = localStorage.getItem('alttp-timer-color-custom');
+  if (tcCust && document.getElementById('timer-color-custom')) document.getElementById('timer-color-custom').value = tcCust;
+  var tbCust = localStorage.getItem('alttp-timer-bg-custom');
+  if (tbCust && document.getElementById('timer-bg-custom'))    document.getElementById('timer-bg-custom').value    = tbCust;
+
+});
+
+// ── App Settings panel ────────────────────────────────────────────────────────
+function toggleAppSettings() {
+  var panel = document.getElementById('app-settings-panel');
+  panel.classList.toggle('open');
+}
+// Close panel when clicking outside
+document.addEventListener('click', function(e) {
+  var panel = document.getElementById('app-settings-panel');
+  var btn   = document.getElementById('app-settings-btn');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && e.target !== btn) {
+    panel.classList.remove('open');
+  }
+});
+
+// ── Auto-update UI ────────────────────────────────────────────────────────────
+(function() {
+  if (!window.electronAPI || !window.electronAPI.onUpdateStatus) return;
+
+  var bar        = document.getElementById('update-bar');
+  var barMsg     = document.getElementById('update-bar-msg');
+  var panelStatus = document.getElementById('update-panel-status');
+  var checkBtn   = document.getElementById('check-update-btn');
+
+  function setBar(msg, type, showInstall) {
+    bar.className = 'visible' + (type === 'error' ? ' error' : '');
+    barMsg.textContent = msg;
+    // Remove any existing install button
+    var existing = document.getElementById('install-update-btn');
+    if (existing) existing.remove();
+    if (showInstall) {
+      var btn = document.createElement('button');
+      btn.id = 'install-update-btn';
+      btn.textContent = '↓ Download';
+      btn.onclick = function() { window.electronAPI.installUpdate(); };
+      bar.appendChild(btn);
+    }
+  }
+
+  function hideBar() {
+    bar.className = '';
+  }
+
+  function setPanelStatus(msg, color) {
+    panelStatus.textContent = msg;
+    panelStatus.style.color = color || '#666';
+  }
+
+  window.electronAPI.onUpdateStatus(function(data) {
+    var status = data.status;
+    var info   = data.info;
+
+    if (status === 'checking') {
+      setPanelStatus('Checking…', '#666');
+      checkBtn.disabled = true;
+    }
+    else if (status === 'up-to-date') {
+      hideBar();
+      setPanelStatus('You\'re up to date.', '#4dff88');
+      checkBtn.disabled = false;
+    }
+    else if (status === 'available') {
+      var ver = info && info.version ? ' v' + info.version : '';
+      setBar('Update' + ver + ' available — click to download.', 'info', true);
+      setPanelStatus('Update' + ver + ' available.', '#7ab8f5');
+      checkBtn.disabled = false;
+    }
+  });
+})();
+
+// ── Presets ──────────────────────────────────────────────────────────────────
+var PRESET_STORAGE_KEY = 'alttp-custom-presets'; // { name: settingsObj }
+
+var BUILTIN_PRESETS = {
+  lordseed: {
+    label: 'Lord Seed',
+    dungeonItems: 'standard',
+    gtCrystals: '7',
+    gamemode: 'standard',
+    entranceShuffle: false,
+    bossShuffle: true,
+    enemizer: true,
+    swordless: false,
+  },
+  standard: {
+    label: 'Standard',
+    dungeonItems: 'standard',
+    gtCrystals: '7',
+    gamemode: 'standard',
+    entranceShuffle: false,
+    bossShuffle: false,
+    enemizer: false,
+    swordless: false,
+  },
+  openstandard: {
+    label: 'Open Standard',
+    dungeonItems: 'standard',
+    gtCrystals: '7',
+    gamemode: 'open',
+    entranceShuffle: false,
+    bossShuffle: false,
+    enemizer: false,
+    swordless: false,
+  },
+  standardkeysanity: {
+    label: 'Standard KeySanity',
+    dungeonItems: 'keysanity',
+    gtCrystals: '7',
+    gamemode: 'standard',
+    entranceShuffle: false,
+    bossShuffle: false,
+    enemizer: false,
+    swordless: false,
+  },
+  openkeysanity: {
+    label: 'Open KeySanity',
+    dungeonItems: 'keysanity',
+    gtCrystals: '7',
+    gamemode: 'open',
+    entranceShuffle: false,
+    bossShuffle: false,
+    enemizer: false,
+    swordless: false,
+  },
+  crosskeys: {
+    label: 'CrossKeys',
+    dungeonItems: 'keysanity',
+    gtCrystals: '7',
+    gamemode: 'open',
+    entranceShuffle: true,
+    bossShuffle: false,
+    enemizer: false,
+    swordless: false,
+  }
+};
+
+// Apply a settings object to the actual form controls on the page.
+function applyPresetSettings(cfg) {
+  if (!cfg) return;
+  var disel = document.getElementById('dungeonitems-select');
+  if (disel && cfg.dungeonItems !== undefined) disel.value = cfg.dungeonItems;
+  var gtsel = document.getElementById('gt-crystals');
+  if (gtsel && cfg.gtCrystals !== undefined) gtsel.value = cfg.gtCrystals;
+  var gmsel = document.getElementById('gamemode-select');
+  if (gmsel && cfg.gamemode !== undefined) gmsel.value = cfg.gamemode;
+
+  var esToggle = document.getElementById('entranceshuffle-toggle');
+  if (esToggle && cfg.entranceShuffle !== undefined) esToggle.checked = !!cfg.entranceShuffle;
+  var bsToggle = document.getElementById('bossshuffle-toggle');
+  if (bsToggle && cfg.bossShuffle !== undefined) bsToggle.checked = !!cfg.bossShuffle;
+  var enToggle = document.getElementById('enemizer-toggle');
+  if (enToggle && cfg.enemizer !== undefined) enToggle.checked = !!cfg.enemizer;
+  var swToggle = document.getElementById('swordless-toggle');
+  if (swToggle && cfg.swordless !== undefined) swToggle.checked = !!cfg.swordless;
+
+  // Re-sync the Yes/No text labels and persist the now-applied settings.
+  ['entranceshuffle','bossshuffle','enemizer','swordless'].forEach(function(name) {
+    var t = document.getElementById(name + '-toggle');
+    var l = document.getElementById(name + '-toggle-label');
+    if (t && l) l.textContent = t.checked ? 'Yes' : 'No';
+  });
+  save();
+}
+
+function loadCustomPresets() {
+  try { return JSON.parse(localStorage.getItem(PRESET_STORAGE_KEY) || '{}'); }
+  catch (ex) { return {}; }
+}
+
+function saveCustomPresets(presets) {
+  localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(presets));
+}
+
+// Capture the current state of all preset-relevant controls into a plain object.
+function captureCurrentSettings() {
+  return {
+    dungeonItems: document.getElementById('dungeonitems-select') ? document.getElementById('dungeonitems-select').value : 'standard',
+    gtCrystals:   document.getElementById('gt-crystals') ? document.getElementById('gt-crystals').value : '7',
+    gamemode:     document.getElementById('gamemode-select') ? document.getElementById('gamemode-select').value : 'standard',
+    entranceShuffle: !!(document.getElementById('entranceshuffle-toggle') && document.getElementById('entranceshuffle-toggle').checked),
+    bossShuffle:     !!(document.getElementById('bossshuffle-toggle') && document.getElementById('bossshuffle-toggle').checked),
+    enemizer:        !!(document.getElementById('enemizer-toggle') && document.getElementById('enemizer-toggle').checked),
+    swordless:       !!(document.getElementById('swordless-toggle') && document.getElementById('swordless-toggle').checked),
+  };
+}
+
+// Populate the preset dropdown with any custom presets saved in localStorage,
+// in addition to the built-in ones already in the markup.
+function populatePresetDropdown() {
+  var sel = document.getElementById('preset-select');
+  if (!sel) return;
+  var customPresets = loadCustomPresets();
+  Object.keys(customPresets).forEach(function(name) {
+    // Avoid duplicate <option> entries if this runs more than once.
+    if (sel.querySelector('option[value="custom:' + CSS.escape(name) + '"]')) return;
+    var opt = document.createElement('option');
+    opt.value = 'custom:' + name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+}
+
+function applyPreset() {
+  var sel = document.getElementById('preset-select');
+  var val = sel ? sel.value : '';
+  if (!val) return;
+  if (BUILTIN_PRESETS[val]) {
+    applyPresetSettings(BUILTIN_PRESETS[val]);
+    return;
+  }
+  if (val.indexOf('custom:') === 0) {
+    var name = val.slice('custom:'.length);
+    var customPresets = loadCustomPresets();
+    if (customPresets[name]) applyPresetSettings(customPresets[name]);
+  }
+}
+
+function saveCustomPreset() {
+  var input = document.getElementById('preset-modal-input');
+  if (input) input.value = '';
+  var overlay = document.getElementById('preset-modal-overlay');
+  if (overlay) {
+    overlay.classList.add('open');
+    if (input) setTimeout(function() { input.focus(); }, 50);
+  }
+}
+
+function presetModalClose() {
+  var overlay = document.getElementById('preset-modal-overlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+function presetModalConfirm() {
+  var input = document.getElementById('preset-modal-input');
+  var name = input ? input.value.trim() : '';
+  if (!name) return;
+  presetModalClose();
+
+  var customPresets = loadCustomPresets();
+  customPresets[name] = captureCurrentSettings();
+  saveCustomPresets(customPresets);
+
+  var sel = document.getElementById('preset-select');
+  if (sel) {
+    var value = 'custom:' + name;
+    var existing = sel.querySelector('option[value="' + value.replace(/"/g, '\\"') + '"]');
+    if (!existing) {
+      var opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    }
+    sel.value = value;
+  }
+  updateDeleteBtn();
+}
+
+function deleteCustomPreset() {
+  var sel = document.getElementById('preset-select');
+  if (!sel) return;
+  var val = sel.value;
+  if (!val || val.indexOf('custom:') !== 0) return;
+  var name = val.slice('custom:'.length);
+  if (!confirm('Delete preset "' + name + '"?')) return;
+  var customPresets = loadCustomPresets();
+  delete customPresets[name];
+  saveCustomPresets(customPresets);
+  var opt = sel.querySelector('option[value="' + val.replace(/"/g, '\\"') + '"]');
+  if (opt) opt.remove();
+  sel.selectedIndex = 0;
+  updateDeleteBtn();
+}
+
+function updateDeleteBtn() {
+  var sel = document.getElementById('preset-select');
+  var btn = document.getElementById('preset-delete-btn');
+  if (!sel || !btn) return;
+  btn.style.display = (sel.value && sel.value.indexOf('custom:') === 0) ? '' : 'none';
+}
+
+// Close modal on overlay click
+document.addEventListener('DOMContentLoaded', function() {
+  var overlay = document.getElementById('preset-modal-overlay');
+  if (overlay) overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) presetModalClose();
+  });
+  var input = document.getElementById('preset-modal-input');
+  if (input) input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') presetModalConfirm();
+    if (e.key === 'Escape') presetModalClose();
+  });
+  var sel = document.getElementById('preset-select');
+  if (sel) sel.addEventListener('change', updateDeleteBtn);
+});
+
+// ── User Guide ───────────────────────────────────────────────────────────────
+var USER_GUIDE_URL = 'https://github.com/hutchch/ALTTPR-Tracker/wiki';
+function openUserGuide() {
+  if (IS_ELECTRON && window.electronAPI.openExternal) {
+    window.electronAPI.openExternal(USER_GUIDE_URL);
+  } else {
+    window.open(USER_GUIDE_URL, '_blank');
+  }
+}
+
+function manualCheckUpdate() {
+  if (!window.electronAPI || !window.electronAPI.checkForUpdates) return;
+  document.getElementById('update-panel-status').textContent = 'Checking…';
+  document.getElementById('update-panel-status').style.color = '#666';
+  var btn = document.getElementById('check-update-btn');
+  btn.disabled = true;
+  // Re-enable after 10s in case the error was suppressed and no status arrives
+  setTimeout(function() {
+    btn.disabled = false;
+    var status = document.getElementById('update-panel-status');
+    if (status.textContent === 'Checking…') status.textContent = '';
+  }, 10000);
+  window.electronAPI.checkForUpdates();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+{
+ "ACCESSIBILITY": {
+  "items": "Guarantees you can obtain 100% of items (100% inventory possible).",
+  "locations": "Guarantees every location/check is reachable (100% locations reachable).",
+  "none": "Only guarantees the seed is beatable — some items or locations may be unreachable."
+ },
+ "BOSS_SHUFFLE": {
+  "full": "Same as Simple except the 3 bosses which appear twice are chosen randomly.",
+  "none": "Bosses are not randomized. All bosses remain in their original dungeons.",
+  "random": "All bosses are chosen entirely at random. You may see one boss multiple times and some bosses may not feature at all.",
+  "simple": "All boss locations (except both Agahnim's and Ganon) are randomly shuffled, including the 3 Ganon's Tower refights. Simple boss shuffle always has you fight Armos Knights, Lanmolas, and Moldorm twice."
+ },
+ "CRYSTALS_GANON": {
+  "_row": "How many of the 7 crystals you must collect before Ganon can be damaged. Lower values let you finish the fight with fewer crystals. \"random\" picks a value 0–7 when the seed is generated.\n\nApplies to goals where crystals make Ganon vulnerable:\n- Defeat Ganon\n- Fast Ganon\n\nHas no effect on: All Dungeons (Ganon is made vulnerable by beating every dungeon boss instead), Master Sword Pedestal, Triforce Hunt, or Ganon Hunt."
+ },
+ "CRYSTALS_TOWER": {
+  "_row": "How many of the 7 crystals you must collect before the barrier at Ganon's Tower opens. Lower values let you enter (and start the final dungeon) sooner. \"random\" picks a value 0–7 when the seed is generated.\n\nApplies to goals where you climb Ganon's Tower:\n- Defeat Ganon\n- Fast Ganon\n- All Dungeons (you may need to enter the tower before completing all dungeons)\n\nHas no effect on: Master Sword Pedestal, Triforce Hunt, or Ganon Hunt (those don't require entering the Tower)."
+ },
+ "DUNGEON_ITEMS": {
+  "full": "Keysanity — Maps, Compasses, Small keys, and Big keys are all shuffled into the world and can be anywhere.",
+  "mc": "Maps and Compasses are shuffled into the world and can be found anywhere; keys stay in-dungeon.",
+  "mcs": "Maps, Compasses, and Small keys are shuffled into the world; big keys stay in-dungeon.",
+  "standard": "Maps, compasses, and keys stay inside their own dungeon (normal)."
+ },
+ "ENEMY_DAMAGE": {
+  "default": "Enemies deal normal damage.",
+  "random": "Damage is fully randomized and can be very swingy — a hit might tickle or nearly kill you.",
+  "shuffled": "Damage values are reshuffled among enemies within reasonable bounds."
+ },
+ "ENEMY_HEALTH": {
+  "default": "Normal enemy health.",
+  "easy": "Enemies have reduced health.",
+  "expert": "Enemies have greatly increased health.",
+  "hard": "Enemies have increased health."
+ },
+ "ENEMY_SHUFFLE": {
+  "none": "Enemies are not randomized. All enemies remain in their original locations.",
+  "random": "Same as Shuffled except enemies under bushes, as well as the percentage chance that they spawn an enemy, are also randomized. This may not seem like much of a difference but in practice it affects playability drastically. In addition tile rooms spawn tiles in random patterns and Thieves' have a 50% chance for being killable or invincible.",
+  "shuffled": "All enemies are randomized but there are some caveats to note:\n- Not all enemies can appear everywhere due to game limitations.\n- Rooms where killing all enemies is required will never include enemies which need specific weapons to kill (e.g. Mimics requiring Bow, etc).\n- Thieves' can now be killed.\n- Tile rooms are not randomized.\n- Enemies under bushes are not randomized."
+ },
+ "GLITCHES": {
+  "hybrid_major_glitches": "A mix of overworld and major glitches may be required by logic.",
+  "major_glitches": "Major Glitches (MG). Logic may require major glitches, including more advanced techniques.",
+  "no_logic": "No Logic. Items are placed with no guarantee of accessibility — the seed may be brutal or require deep glitch knowledge.",
+  "none": "No Glitches (aka No Major Glitches/NMG). The seed is guaranteed completable without any glitches.",
+  "overworld_glitches": "Overworld Glitches (OWG). Logic may require overworld glitches such as boots clips and screen transitions."
+ },
+ "GOAL": {
+  "dungeons": "All-dungeons goal. You must clear every dungeon (including Hyrule Castle Tower and Ganon's Tower) before Ganon can be beaten, then defeat Ganon.",
+  "fast_ganon": "Same as Ganon, but Ganon becomes vulnerable as soon as you have the required crystals — you skip Ganon's Tower and the Agahnim 2 fight and can go straight to him.",
+  "ganon": "The standard goal. Collect the required crystals, clear Ganon's Tower and defeat Agahnim atop it, then defeat Ganon at the Pyramid.",
+  "ganonhunt": "Triforce pieces are scattered across the world. Collect the required number to make Ganon vulnerable, then defeat him.",
+  "pedestal": "Pull the Triforce from the Master Sword pedestal in the Lost Woods. Requires the three pendants; reaching the pedestal wins — no Ganon fight.",
+  "triforce-hunt": "Collect the required number of scattered Triforce pieces and turn them in to Murahdahla (in front of Hyrule Castle) to win. No Ganon fight needed."
+ },
+ "HEART_COLOR": {
+  "_row": "Sets the color of the HUD hearts. Purely cosmetic."
+ },
+ "HINTS": {
+  "off": "Disable hints on the telepathic tiles throughout the world.",
+  "on": "Enable hints which can be found on the telepathic tiles throughout the world."
+ },
+ "ITEM_FUNCTIONALITY": {
+  "expert": "Item effects are nerfed further, removing most defensive \"crutches.\"",
+  "hard": "Some item effects are nerfed (e.g. the Cape and Cane of Byrna give less protection and drain more magic; silver arrows become limited).",
+  "normal": "Items work as in the normal game."
+ },
+ "ITEM_PLACEMENT": {
+  "advanced": "This setting is aimed at experienced players. The intention of this setting is to maximize glitchless item placement reach. Dark rooms with torches are considered accessible with the Fire Rod; other dark rooms remain logically accessible with the Lamp. No other consideration is given to the obscurity of item placements or the level of execution required to access locations. The expectation is a player choosing this setting is decently familiar and practiced with the original game.",
+  "basic": "This setting is aimed at new players or people looking for a more casual experience. Logical restrictions are in place to prevent items being placed in obscure locations which require niche knowledge to access (e.g. accessing Bumper Cave ledge without the Hookshot). Other logical restrictions also ensure excessively difficult execution is not required in order to progress. For example if you need to beat a late-game Dark World dungeon you will always have access to some sword and defense upgrades somewhere in the world."
+ },
+ "ITEM_POOL": {
+  "expert": "Even more restricted (sword to Master, no shield or armor upgrades, minimal consumables).",
+  "hard": "Power items are capped and consumables reduced (sword to Tempered, shield to Red, armor to Blue; less magic help and fewer refills).",
+  "normal": "The standard, full item pool."
+ },
+ "POT_SHUFFLE": {
+  "off": "Whatever hides under pots is normal.",
+  "on": "Shuffles what's hidden under pots within each room."
+ },
+ "QUICKSWAP": {
+  "false": "No quick swapping — change items from the menu.",
+  "true": "Cycle equipped items with the L/R shoulder buttons without opening the menu."
+ },
+ "SPOILER": {
+  "off": "No spoiler log is saved.",
+  "on": "Saves a full spoiler log next to the seed, viewable in the \"View Spoiler Logs\" browser."
+ },
+ "SPRITE": {
+  "_row": "Choose the character sprite (skin) for Link. Purely cosmetic — no effect on logic or gameplay."
+ },
+ "STATE": {
+  "inverted": "In this setting Link starts in the Dark World and must navigate his way to the Light World in order to defeat Ganon! There are several major changes for this to work:\n- Ganon's Tower and Agahnim's Tower have traded places.\n- Ganon has abandoned the Pyramid and is hiding underneath Hyrule Castle.\n- All portals now take you from the Dark World to the Light World.\n- Link will be a bunny in the Light World without the Moon Pearl.\n- The Magic Mirror now transports you from the Light World to the Dark World.\n- The crystals now unlock the door to Hyrule Castle Tower (not Ganon's Tower).\nOther modifications were required to make this work: Link's House and the Bomb Shop have traded places; the flute only works in the Dark World; lots of Light World terrain is modified to retain accessibility; the Death Mountain cave system changed; the Old Man is lost in the Dark World; Ice Palace and Turtle Rock have new access. Bunny Link can still use the Book of Mudora, talk to NPCs, and collect freestanding items. Inverted games can be really difficult — we recommend starting with some of the other world states.",
+  "open": "This setting starts as if the initial prologue has already been beaten. Zelda has already been rescued and you are free to start in either Link's House or at the Sanctuary. All the chests in Hyrule Castle (including the item Link's Uncle has) have not been collected yet, so you must decide when and whether to visit.",
+  "retro": "This setting is a throwback to the original The Legend of Zelda. The main concepts:\n- Rupee Bow: the bow no longer uses arrows for ammo and instead uses rupees. The first Progressive Bow shoots Wooden Arrows; the second can also shoot Silver Arrows. Neither works until a Rupee Quiver is purchased. The Quiver costs 80 rupees and appears in one randomly chosen shop. Wooden Arrows cost 10 rupees each; Silver Arrows cost 50.\n- Shops: five of nine possible shops are randomly chosen to contain new stock (excluding the Bomb Shop and Potion Shop). One holds the Rupee Quiver; small keys are also buyable in multiple shops for 100 rupees with no limit.\n- Small Keys: no longer dungeon-specific — they open key doors in any dungeon and may be found anywhere. Big keys, maps, and compasses remain dungeon-specific.\n- Take-Any Caves: five randomly chosen single-entrance caves now lead to take-any caves. Four offer a choice between a Heart Container and a Blue Potion refill; the fifth gives a sword upgrade (taken from the pool), leaving only 3 swords in the regular item pool.",
+  "standard": "This setting is the closest to the original game. You wake in Link's house, and go through the Escape sequence (rescuing Zelda in Hyrule Castle and delivering her to the Sanctuary). This must be completed before you are free to explore Hyrule. Your uncle is guaranteed to give you a weapon which lets you clear the prologue (although not necessarily a sword). You are given a light cone for navigating the dark rooms of the Sewers even without the Lamp (although any future visits to other dark rooms, except for the Sewers, will be in total darkness until you find the Lamp)."
+ },
+ "TIMER": {
+  "off": "No on-screen timer.",
+  "stopwatch": "A stopwatch timer in the HUD for practicing speed runs."
+ },
+ "WEAPONS": {
+  "assured": "You start with the Fighter's Sword guaranteed; the remaining sword upgrades stay in the pool.",
+  "randomized": "Swords are shuffled into the item pool like any other item and can be found anywhere (or be gated behind progression). In this mode, you may be forced to use a non-sword weapon (e.g., Bow, Cane, Bombs, etc.) until a sword is found.",
+  "swordless": "No swords exist at all. You beat the game without one — the Hammer covers most sword-only interactions (including damaging Ganon). Any curtains that require being cut (e.g., Agahnim 1 and Skull Woods.)",
+  "vanilla": "The four sword upgrades sit in their original normal spots (Uncle, pedestal, blacksmiths, and the cursed fairy)."
+ }
+}

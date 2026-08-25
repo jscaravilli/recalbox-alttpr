@@ -1,0 +1,162 @@
+[
+ {
+  "name": "8-Bit Big Band",
+  "author": "ph112358",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1rXbi-edbsRa6fXnnIi9zAGLPJCCCDm6a/view"
+ },
+ {
+  "name": "A Link Between Worlds OST Extended",
+  "author": "arborelia",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "arborelia",
+  "url": "http://arborelia.net/z3r/albw/"
+ },
+ {
+  "name": "A Link to the Past: Enhanced Soundtrack",
+  "author": "Zerethn",
+  "expanded": "None",
+  "fmt": "RAR",
+  "host": "mediafire",
+  "url": "https://www.mediafire.com/file/qn1lyokmsdc1guy/alttp_enhanced_soundtrack_pcm.rar/file"
+ },
+ {
+  "name": "Cadence of Hyrule",
+  "author": "RokonShimo",
+  "expanded": "Full",
+  "fmt": "RAR",
+  "host": "dropbox",
+  "url": "https://www.dropbox.com/sh/dm82nohefhv7p92/AABW01Pf4bXIjOcGPgkI-Lema?dl=0"
+ },
+ {
+  "name": "Cadence of Hyrule (2024)",
+  "author": "Damachaman",
+  "expanded": "Partial",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1Cj6Qgo0mt5o9LqLmcQ-zab6kERXkfnYZ/view"
+ },
+ {
+  "name": "CrossCode",
+  "author": "TjMaelstrom",
+  "expanded": "Full",
+  "fmt": "7Z",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1DJtXA2N86oVRGU22zMSbfm-CC8MNmcGM/view"
+ },
+ {
+  "name": "Cult of the Lamb",
+  "author": "Jeddoman",
+  "expanded": "Partial",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1Jjowc1NmYgUwtVJxO8z9qc3zDrkpYHiA/view"
+ },
+ {
+  "name": "Donkey Kong Country 2 Remastered",
+  "author": "Reed Porter",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1_Kmyn1XkNor0bcDQiXXhkxVGyTS0fflx/view"
+ },
+ {
+  "name": "Donkey Kong Country: Tropical Freeze",
+  "author": "malmo",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1-v30I46053Hdo7jmJi7JZfkPuiuaNbAT/view"
+ },
+ {
+  "name": "Final Fantasy 7 (v31)",
+  "author": "codemann8",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/151FfuMGJq18zhCxMJyVCGxXhTYdjFlbn/view"
+ },
+ {
+  "name": "Final Fantasy VIII",
+  "author": "zelgadissan",
+  "expanded": "Partial",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1HH5RIisIiW3tfyu64Al_mfb7f2dOIxa5/view"
+ },
+ {
+  "name": "Link's Awakening Orchestrated Cover by The Second Narrator",
+  "author": "Jaejo36",
+  "expanded": "Full",
+  "fmt": "7Z",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1S5uumXNvOrkjjyHUQtNjUZ_8qNHf8ycs/view"
+ },
+ {
+  "name": "Maple Story",
+  "author": "Vinter",
+  "expanded": "Full",
+  "fmt": "7Z",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/17b-bbkaviQE1sVcUCmw0AUk-K1AyKBQZ/view"
+ },
+ {
+  "name": "Octopath Traveller",
+  "author": "Reed Porter",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1JJ9VHm8ryUBSXQe6vpK5x0rFowF3F1To/view"
+ },
+ {
+  "name": "Octopath Traveller 2",
+  "author": "VidNinja & Iceman_F1",
+  "expanded": "Partial",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/19kWT0bG5GXmToQuaQCbZvoRmKezBHkh0/view"
+ },
+ {
+  "name": "Pokemon Ruby & Sapphire",
+  "author": "Coxla",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "mediafire",
+  "url": "https://www.mediafire.com/file/p9c9sp6yophyr8w/Pokemon_Ruby_%2526_Sapphire_MSU.zip/file"
+ },
+ {
+  "name": "Pokemon Scarlet/Violet",
+  "author": "norskmatty",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1cDYNTQWuqgNiU46tgKvk3Vsa2mXzW6BB/view"
+ },
+ {
+  "name": "Sonic 3 and Knuckles",
+  "author": "Reed Porter",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1zPXOMc3wqT9SXeCMWz5OCvstXJOTMV8A/view"
+ },
+ {
+  "name": "Yoshi's Woolly World",
+  "author": "Skysplinter",
+  "expanded": "Full",
+  "fmt": "ZIP",
+  "host": "mediafire",
+  "url": "http://www.mediafire.com/file/lmlvec5tted2owc"
+ },
+ {
+  "name": "Zelda Fans' Favorites",
+  "author": "Fleakee",
+  "expanded": "Full",
+  "fmt": "RAR",
+  "host": "gdrive",
+  "url": "https://drive.google.com/file/d/1npigI8FuYiHmkNCYNzolngvIU30Hy6T4/view"
+ }
+]

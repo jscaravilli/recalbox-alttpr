@@ -1,0 +1,3053 @@
+[
+{
+"name": "Abigail",
+"file": "abigail.1",
+"author": "Fish_waffle64",
+"preview": "abigail.1.png"
+},
+{
+"name": "Adol",
+"file": "adol.1",
+"author": "Yuushia",
+"preview": "adol.1.png"
+},
+{
+"name": "Adventure 2600",
+"file": "adventure-2600.1",
+"author": "Purple Peak",
+"preview": "adventure-2600.1.png"
+},
+{
+"name": "Aggretsuko",
+"file": "aggretsuko.1",
+"author": "skovacs1",
+"preview": "aggretsuko.1.png"
+},
+{
+"name": "Agrias",
+"file": "agrias.1",
+"author": "Tux"
+},
+{
+"name": "Alcoon",
+"file": "alcoon.1",
+"author": "Wuffie"
+},
+{
+"name": "Alex",
+"file": "alex.1",
+"author": "Fish_waffle64",
+"preview": "alex.1.png"
+},
+{
+"name": "Alice",
+"file": "alice.1",
+"author": "Artheau",
+"preview": "alice.1.png"
+},
+{
+"name": "Angel",
+"file": "angel.1",
+"author": "NO_Body_The_Dragon"
+},
+{
+"name": "Angry Video Game Nerd",
+"file": "angry-video-game-nerd.1",
+"author": "ABOhiccups",
+"preview": "angry-video-game-nerd.1.png"
+},
+{
+"name": "AnnaLavellan",
+"file": "anna-lavellan.1",
+"author": "AnnaLavellan",
+"preview": "anna-lavellan.1.png"
+},
+{
+"name": "Arcane",
+"file": "arcane.1",
+"author": "MM102",
+"preview": "arcane.1.png"
+},
+{
+"name": "Archen",
+"file": "archen.1",
+"author": "Vonyee",
+"preview": "archen.1.png"
+},
+{
+"name": "ArcticArtemisFox",
+"file": "arctic-artemis.1",
+"author": "Chew Terr",
+"preview": "arctic-artemis.1.png"
+},
+{
+"name": "ArcturusChusky",
+"file": "arcturus-chusky.1",
+"author": "Drieky",
+"preview": "arcturus-chusky.1.png"
+},
+{
+"name": "Aria",
+"file": "aria.1",
+"author": "Maya Neko Comics",
+"preview": "aria.1.png"
+},
+{
+"name": "Ark (Cape)",
+"file": "ark.1",
+"author": "wzl",
+"preview": "ark.1.png"
+},
+{
+"name": "Ark (No Cape)",
+"file": "ark-dorana.2",
+"author": "Dorana",
+"preview": "ark-dorana.2.png"
+},
+{
+"name": "Arrghus",
+"file": "arrghus.3",
+"author": "kan",
+"preview": "arrghus.3.png"
+},
+{
+"name": "Astor",
+"file": "astor.1",
+"author": "Herowho",
+"preview": "astor.1.png"
+},
+{
+"name": "Astronaut",
+"file": "astronaut.2",
+"author": "Malmo",
+"preview": "astronaut.2.png"
+},
+{
+"name": "Asuna",
+"file": "asuna.2",
+"author": "Natsuru Kiyohoshi",
+"preview": "asuna.2.png"
+},
+{
+"name": "Axolotl",
+"file": "axolotl.1",
+"author": "The_Nalox & Chika9516"
+},
+{
+"name": "B.S. Boy",
+"file": "bsboy.1",
+"author": "InTheBeef",
+"preview": "bsboy.1.png"
+},
+{
+"name": "B.S. Girl",
+"file": "bsgirl.1",
+"author": "InTheBeef",
+"preview": "bsgirl.1.png"
+},
+{
+"name": "Baba",
+"file": "baba.2",
+"author": "malmo",
+"preview": "baba.2.png"
+},
+{
+"name": "Baby Fro",
+"file": "baby-fro-mocha.1",
+"author": "MochaJones10",
+"preview": "baby-fro-mocha.1.png"
+},
+{
+"name": "Baby Metroid",
+"file": "metroid.1",
+"author": "Jam",
+"preview": "metroid.1.png"
+},
+{
+"name": "Badeline",
+"file": "badeline.1",
+"author": "Jam",
+"preview": "badeline.1.png"
+},
+{
+"name": "Bananas In Pyjamas",
+"file": "bananas-in-pyjamas.1",
+"author": "codemann8",
+"preview": "bananas-in-pyjamas.1.png"
+},
+{
+"name": "Bandit",
+"file": "bandit.1",
+"author": "Fenrika",
+"preview": "bandit.1.png"
+},
+{
+"name": "Batman",
+"file": "batman.1",
+"author": "Ninjakauz",
+"preview": "batman.1.png"
+},
+{
+"name": "Bavarian Link",
+"file": "bavarian-link.1",
+"author": "The_Nalox"
+},
+{
+"name": "Beau",
+"file": "beau.1",
+"author": "Achy",
+"preview": "beau.1.png"
+},
+{
+"name": "Bee",
+"file": "bee.1",
+"author": "TarThoron",
+"preview": "bee.1.png"
+},
+{
+"name": "Bewp",
+"file": "bewp.1",
+"author": "Valechec",
+"preview": "bewp.1.png"
+},
+{
+"name": "Big Key",
+"file": "bigkey.2",
+"author": "kan",
+"preview": "bigkey.2.png"
+},
+{
+"name": "Birb",
+"file": "birb.2",
+"author": "Dr. Deadrewski",
+"preview": "birb.2.png"
+},
+{
+"name": "Birb of Paradise",
+"file": "birb-of-paradise.1",
+"author": "Dr. Deadrewski",
+"preview": "birb-of-paradise.1.png"
+},
+{
+"name": "Birdfruit",
+"file": "birdfruit.1",
+"author": "karafruit",
+"preview": "birdfruit.1.png"
+},
+{
+"name": "Birdo",
+"file": "birdo.1",
+"author": "BlackTycoon",
+"preview": "birdo.1.png"
+},
+{
+"name": "Black Mage",
+"file": "blackmage.1",
+"author": "TheRedMage",
+"preview": "blackmage.1.png"
+},
+{
+"name": "Blacksmith Link",
+"file": "blacksmithlink.1",
+"author": "Glan",
+"preview": "blacksmithlink.1.png"
+},
+{
+"name": "Blazer",
+"file": "blazer.1",
+"author": "Herowho",
+"preview": "blazer.1.png"
+},
+{
+"name": "Blossom",
+"file": "blossom.1",
+"author": "Artheau",
+"preview": "blossom.1.png"
+},
+{
+"name": "Blue",
+"file": "blue.1",
+"author": "WiipartyU",
+"preview": "blue.1.png"
+},
+{
+"name": "Bob",
+"file": "bob.2",
+"author": "kan",
+"preview": "bob.2.png"
+},
+{
+"name": "Bob Ross",
+"file": "bobross.1",
+"author": "CaptainApathy",
+"preview": "bobross.1.png"
+},
+{
+"name": "Boco the Chocobo",
+"file": "boco.2",
+"author": "TarThoron",
+"preview": "boco.2.png"
+},
+{
+"name": "Bomberman",
+"file": "bomberman.1",
+"author": "H.E.L.P.e.R.Mod2"
+},
+{
+"name": "Boo",
+"file": "boo.2",
+"author": "Zarby89",
+"preview": "boo.2.png"
+},
+{
+"name": "Boo 2",
+"file": "boo-two.1",
+"author": "Achy",
+"preview": "boo-two.1.png"
+},
+{
+"name": "Bottle o' Goo",
+"file": "bottle_o_goo.1",
+"author": "Fish_waffle64",
+"preview": "bottle_o_goo.1.png"
+},
+{
+"name": "BotW Link",
+"file": "botw-link.2",
+"author": "Pasta La Vista",
+"preview": "botw-link.2.png"
+},
+{
+"name": "BotW Zelda",
+"file": "botw-zelda.1",
+"author": "Roo",
+"preview": "botw-zelda.1.png"
+},
+{
+"name": "Bowser",
+"file": "bowser.1",
+"author": "Artheau",
+"preview": "bowser.1.png"
+},
+{
+"name": "Bowsette",
+"file": "bowsette.2",
+"author": "Sarah Shinespark",
+"preview": "bowsette.2.png"
+},
+{
+"name": "Bowsette (Red)",
+"file": "bowsette_red.2",
+"author": "Sarah Shinespark",
+"preview": "bowsette_red.2.png"
+},
+{
+"name": "Branch",
+"file": "branch.1",
+"author": "cbass601",
+"preview": "branch.1.png"
+},
+{
+"name": "Brian",
+"file": "brian.1",
+"author": "Herowho",
+"preview": "brian.1.png"
+},
+{
+"name": "Broccoli",
+"file": "broccoli.2",
+"author": "kan",
+"preview": "broccoli.2.png"
+},
+{
+"name": "Bronzor",
+"file": "bronzor.2",
+"author": "kan",
+"preview": "bronzor.2.png"
+},
+{
+"name": "Bubblen",
+"file": "bubblen.1",
+"author": "NO Body the Dragon",
+"preview": "bubblen.1.png"
+},
+{
+"name": "Bubbles",
+"file": "bubbles.1",
+"author": "Artheau",
+"preview": "bubbles.1.png"
+},
+{
+"name": "Bullet Bill",
+"file": "bullet_bill.1",
+"author": "Artheau",
+"preview": "bullet_bill.1.png"
+},
+{
+"name": "Buttercup",
+"file": "buttercup.1",
+"author": "Artheau",
+"preview": "buttercup.1.png"
+},
+{
+"name": "Cactuar",
+"file": "cactuar.1",
+"author": "RyuTech",
+"preview": "cactuar.1.png"
+},
+{
+"name": "Cadence",
+"file": "cadence.1",
+"author": "Fish_waffle64",
+"preview": "cadence.1.png"
+},
+{
+"name": "Captain Novolin",
+"file": "captain-novolin.1",
+"author": "Fragger",
+"preview": "captain-novolin.1.png"
+},
+{
+"name": "Captain Toadette",
+"file": "toadette_captain.1",
+"author": "Devan2002",
+"preview": "toadette_captain.1.png"
+},
+{
+"name": "CarlSagan42",
+"file": "carlsagan42.1",
+"author": "FedoraFriday",
+"preview": "carlsagan42.1.png"
+},
+{
+"name": "Casual Zelda",
+"file": "casual-zelda.1",
+"author": "Fish_waffle64",
+"preview": "casual-zelda.1.png"
+},
+{
+"name": "Cat Boo",
+"file": "catboo.1",
+"author": "JaySee87",
+"preview": "catboo.1.png"
+},
+{
+"name": "Catgirl (Hidari)",
+"file": "catgirl-hidari.1",
+"author": "Hidari",
+"preview": "catgirl-hidari.1.png"
+},
+{
+"name": "CD-i Link",
+"file": "cdilink.1",
+"author": "SnipSlum",
+"preview": "cdilink.1.png"
+},
+{
+"name": "Celes",
+"file": "celes.1",
+"author": "Deagans",
+"preview": "celes.1.png"
+},
+{
+"name": "Centaur Enos",
+"file": "centaur-enos.1",
+"author": "Ziusudra",
+"preview": "centaur-enos.1.png"
+},
+{
+"name": "Charizard",
+"file": "charizard.1",
+"author": "Charmander106",
+"preview": "charizard.1.png"
+},
+{
+"name": "Cheep Cheep",
+"file": "cheepcheep.1",
+"author": "Faw",
+"preview": "cheepcheep.1.png"
+},
+{
+"name": "Chef Pepper",
+"file": "chef-pepper.1",
+"author": "MiraPoix",
+"preview": "chef-pepper.1.png"
+},
+{
+"name": "Chibity",
+"file": "chibity.1",
+"author": "Ecyro",
+"preview": "chibity.1.png"
+},
+{
+"name": "Chrizzz",
+"file": "chrizzz.1",
+"author": "Chrizzz",
+"preview": "chrizzz.1.png"
+},
+{
+"name": "Cinna",
+"file": "cinna.2",
+"author": "norskmatty",
+"preview": "cinna.2.png"
+},
+{
+"name": "Cirno",
+"file": "cirno.1",
+"author": "Achy",
+"preview": "cirno.1.png"
+},
+{
+"name": "Clifford",
+"file": "clifford.2",
+"author": "PlaguedOne",
+"preview": "clifford.2.png"
+},
+{
+"name": "Clippy",
+"file": "clippy.1",
+"author": "PlaguedOne",
+"preview": "clippy.1.png"
+},
+{
+"name": "Cloud",
+"file": "cloud.1",
+"author": "FedoraFriday",
+"preview": "cloud.1.png"
+},
+{
+"name": "Clyde",
+"file": "clyde.1",
+"author": "Artheau",
+"preview": "clyde.1.png"
+},
+{
+"name": "Conker",
+"file": "conker.1",
+"author": "Charmander106/SePH",
+"preview": "conker.1.png"
+},
+{
+"name": "Conker Neo",
+"file": "conker-neo.1",
+"author": "Erock Kerberos Chew",
+"preview": "conker-neo.1.png"
+},
+{
+"name": "Cool 90s Bun",
+"file": "cool-90s-bun.1",
+"author": "Gwenegade",
+"preview": "cool-90s-bun.1.png"
+},
+{
+"name": "Cool 90s Link",
+"file": "cool-90s-link.1",
+"author": "Gwenegade",
+"preview": "cool-90s-link.1.png"
+},
+{
+"name": "Cornelius",
+"file": "cornelius.1",
+"author": "Lori",
+"preview": "cornelius.1.png"
+},
+{
+"name": "Corona",
+"file": "corona.2",
+"author": "Herowho",
+"preview": "corona.2.png"
+},
+{
+"name": "Cousin Knol",
+"file": "cousin-knol.1",
+"author": "Tryford",
+"preview": "cousin-knol.1.png"
+},
+{
+"name": "Crewmate",
+"file": "crewmate.2",
+"author": "Fish_waffle64",
+"preview": "crewmate.2.png"
+},
+{
+"name": "Crono",
+"file": "crono.2",
+"author": "Dr. Deadrewski",
+"preview": "crono.2.png"
+},
+{
+"name": "Cucco",
+"file": "cucco.3",
+"author": "Minnie Trethewey",
+"preview": "cucco.3.png"
+},
+{
+"name": "Cursor",
+"file": "cursor.2",
+"author": "PlaguedOne",
+"preview": "cursor.2.png"
+},
+{
+"name": "D.Owls",
+"file": "d_owls.2",
+"author": "D.Owls",
+"preview": "d_owls.2.png"
+},
+{
+"name": "Dark Boy",
+"file": "darkboy.1",
+"author": "iBazly",
+"preview": "darkboy.1.png"
+},
+{
+"name": "Dark Girl",
+"file": "darkgirl.1",
+"author": "iBazly",
+"preview": "darkgirl.1.png"
+},
+{
+"name": "Dark Link",
+"file": "darklink.1",
+"author": "iBazly",
+"preview": "darklink.1.png"
+},
+{
+"name": "Dark Link (Tunic)",
+"file": "darklink-tunic.1",
+"author": "Damon",
+"preview": "darklink-tunic.1.png"
+},
+{
+"name": "Dark Link (Zelda 2)",
+"file": "dark-link-z2.1",
+"author": "Wild Fang",
+"preview": "dark-link-z2.1.png"
+},
+{
+"name": "Dark Matter",
+"file": "dark-matter.1",
+"author": "Lougaroc",
+"preview": "dark-matter.1.png"
+},
+{
+"name": "Dark Panda",
+"file": "dark-panda.1",
+"author": "MM102",
+"preview": "dark-panda.1.png"
+},
+{
+"name": "Dark Swatchy",
+"file": "darkswatchy.2",
+"author": "Minnie Trethewey",
+"preview": "darkswatchy.2.png"
+},
+{
+"name": "Dark Zelda",
+"file": "darkzelda.1",
+"author": "iBazly",
+"preview": "darkzelda.1.png"
+},
+{
+"name": "Dark Zora",
+"file": "darkzora.2",
+"author": "iBazly",
+"preview": "darkzora.2.png"
+},
+{
+"name": "Deadpool (Mythic)",
+"file": "deadpool-mythic.1",
+"author": "Mythic",
+"preview": "deadpool-mythic.1.png"
+},
+{
+"name": "Deadpool (SirCzah)",
+"file": "deadpool.1",
+"author": "SirCzah",
+"preview": "deadpool.1.png"
+},
+{
+"name": "Deadrock",
+"file": "deadrock.1",
+"author": "Glan",
+"preview": "deadrock.1.png"
+},
+{
+"name": "Decidueye",
+"file": "decidueye.1",
+"author": "Achy",
+"preview": "decidueye.1.png"
+},
+{
+"name": "Dekar",
+"file": "dekar.1",
+"author": "The3X",
+"preview": "dekar.1.png"
+},
+{
+"name": "Dennsen86",
+"file": "dennsen86.1",
+"author": "Bonzaibier",
+"preview": "dennsen86.1.png"
+},
+{
+"name": "Diddy Kong",
+"file": "diddy-kong.1",
+"author": "copybookpizza10",
+"preview": "diddy-kong.1.png"
+},
+{
+"name": "Dig Dug",
+"file": "digdug.1",
+"author": "kan",
+"preview": "digdug.1.png"
+},
+{
+"name": "Dipper",
+"file": "dipper.1",
+"author": "Sharpefern",
+"preview": "dipper.1.png"
+},
+{
+"name": "Discord",
+"file": "discord-mlp.1",
+"author": "JerryEris",
+"preview": "discord-mlp.1.png"
+},
+{
+"name": "Dot_lvl",
+"file": "dot_lvl.1",
+"author": "happytoaster",
+"preview": "dot_lvl.1.png"
+},
+{
+"name": "Dr. Treymond Spyre Spyreson III",
+"file": "treymond.1",
+"author": "Drieky",
+"preview": "treymond.1.png"
+},
+{
+"name": "Dragonair",
+"file": "dragonair.2",
+"author": "Drieky",
+"preview": "dragonair.2.png"
+},
+{
+"name": "Dragonite",
+"file": "dragonite.2",
+"author": "Fish_waffle64",
+"preview": "dragonite.2.png"
+},
+{
+"name": "Drak",
+"file": "drak.1",
+"author": "chpringles"
+},
+{
+"name": "Drake The Dragon",
+"file": "drake.2",
+"author": "NO Body The Dragon",
+"preview": "drake.2.png"
+},
+{
+"name": "Drawcia",
+"file": "drawcia.1",
+"author": "Plouni",
+"preview": "drawcia.1.png"
+},
+{
+"name": "Eevee",
+"file": "eevee.2",
+"author": "Drieky",
+"preview": "eevee.2.png"
+},
+{
+"name": "Eggplant",
+"file": "eggplant.1",
+"author": "PlaguedOne",
+"preview": "eggplant.1.png"
+},
+{
+"name": "Eirika",
+"file": "eirika.1",
+"author": "Lougaroc",
+"preview": "eirika.1.png"
+},
+{
+"name": "Elfilin",
+"file": "elfilin.1",
+"author": "Plouni",
+"preview": "elfilin.1.png"
+},
+{
+"name": "Ema Skye",
+"file": "ema-skye.1",
+"author": "Linlinlin",
+"preview": "ema-skye.1.png"
+},
+{
+"name": "EmoSaru",
+"file": "emosaru.1",
+"author": "Achy",
+"preview": "emosaru.1.png"
+},
+{
+"name": "Espeon",
+"file": "espeon.2",
+"author": "Drieky",
+"preview": "espeon.2.png"
+},
+{
+"name": "Ezlo",
+"file": "ezlo.1",
+"author": "cbass601",
+"preview": "ezlo.1.png"
+},
+{
+"name": "Fi",
+"file": "fi.1",
+"author": "Lougaroc",
+"preview": "fi.1.png"
+},
+{
+"name": "Fierce Deity Link",
+"file": "fierce-deity-link.3",
+"author": "Jeffreygriggs2",
+"preview": "fierce-deity-link.3.png"
+},
+{
+"name": "Figaro Merchant",
+"file": "locke_merchant.1",
+"author": "Artheau",
+"preview": "locke_merchant.1.png"
+},
+{
+"name": "Finn Merten",
+"file": "finn.3",
+"author": "Devan2002",
+"preview": "finn.3.png"
+},
+{
+"name": "Finny Bear",
+"file": "finny_bear.1",
+"author": "skovacs1",
+"preview": "finny_bear.1.png"
+},
+{
+"name": "Flareon",
+"file": "flareon.1",
+"author": "Drieky",
+"preview": "flareon.1.png"
+},
+{
+"name": "Flavor Guy",
+"file": "flavor_guy.1",
+"author": "PlaguedOne",
+"preview": "flavor_guy.1.png"
+},
+{
+"name": "Floodgate Fish",
+"file": "fish_floodgate.1",
+"author": "Delphi1024",
+"preview": "fish_floodgate.1.png"
+},
+{
+"name": "Four Swords Link",
+"file": "fourswordslink.3",
+"author": "Minnie Trethewey",
+"preview": "fourswordslink.3.png"
+},
+{
+"name": "Fox Link",
+"file": "foxlink.1",
+"author": "InTheBeef",
+"preview": "foxlink.1.png"
+},
+{
+"name": "Fransen",
+"file": "fransen.1",
+"author": "Distelschweif",
+"preview": "fransen.1.png"
+},
+{
+"name": "Freya Crescent",
+"file": "freya.1",
+"author": "Demoncraze",
+"preview": "freya.1.png"
+},
+{
+"name": "Frisk",
+"file": "frisk.2",
+"author": "TobyFox/MisterKerr",
+"preview": "frisk.2.png"
+},
+{
+"name": "Frog Link",
+"file": "froglink.4",
+"author": "Minnie Trethewey",
+"preview": "froglink.4.png"
+},
+{
+"name": "Fujin",
+"file": "fujin.2",
+"author": "FujinAkari",
+"preview": "fujin.2.png"
+},
+{
+"name": "Future Trunks",
+"file": "future_trunks.1",
+"author": "Merciter",
+"preview": "future_trunks.1.png"
+},
+{
+"name": "Gamer",
+"file": "gamer.2",
+"author": "InTheBeef",
+"preview": "gamer.2.png"
+},
+{
+"name": "GaMetal",
+"file": "gametal.1",
+"author": "TheRedMage and Mirby"
+},
+{
+"name": "Ganondorf",
+"file": "ganondorf.2",
+"author": "Fish_waffle64",
+"preview": "ganondorf.2.png"
+},
+{
+"name": "Garfield",
+"file": "garfield.2",
+"author": "Fwiller",
+"preview": "garfield.2.png"
+},
+{
+"name": "Garnet",
+"file": "garnet.1",
+"author": "Artheau",
+"preview": "garnet.1.png"
+},
+{
+"name": "Garo Master",
+"file": "garomaster.1",
+"author": "Herowho",
+"preview": "garomaster.1.png"
+},
+{
+"name": "GBC Link",
+"file": "gbc-link.1",
+"author": "skovacs1",
+"preview": "gbc-link.1.png"
+},
+{
+"name": "Geno",
+"file": "geno.2",
+"author": "FedoraFriday",
+"preview": "geno.2.png"
+},
+{
+"name": "Gina Lestrade",
+"file": "gina_lestrade.1",
+"author": "PikminWarrior",
+"preview": "gina_lestrade.1.png"
+},
+{
+"name": "GliitchWiitch",
+"file": "gliitchwiitch.1",
+"author": "Ivy-IV",
+"preview": "gliitchwiitch.1.png"
+},
+{
+"name": "Glove Color Link",
+"file": "glove-color-link.1",
+"author": "Wild Fang",
+"preview": "glove-color-link.1.png"
+},
+{
+"name": "Go Mode",
+"file": "go-mode.1",
+"author": "Zero Meaning",
+"preview": "go-mode.1.png"
+},
+{
+"name": "Gobli",
+"file": "gobli.1",
+"author": "Lantis",
+"preview": "gobli.1.png"
+},
+{
+"name": "Goemon",
+"file": "goemon.1",
+"author": "norskmatty",
+"preview": "goemon.1.png"
+},
+{
+"name": "Gooey",
+"file": "gooey.2",
+"author": "Lougaroc",
+"preview": "gooey.2.png"
+},
+{
+"name": "Goomba",
+"file": "goomba.1",
+"author": "SirCzah",
+"preview": "goomba.1.png"
+},
+{
+"name": "Goose",
+"file": "goose.1",
+"author": "Jam",
+"preview": "goose.1.png"
+},
+{
+"name": "Graalian Noob",
+"file": "graalian-noob.1",
+"author": "EGamer2",
+"preview": "graalian-noob.1.png"
+},
+{
+"name": "GrandPOOBear",
+"file": "grandpoobear.2",
+"author": "proximitysound",
+"preview": "grandpoobear.2.png"
+},
+{
+"name": "Gretis",
+"file": "gretis.1",
+"author": "SnakeGrunger",
+"preview": "gretis.1.png"
+},
+{
+"name": "Growlithe",
+"file": "growlithe.2",
+"author": "Drieky",
+"preview": "growlithe.2.png"
+},
+{
+"name": "Gruncle Stan",
+"file": "grunclestan.1",
+"author": "SirCzah",
+"preview": "grunclestan.1.png"
+},
+{
+"name": "Guandar",
+"file": "guandar.1",
+"author": "MoeChicken"
+},
+{
+"name": "Guiz",
+"file": "guiz.2",
+"author": "GuizDP",
+"preview": "guiz.2.png"
+},
+{
+"name": "Hainz the Blahaj",
+"file": "hainz_the_blahaj.1",
+"author": "Nekoni_Hoozuki",
+"preview": "hainz_the_blahaj.1.png"
+},
+{
+"name": "Hamtaro",
+"file": "hamtaro.1",
+"author": "NO Body the Dragon",
+"preview": "hamtaro.1.png"
+},
+{
+"name": "Hanna",
+"file": "hanna.2",
+"author": "Maya-Neko",
+"preview": "hanna.2.png"
+},
+{
+"name": "Hardhat Beetle",
+"file": "hardhat_beetle.1",
+"author": "Artheau",
+"preview": "hardhat_beetle.1.png"
+},
+{
+"name": "Hat Color Link",
+"file": "linkhatcolor.1",
+"author": "Damon",
+"preview": "linkhatcolor.1.png"
+},
+{
+"name": "Hat Kid",
+"file": "hat-kid.1",
+"author": "skovacs1",
+"preview": "hat-kid.1.png"
+},
+{
+"name": "Head Link",
+"file": "head-link.1",
+"author": "TarThoron",
+"preview": "head-link.1.png"
+},
+{
+"name": "Headless Link",
+"file": "headlesslink.2",
+"author": "kan",
+"preview": "headlesslink.2.png"
+},
+{
+"name": "Heem",
+"file": "heem.1",
+"author": "Xonmean",
+"preview": "heem.1.png"
+},
+{
+"name": "Hello Kitty",
+"file": "hello_kitty.1",
+"author": "qeeen",
+"preview": "hello_kitty.1.png"
+},
+{
+"name": "Hero of Awakening",
+"file": "hero-of-awakening.2",
+"author": "Vonyee",
+"preview": "hero-of-awakening.2.png"
+},
+{
+"name": "Hero of Hyrule",
+"file": "hero-of-hyrule.2",
+"author": "Vonyee",
+"preview": "hero-of-hyrule.2.png"
+},
+{
+"name": "Hint Tile",
+"file": "hint_tile.1",
+"author": "PlaguedOne",
+"preview": "hint_tile.1.png"
+},
+{
+"name": "Hoarder (Bush)",
+"file": "hoarder-bush.1",
+"author": "Restomak",
+"preview": "hoarder-bush.1.png"
+},
+{
+"name": "Hoarder (Pot)",
+"file": "hoarder-pot.1",
+"author": "Restomak",
+"preview": "hoarder-pot.1.png"
+},
+{
+"name": "Hoarder (Rock)",
+"file": "hoarder-rock.1",
+"author": "Restomak",
+"preview": "hoarder-rock.1.png"
+},
+{
+"name": "Hollow Knight",
+"file": "hollow-knight.2",
+"author": "Chew_Terr",
+"preview": "hollow-knight.2.png"
+},
+{
+"name": "Hollow Knight (Malmo/Winter)",
+"file": "hollow-knight-winter.1",
+"author": "Malmo and Atth3h3art0fwinter",
+"preview": "hollow-knight-winter.1.png"
+},
+{
+"name": "Homer Simpson",
+"file": "homer.1",
+"author": "Fwiller",
+"preview": "homer.1.png"
+},
+{
+"name": "Hornet",
+"file": "hornet.2",
+"author": "Spiffy",
+"preview": "hornet.2.png"
+},
+{
+"name": "Horseman",
+"file": "horse.1",
+"author": "FedoraFriday",
+"preview": "horse.1.png"
+},
+{
+"name": "Hotdog",
+"file": "hotdog.1",
+"author": "Xag & Tylo",
+"preview": "hotdog.1.png"
+},
+{
+"name": "Hyrule Knight",
+"file": "hyruleknight.1",
+"author": "InTheBeef",
+"preview": "hyruleknight.1.png"
+},
+{
+"name": "Hyrule Soldier",
+"file": "soldiersprite.1",
+"author": "InTheBeef",
+"preview": "soldiersprite.1.png"
+},
+{
+"name": "iBazly",
+"file": "ibazly.1",
+"author": "Achy",
+"preview": "ibazly.1.png"
+},
+{
+"name": "Ignignokt",
+"file": "ignignokt.3",
+"author": "kan",
+"preview": "ignignokt.3.png"
+},
+{
+"name": "Imani",
+"file": "imani.1",
+"author": "Bean"
+},
+{
+"name": "Informant Woman",
+"file": "informant_woman.1",
+"author": "Herowho",
+"preview": "informant_woman.1.png"
+},
+{
+"name": "Inkling",
+"file": "inkling.1",
+"author": "RyuTech",
+"preview": "inkling.1.png"
+},
+{
+"name": "Invisible Link",
+"file": "invisibleman.2",
+"author": "Minnie Trethewey",
+"preview": "invisibleman.2.png"
+},
+{
+"name": "Isabelle",
+"file": "isabelle.1",
+"author": "pholyn"
+},
+{
+"name": "Jack Frost",
+"file": "jack-frost.1",
+"author": "xypotion",
+"preview": "jack-frost.1.png"
+},
+{
+"name": "Jason Frudnick",
+"file": "jason_frudnick.1",
+"author": "Artheau",
+"preview": "jason_frudnick.1.png"
+},
+{
+"name": "Jasp",
+"file": "jasp.1",
+"author": "Chonixtu",
+"preview": "jasp.1.png"
+},
+{
+"name": "Jogurt",
+"file": "jogurt.1",
+"author": "Nakuri",
+"preview": "jogurt.1.png"
+},
+{
+"name": "Jolteon",
+"file": "jolteon.1",
+"author": "Drieky",
+"preview": "jolteon.1.png"
+},
+{
+"name": "JoshTriangles",
+"file": "josh-triangles.1",
+"author": "RaylaRabbit",
+"preview": "josh-triangles.1.png"
+},
+{
+"name": "Juste Belmont",
+"file": "juste-belmont.1",
+"author": "Nolouls",
+"preview": "juste-belmont.1.png"
+},
+{
+"name": "Juzcook",
+"file": "juz.1",
+"author": "FedoraFriday",
+"preview": "juz.1.png"
+},
+{
+"name": "Kaguya",
+"file": "kaguya.1",
+"author": "Linlinlin",
+"preview": "kaguya.1.png"
+},
+{
+"name": "Kain",
+"file": "kain.2",
+"author": "Chew Terr",
+"preview": "kain.2.png"
+},
+{
+"name": "Kakyoin",
+"file": "kakyoin.1",
+"author": "blanketc (pearl)",
+"preview": "kakyoin.1.png"
+},
+{
+"name": "Katsura",
+"file": "katsura.2",
+"author": "atth3h3art0fwinter",
+"preview": "katsura.2.png"
+},
+{
+"name": "Kecleon",
+"file": "kecleon.1",
+"author": "Gylergin",
+"preview": "kecleon.1.png"
+},
+{
+"name": "Kefka",
+"file": "kefka.2",
+"author": "Chew Terr",
+"preview": "kefka.2.png"
+},
+{
+"name": "Kenny McCormick",
+"file": "kenny_mccormick.1",
+"author": "Artheau",
+"preview": "kenny_mccormick.1.png"
+},
+{
+"name": "Ketchup",
+"file": "ketchup.1",
+"author": "t0uchan",
+"preview": "ketchup.1.png"
+},
+{
+"name": "Kholdstare",
+"file": "kholdstare.2",
+"author": "kan",
+"preview": "kholdstare.2.png"
+},
+{
+"name": "King Gothalion",
+"file": "king_gothalion.1",
+"author": "kickpixel",
+"preview": "king_gothalion.1.png"
+},
+{
+"name": "King Graham",
+"file": "king_graham.2",
+"author": "MisterKerr",
+"preview": "king_graham.2.png"
+},
+{
+"name": "Kinu",
+"file": "kinu.1",
+"author": "UberNooga",
+"preview": "kinu.1.png"
+},
+{
+"name": "Kira",
+"file": "kira.1",
+"author": "Maya Neko Comics",
+"preview": "kira.1.png"
+},
+{
+"name": "Kirby",
+"file": "kirby-meta.1",
+"author": "KHRoxas",
+"preview": "kirby-meta.1.png"
+},
+{
+"name": "Kirby (Dreamland 3)",
+"file": "kirby-d3.2",
+"author": "Plouni",
+"preview": "kirby-d3.2.png"
+},
+{
+"name": "Kite",
+"file": "kite.2",
+"author": "scoutjd"
+},
+{
+"name": "Koda",
+"file": "koda.1",
+"author": "Koda",
+"preview": "koda.1.png"
+},
+{
+"name": "Koopa",
+"file": "koopa.1",
+"author": "Tryford"
+},
+{
+"name": "Koragi",
+"file": "koragi.1",
+"author": "Antroyst",
+"preview": "koragi.1.png"
+},
+{
+"name": "Kore8",
+"file": "kore8.1",
+"author": "Skewer",
+"preview": "kore8.1.png"
+},
+{
+"name": "Korok",
+"file": "korok.1",
+"author": "atth3h3art0fwinter",
+"preview": "korok.1.png"
+},
+{
+"name": "Kris",
+"file": "kris.1",
+"author": "nani6400",
+"preview": "kris.1.png"
+},
+{
+"name": "Krissy",
+"file": "krissy.1",
+"author": "_aitchFactor",
+"preview": "krissy.1.png"
+},
+{
+"name": "Kriv",
+"file": "kriv.1",
+"author": "UltChimi",
+"preview": "kriv.1.png"
+},
+{
+"name": "Kromb",
+"file": "kromb.1",
+"author": "Nekoni_Hoozuki",
+"preview": "kromb.1.png"
+},
+{
+"name": "Lakitu",
+"file": "lakitu.1",
+"author": "SirCzah",
+"preview": "lakitu.1.png"
+},
+{
+"name": "Lanux",
+"file": "lanux.1",
+"author": "Nekoni_Hoozuki"
+},
+{
+"name": "Lapras",
+"file": "lapras.1",
+"author": "Fish_waffle64",
+"preview": "lapras.1.png"
+},
+{
+"name": "Latias",
+"file": "latias.1",
+"author": "WiipartyU",
+"preview": "latias.1.png"
+},
+{
+"name": "Latios",
+"file": "latios.1",
+"author": "WiipartyU",
+"preview": "latios.1.png"
+},
+{
+"name": "Leafeon",
+"file": "leafeon.1",
+"author": "Drieky",
+"preview": "leafeon.1.png"
+},
+{
+"name": "League Mascot",
+"file": "league-mascot.1",
+"author": "ptrain24",
+"preview": "league-mascot.1.png"
+},
+{
+"name": "Leongar",
+"file": "leongar.1",
+"author": "Lougaroc",
+"preview": "leongar.1.png"
+},
+{
+"name": "Lest",
+"file": "lest.1",
+"author": "PrideToRuleEarth",
+"preview": "lest.1.png"
+},
+{
+"name": "Lestat",
+"file": "lestat.1",
+"author": "Ziusudra",
+"preview": "lestat.1.png"
+},
+{
+"name": "Lily",
+"file": "lily.1",
+"author": "ScatlinkSean",
+"preview": "lily.1.png"
+},
+{
+"name": "Linja",
+"file": "linja.1",
+"author": "Razhagal",
+"preview": "linja.1.png"
+},
+{
+"name": "Link",
+"file": "001.link.1",
+"author": "Nintendo",
+"preview": "001.link.1.png"
+},
+{
+"name": "Link (Zelda 1)",
+"file": "link-z1.1",
+"author": "Starry Melody",
+"preview": "link-z1.1.png"
+},
+{
+"name": "Link Redrawn",
+"file": "link-redrawn.4",
+"author": "Spiffy",
+"preview": "link-redrawn.4.png"
+},
+{
+"name": "Little Hylian",
+"file": "little-hylian.1",
+"author": "MM102",
+"preview": "little-hylian.1.png"
+},
+{
+"name": "Locke",
+"file": "locke.1",
+"author": "Rose",
+"preview": "locke.1.png"
+},
+{
+"name": "Lord Hoell",
+"file": "lord-hoell.1",
+"author": "Ochahime"
+},
+{
+"name": "Love Shak",
+"file": "shaktool-love.1",
+"author": "Fragger",
+"preview": "shaktool-love.1.png"
+},
+{
+"name": "Lucario",
+"file": "lucario.1",
+"author": "Achy",
+"preview": "lucario.1.png"
+},
+{
+"name": "Lucas",
+"file": "lucas.1",
+"author": "Plouni",
+"preview": "lucas.1.png"
+},
+{
+"name": "LuckwurstJoe",
+"file": "luckwurst-joe.1",
+"author": "LuckwurstJoe/Nekoni_Hoozuki",
+"preview": "luckwurst-joe.1.png"
+},
+{
+"name": "Luffy",
+"file": "luffy.2",
+"author": "BOtheMighty",
+"preview": "luffy.2.png"
+},
+{
+"name": "Lugia",
+"file": "lugia.1",
+"author": "Charmander106"
+},
+{
+"name": "Luigi",
+"file": "luigi.1",
+"author": "Achy",
+"preview": "luigi.1.png"
+},
+{
+"name": "Lumberjack",
+"file": "lumberjack.1",
+"author": "norskmatty",
+"preview": "lumberjack.1.png"
+},
+{
+"name": "Luna Maindo",
+"file": "luna-maindo.1",
+"author": "IkkyLights",
+"preview": "luna-maindo.1.png"
+},
+{
+"name": "Lycanroc",
+"file": "lycanroc.1",
+"author": "Lougaroc",
+"preview": "lycanroc.1.png"
+},
+{
+"name": "Lynea",
+"file": "lynea.1",
+"author": "Artimus83/Nekoni_Hoozuki",
+"preview": "lynea.1.png"
+},
+{
+"name": "Lynel (BotW)",
+"file": "lynel-botw.1",
+"author": "Lougaroc",
+"preview": "lynel-botw.1.png"
+},
+{
+"name": "Mad_Tears",
+"file": "mad_tears.1",
+"author": "littlefatpanda",
+"preview": "mad_tears.1.png"
+},
+{
+"name": "Madeline",
+"file": "madeline.1",
+"author": "Jam",
+"preview": "madeline.1.png"
+},
+{
+"name": "Magus",
+"file": "magus.1",
+"author": "PlaguedOne",
+"preview": "magus.1.png"
+},
+{
+"name": "Maiden",
+"file": "maiden.1",
+"author": "Plan",
+"preview": "maiden.1.png"
+},
+{
+"name": "Majora's Mask",
+"file": "majora.1",
+"author": "Dawn",
+"preview": "majora.1.png"
+},
+{
+"name": "Mallow (Cat)",
+"file": "mallow-cat.1",
+"author": "FedoraFriday",
+"preview": "mallow-cat.1.png"
+},
+{
+"name": "Manga Link",
+"file": "mangalink.3",
+"author": "kan",
+"preview": "mangalink.3.png"
+},
+{
+"name": "Maple Queen",
+"file": "maplequeen.2",
+"author": "Zarby89",
+"preview": "maplequeen.2.png"
+},
+{
+"name": "Marin",
+"file": "marin.2",
+"author": "Nocturnesthesia",
+"preview": "marin.2.png"
+},
+{
+"name": "Mario (Classic)",
+"file": "mario-classic.2",
+"author": "Damon",
+"preview": "mario-classic.2.png"
+},
+{
+"name": "Mario and Cappy",
+"file": "mariocappy.1",
+"author": "Damon",
+"preview": "mariocappy.1.png"
+},
+{
+"name": "Marisa Kirisame",
+"file": "marisa.1",
+"author": "Achy",
+"preview": "marisa.1.png"
+},
+{
+"name": "Marvin the Cat",
+"file": "cat.3",
+"author": "Fish_waffle64",
+"preview": "cat.3.png"
+},
+{
+"name": "Matthias",
+"file": "matthias.1",
+"author": "Marcus Bolduc",
+"preview": "matthias.1.png"
+},
+{
+"name": "Meatwad",
+"file": "meatwad.2",
+"author": "kan",
+"preview": "meatwad.2.png"
+},
+{
+"name": "Medallions",
+"file": "medallions.2",
+"author": "Minnie Trethewey",
+"preview": "medallions.2.png"
+},
+{
+"name": "Medli",
+"file": "medli.1",
+"author": "Kzinssie",
+"preview": "medli.1.png"
+},
+{
+"name": "Mega Man (Classic)",
+"file": "megaman.1",
+"author": "CrebleStar",
+"preview": "megaman.1.png"
+},
+{
+"name": "Megaman X",
+"file": "megaman-x.2",
+"author": "PlaguedOne",
+"preview": "megaman-x.2.png"
+},
+{
+"name": "Megaman X2",
+"file": "megaman-x2.1",
+"author": "PlaguedOne",
+"preview": "megaman-x2.1.png"
+},
+{
+"name": "Meta Knight",
+"file": "metaknight.1",
+"author": "Plouni",
+"preview": "metaknight.1.png"
+},
+{
+"name": "Meteion",
+"file": "meteion.1",
+"author": "MintToBe",
+"preview": "meteion.1.png"
+},
+{
+"name": "MewLp",
+"file": "mew.1",
+"author": "MewLp",
+"preview": "mew.1.png"
+},
+{
+"name": "Mike Jones",
+"file": "mike-jones.2",
+"author": "Fish_waffle64",
+"preview": "mike-jones.2.png"
+},
+{
+"name": "Milly",
+"file": "milly.1",
+"author": "Acmlm",
+"preview": "milly.1.png"
+},
+{
+"name": "Mimic",
+"file": "mimic.1",
+"author": "Chew Terr",
+"preview": "mimic.1.png"
+},
+{
+"name": "Mimikyu",
+"file": "mimikyu.1",
+"author": "Plouni",
+"preview": "mimikyu.1.png"
+},
+{
+"name": "Mini Ganon",
+"file": "ganon.2",
+"author": "atth3h3art0fwinter",
+"preview": "ganon.2.png"
+},
+{
+"name": "Minish Cap Link",
+"file": "minishcaplink.3",
+"author": "InTheBeef",
+"preview": "minishcaplink.3.png"
+},
+{
+"name": "Minish Link",
+"file": "minish_link.1",
+"author": "Artheau",
+"preview": "minish_link.1.png"
+},
+{
+"name": "Mipha",
+"file": "mipha.2",
+"author": "RippedSnorlax",
+"preview": "mipha.2.png"
+},
+{
+"name": "missingno",
+"file": "missingno.2",
+"author": "AAhbxsujd",
+"preview": "missingno.2.png"
+},
+{
+"name": "Moblin",
+"file": "moblin.2",
+"author": "Noctai_",
+"preview": "moblin.2.png"
+},
+{
+"name": "Modern Link",
+"file": "modernlink.1",
+"author": "RyuTech",
+"preview": "modernlink.1.png"
+},
+{
+"name": "MoeChicken",
+"file": "moechicken.1",
+"author": "MoeChicken",
+"preview": "moechicken.1.png"
+},
+{
+"name": "Momiji Inubashiri",
+"file": "momiji.1",
+"author": "Ardaceus",
+"preview": "momiji.1.png"
+},
+{
+"name": "Moosh",
+"file": "moosh.1",
+"author": "PlaguedOne",
+"preview": "moosh.1.png"
+},
+{
+"name": "Mouse",
+"file": "mouse.1",
+"author": "Malthaez",
+"preview": "mouse.1.png"
+},
+{
+"name": "Ms. Paint Dog",
+"file": "ms-paintdog.2",
+"author": "TehRealSalt",
+"preview": "ms-paintdog.2.png"
+},
+{
+"name": "Nature Link",
+"file": "naturelink.1",
+"author": "iBazly",
+"preview": "naturelink.1.png"
+},
+{
+"name": "Navi",
+"file": "navi.1",
+"author": "qwertymodo",
+"preview": "navi.1.png"
+},
+{
+"name": "Navirou",
+"file": "navirou.3",
+"author": "Lori",
+"preview": "navirou.3.png"
+},
+{
+"name": "Nayada",
+"file": "nayada.1",
+"author": "Plouni",
+"preview": "nayada.1.png"
+},
+{
+"name": "Necrosky90",
+"file": "necrosky90.1",
+"author": "Necrosky90",
+"preview": "necrosky90.1.png"
+},
+{
+"name": "Ned Flanders",
+"file": "ned-flanders.1",
+"author": "JJ0033LL",
+"preview": "ned-flanders.1.png"
+},
+{
+"name": "Negative Link",
+"file": "negativelink.1",
+"author": "iBazly",
+"preview": "negativelink.1.png"
+},
+{
+"name": "Nekoni Hoozuki",
+"file": "nekoni_hoozuki.1",
+"author": "Nekoni_Hoozuki",
+"preview": "nekoni_hoozuki.1.png"
+},
+{
+"name": "Neosad",
+"file": "neosad.2",
+"author": "Dr. Deadrewski",
+"preview": "neosad.2.png"
+},
+{
+"name": "Nepgear",
+"file": "nepgear.1",
+"author": "HoxNorf",
+"preview": "nepgear.1.png"
+},
+{
+"name": "Neptune",
+"file": "neptune.1",
+"author": "HoxNorf",
+"preview": "neptune.1.png"
+},
+{
+"name": "NES Link",
+"file": "neslink.3",
+"author": "Minnie Trethewey/kan",
+"preview": "neslink.3.png"
+},
+{
+"name": "Ness",
+"file": "ness.2",
+"author": "Lantis",
+"preview": "ness.2.png"
+},
+{
+"name": "Nia",
+"file": "nia.1",
+"author": "Mojonbo",
+"preview": "nia.1.png"
+},
+{
+"name": "Niddraig",
+"file": "niddraig.2",
+"author": "Jakebob",
+"preview": "niddraig.2.png"
+},
+{
+"name": "Niko",
+"file": "niko.1",
+"author": "ScatlinkSean",
+"preview": "niko.1.png"
+},
+{
+"name": "Ninten",
+"file": "ninten.1",
+"author": "Plouni",
+"preview": "ninten.1.png"
+},
+{
+"name": "Octorok",
+"file": "octorok.1",
+"author": "Fire-Luigi",
+"preview": "octorok.1.png"
+},
+{
+"name": "Old Man",
+"file": "oldman.2",
+"author": "Zarby89",
+"preview": "oldman.2.png"
+},
+{
+"name": "Olde Man",
+"file": "olde-man.1",
+"author": "Justin",
+"preview": "olde-man.1.png"
+},
+{
+"name": "Ori",
+"file": "ori.2",
+"author": "Phant",
+"preview": "ori.2.png"
+},
+{
+"name": "Outline Link",
+"file": "outlinelink.1",
+"author": "VT",
+"preview": "outlinelink.1.png"
+},
+{
+"name": "Paper Mario",
+"file": "paper-mario.1",
+"author": "Fire-Luigi",
+"preview": "paper-mario.1.png"
+},
+{
+"name": "Parallel Worlds Link",
+"file": "parallelworldslink.1",
+"author": "SePH/InTheBeef",
+"preview": "parallelworldslink.1.png"
+},
+{
+"name": "Patia",
+"file": "patia.1",
+"author": "AaronDobbe",
+"preview": "patia.1.png"
+},
+{
+"name": "Paul the Woodsman",
+"file": "paul-s-woodman.1",
+"author": "Tryford",
+"preview": "paul-s-woodman.1.png"
+},
+{
+"name": "Paula",
+"file": "paula.1",
+"author": "Fish_waffle64",
+"preview": "paula.1.png"
+},
+{
+"name": "Penguin Link",
+"file": "penguinlink.2",
+"author": "Fish_waffle64",
+"preview": "penguinlink.2.png"
+},
+{
+"name": "Pete",
+"file": "pete.2",
+"author": "Lantis",
+"preview": "pete.2.png"
+},
+{
+"name": "Phoenix Wright",
+"file": "phoenix-wright.1",
+"author": "SnipSlum",
+"preview": "phoenix-wright.1.png"
+},
+{
+"name": "Pikachu",
+"file": "pikachu.2",
+"author": "t0uchan",
+"preview": "pikachu.2.png"
+},
+{
+"name": "Pink Ribbon Link",
+"file": "pinkribbonlink.3",
+"author": "kan",
+"preview": "pinkribbonlink.3.png"
+},
+{
+"name": "Piranha Plant",
+"file": "piranha_plant.1",
+"author": "lecremateur",
+"preview": "piranha_plant.1.png"
+},
+{
+"name": "Plague Knight",
+"file": "plagueknight.2",
+"author": "Gwenegade",
+"preview": "plagueknight.2.png"
+},
+{
+"name": "Plouni",
+"file": "plouni.1",
+"author": "Plouni",
+"preview": "plouni.1.png"
+},
+{
+"name": "PoC Link",
+"file": "poc-link.1",
+"author": "Nolouls",
+"preview": "poc-link.1.png"
+},
+{
+"name": "Pokey",
+"file": "pokey.3",
+"author": "kan",
+"preview": "pokey.3.png"
+},
+{
+"name": "Pony",
+"file": "littlepony.1",
+"author": "Botchos",
+"preview": "littlepony.1.png"
+},
+{
+"name": "Popoi",
+"file": "popoi.1",
+"author": "ItsSupercar",
+"preview": "popoi.1.png"
+},
+{
+"name": "Poppy",
+"file": "poppy.1",
+"author": "cbass601",
+"preview": "poppy.1.png"
+},
+{
+"name": "Porg Knight",
+"file": "porg_knight.1",
+"author": "PorgCollector",
+"preview": "porg_knight.1.png"
+},
+{
+"name": "Power Pigg",
+"file": "power-pigg.1",
+"author": "looking4giants"
+},
+{
+"name": "Power Ranger",
+"file": "power-ranger.1",
+"author": "Zeta Xero",
+"preview": "power-ranger.1.png"
+},
+{
+"name": "Power Up with Pride Mushroom",
+"file": "mushy.1",
+"author": "Achy",
+"preview": "mushy.1.png"
+},
+{
+"name": "Powerpuff Girl",
+"file": "powerpuff_girl.2",
+"author": "Gwenegade",
+"preview": "powerpuff_girl.2.png"
+},
+{
+"name": "Pride Link",
+"file": "pridelink.2",
+"author": "proximitysound",
+"preview": "pridelink.2.png"
+},
+{
+"name": "Primm",
+"file": "primm.1",
+"author": "Artheau",
+"preview": "primm.1.png"
+},
+{
+"name": "Princess Bubblegum",
+"file": "princess_bubblegum.1",
+"author": "Devan2002",
+"preview": "princess_bubblegum.1.png"
+},
+{
+"name": "Princess Peach",
+"file": "peach.1",
+"author": "RoPan",
+"preview": "peach.1.png"
+},
+{
+"name": "Prof. Renderer Grizzleton",
+"file": "prof-renderer-grizzleton.2",
+"author": "Professor Renderer",
+"preview": "prof-renderer-grizzleton.2.png"
+},
+{
+"name": "Protogen",
+"file": "protogen.1",
+"author": "Purple Peak",
+"preview": "protogen.1.png"
+},
+{
+"name": "Psyduck",
+"file": "psyduck.2",
+"author": "skovacs1",
+"preview": "psyduck.2.png"
+},
+{
+"name": "Purple Chest",
+"file": "purplechest-bottle.2",
+"author": "Minnie Trethewey",
+"preview": "purplechest-bottle.2.png"
+},
+{
+"name": "Pyro",
+"file": "pyro.1",
+"author": "malmo",
+"preview": "pyro.1.png"
+},
+{
+"name": "QuadBanger",
+"file": "quadbanger.1",
+"author": "Kai Gomez",
+"preview": "quadbanger.1.png"
+},
+{
+"name": "Rainbow Link",
+"file": "rainbowlink.2",
+"author": "kan",
+"preview": "rainbowlink.2.png"
+},
+{
+"name": "Randi",
+"file": "randi.1",
+"author": "RoodyOh",
+"preview": "randi.1.png"
+},
+{
+"name": "Rash",
+"file": "rash.1",
+"author": "Fragger",
+"preview": "rash.1.png"
+},
+{
+"name": "Rat",
+"file": "rat.2",
+"author": "atth3h3art0fwinter",
+"preview": "rat.2.png"
+},
+{
+"name": "Red",
+"file": "red.1",
+"author": "WiipartyU",
+"preview": "red.1.png"
+},
+{
+"name": "Red Mage",
+"file": "red-mage.1",
+"author": "TheRedMage",
+"preview": "red-mage.1.png"
+},
+{
+"name": "Reimu Hakurei (HoxNorf)",
+"file": "reimu-hoxnorf.2",
+"author": "HoxNorf",
+"preview": "reimu-hoxnorf.2.png"
+},
+{
+"name": "Reimu Hakurei (RickyofKokiri)",
+"file": "reimu-rickyofkokiri.1",
+"author": "RickyofKokiri",
+"preview": "reimu-rickyofkokiri.1.png"
+},
+{
+"name": "Remeer",
+"file": "remeer.1",
+"author": "Herowho",
+"preview": "remeer.1.png"
+},
+{
+"name": "Remus R Black",
+"file": "remus-ruldufus-black.1",
+"author": "The3rdX",
+"preview": "remus-ruldufus-black.1.png"
+},
+{
+"name": "Renoko",
+"file": "renoko.1",
+"author": "CreatureUnknown"
+},
+{
+"name": "Reverse Mail Order",
+"file": "reverse-mails.1",
+"author": "Wild Fang",
+"preview": "reverse-mails.1.png"
+},
+{
+"name": "Rick",
+"file": "rick.2",
+"author": "Eric the Terrible/Devan 2002",
+"preview": "rick.2.png"
+},
+{
+"name": "Robo-Link 9000",
+"file": "robotlink.2",
+"author": "kan",
+"preview": "robotlink.2.png"
+},
+{
+"name": "Rocko",
+"file": "rocko.2",
+"author": "t0uchan",
+"preview": "rocko.2.png"
+},
+{
+"name": "Rocky",
+"file": "rocky.1",
+"author": "Charmander106"
+},
+{
+"name": "Roronoa Zoro",
+"file": "roronoa-zoro.1",
+"author": "Drieky",
+"preview": "roronoa-zoro.1.png"
+},
+{
+"name": "Rottytops",
+"file": "rottytops.2",
+"author": "PlaguedOne",
+"preview": "rottytops.2.png"
+},
+{
+"name": "Rover",
+"file": "rover.1",
+"author": "NO Body the Dragon",
+"preview": "rover.1.png"
+},
+{
+"name": "Roy Koopa",
+"file": "roykoopa.1",
+"author": "Achy",
+"preview": "roykoopa.1.png"
+},
+{
+"name": "Rozalyndis",
+"file": "rozalyndis.1",
+"author": "Unfathomarble",
+"preview": "rozalyndis.1.png"
+},
+{
+"name": "Rumia",
+"file": "rumia.1",
+"author": "Achy",
+"preview": "rumia.1.png"
+},
+{
+"name": "Rydia",
+"file": "rydia.1",
+"author": "Sho",
+"preview": "rydia.1.png"
+},
+{
+"name": "Ryu",
+"file": "ryu.2",
+"author": "PlaguedOne",
+"preview": "ryu.2.png"
+},
+{
+"name": "Sailor Jupiter",
+"file": "sailor-jupiter.1",
+"author": "Sharpefern",
+"preview": "sailor-jupiter.1.png"
+},
+{
+"name": "Sailor Mars",
+"file": "sailor-mars.1",
+"author": "Sharpefern",
+"preview": "sailor-mars.1.png"
+},
+{
+"name": "Sailor Mercury",
+"file": "sailor-mercury.1",
+"author": "Sharpefern",
+"preview": "sailor-mercury.1.png"
+},
+{
+"name": "Sailor Moon",
+"file": "sailormoon.2",
+"author": "Gwenegade",
+"preview": "sailormoon.2.png"
+},
+{
+"name": "Sailor Saturn",
+"file": "sailor-saturn.1",
+"author": "Gwenegade",
+"preview": "sailor-saturn.1.png"
+},
+{
+"name": "Sailor Venus",
+"file": "sailor-venus.1",
+"author": "Sharpefern",
+"preview": "sailor-venus.1.png"
+},
+{
+"name": "Saitama",
+"file": "saitama.2",
+"author": "Dabeanjelly/Ath3h3art0fwinter",
+"preview": "saitama.2.png"
+},
+{
+"name": "Salty Squiddy",
+"file": "squiddy.1",
+"author": "Siletrea",
+"preview": "squiddy.1.png"
+},
+{
+"name": "Samurott",
+"file": "samurott.1",
+"author": "Lougaroc",
+"preview": "samurott.1.png"
+},
+{
+"name": "Samus",
+"file": "samus.2",
+"author": "Fish_waffle64",
+"preview": "samus.2.png"
+},
+{
+"name": "Samus (Classic)",
+"file": "samus_classic.1",
+"author": "Fish_waffle64",
+"preview": "samus_classic.1.png"
+},
+{
+"name": "Samus (Super Metroid)",
+"file": "samus-sm.1",
+"author": "Ben G",
+"preview": "samus-sm.1.png"
+},
+{
+"name": "Sans (Carld923)",
+"file": "sans-carld.1",
+"author": "Carld923"
+},
+{
+"name": "Sans (Tux_66)",
+"file": "sans-tux.1",
+"author": "tux_66"
+},
+{
+"name": "Santa Hat Link",
+"file": "santahat-link.1",
+"author": "Lexitik",
+"preview": "santahat-link.1.png"
+},
+{
+"name": "Santa Link",
+"file": "santalink.3",
+"author": "HOHOHO",
+"preview": "santalink.3.png"
+},
+{
+"name": "Saria",
+"file": "saria.1",
+"author": "JaidynReiman",
+"preview": "saria.1.png"
+},
+{
+"name": "Scholar",
+"file": "scholar.1",
+"author": "Damon",
+"preview": "scholar.1.png"
+},
+{
+"name": "Selan",
+"file": "selan.2",
+"author": "atth3h3art0fwinter",
+"preview": "selan.2.png"
+},
+{
+"name": "SevenS1ns",
+"file": "sevens1ns.1",
+"author": "Hroun",
+"preview": "sevens1ns.1.png"
+},
+{
+"name": "Shade",
+"file": "shade.1",
+"author": "NO Body the Dragon",
+"preview": "shade.1.png"
+},
+{
+"name": "Shadow",
+"file": "shadow.1",
+"author": "CGG Zayik",
+"preview": "shadow.1.png"
+},
+{
+"name": "Shadow Sakura",
+"file": "shadowsaku.2",
+"author": "iBazly",
+"preview": "shadowsaku.2.png"
+},
+{
+"name": "Shaktool",
+"file": "shaktool.1",
+"author": "Fragger",
+"preview": "shaktool.1.png"
+},
+{
+"name": "Shantae",
+"file": "shantae.1",
+"author": "skovacs1",
+"preview": "shantae.1.png"
+},
+{
+"name": "Shiluna",
+"file": "shiluna.1",
+"author": "Nekoni_Hoozuki",
+"preview": "shiluna.1.png"
+},
+{
+"name": "Shin",
+"file": "shin.1",
+"author": "Nekoni_Hoozuki",
+"preview": "shin.1.png"
+},
+{
+"name": "Shinmyoumaru Sukuna",
+"file": "shinmyoumaru-sukuna.2",
+"author": "Pasta La Vista",
+"preview": "shinmyoumaru-sukuna.2.png"
+},
+{
+"name": "Shopkeeper Link",
+"file": "shopkeeper-link.1",
+"author": "mm2nescartridge",
+"preview": "shopkeeper-link.1.png"
+},
+{
+"name": "Shoujo",
+"file": "shoujo.1",
+"author": "JephWahl"
+},
+{
+"name": "Shuppet",
+"file": "shuppet.2",
+"author": "kan",
+"preview": "shuppet.2.png"
+},
+{
+"name": "Shy Gal",
+"file": "shy-gal.1",
+"author": "FedoraFriday",
+"preview": "shy-gal.1.png"
+},
+{
+"name": "Shy Guy",
+"file": "shy-guy.1",
+"author": "skovacs1",
+"preview": "shy-guy.1.png"
+},
+{
+"name": "SighnWaive",
+"file": "sighn_waive.1",
+"author": "GenoCL",
+"preview": "sighn_waive.1.png"
+},
+{
+"name": "Skunk",
+"file": "skunk.1",
+"author": "Hiveul",
+"preview": "skunk.1.png"
+},
+{
+"name": "Slime",
+"file": "slime.1",
+"author": "KamenRideDecade",
+"preview": "slime.1.png"
+},
+{
+"name": "Slowpoke",
+"file": "slowpoke.2",
+"author": "Joey_Rat",
+"preview": "slowpoke.2.png"
+},
+{
+"name": "SNES Controller",
+"file": "snes-controller.2",
+"author": "cbass601",
+"preview": "snes-controller.2.png"
+},
+{
+"name": "Sobble",
+"file": "sobble.2",
+"author": "Drieky",
+"preview": "sobble.2.png"
+},
+{
+"name": "Soda Can",
+"file": "sodacan.1",
+"author": "Zarby89",
+"preview": "sodacan.1.png"
+},
+{
+"name": "Sokka",
+"file": "sokka.1",
+"author": "Sharpefern",
+"preview": "sokka.1.png"
+},
+{
+"name": "Solaire of Astora",
+"file": "solaire.1",
+"author": "Knilip",
+"preview": "solaire.1.png"
+},
+{
+"name": "Sonic the Hedgehog",
+"file": "sonic.1",
+"author": "Osaka",
+"preview": "sonic.1.png"
+},
+{
+"name": "Sora",
+"file": "sora.1",
+"author": "roxas232",
+"preview": "sora.1.png"
+},
+{
+"name": "Sora (KH1)",
+"file": "sora_kh1.1",
+"author": "ScatlinkSean",
+"preview": "sora_kh1.1.png"
+},
+{
+"name": "Spamton G. Spamton",
+"file": "spamton-g-spamton.1",
+"author": "Pasta La Vista",
+"preview": "spamton-g-spamton.1.png"
+},
+{
+"name": "Spat",
+"file": "spat.1",
+"author": "NO Body the Dragon",
+"preview": "spat.1.png"
+},
+{
+"name": "Spiked Roller",
+"file": "spikedroller.1",
+"author": "PlaguedOne",
+"preview": "spikedroller.1.png"
+},
+{
+"name": "Spiritendo",
+"file": "spiritendo.1",
+"author": "Nekoni_Hoozuki"
+},
+{
+"name": "Spongebob Squarepants",
+"file": "spongebob.1",
+"author": "JJ0033LL",
+"preview": "spongebob.1.png"
+},
+{
+"name": "Spyro the Dragon",
+"file": "spyro.2",
+"author": "Drieky",
+"preview": "spyro.2.png"
+},
+{
+"name": "Squall",
+"file": "squall.1",
+"author": "Maessan",
+"preview": "squall.1.png"
+},
+{
+"name": "Squirrel",
+"file": "squirrel.1",
+"author": "Fish_waffle64",
+"preview": "squirrel.1.png"
+},
+{
+"name": "Squirtle",
+"file": "squirtle.1",
+"author": "Numberplay",
+"preview": "squirtle.1.png"
+},
+{
+"name": "Stalfos",
+"file": "stalfos.1",
+"author": "Artheau",
+"preview": "stalfos.1.png"
+},
+{
+"name": "Stan",
+"file": "stan.2",
+"author": "kan",
+"preview": "stan.2.png"
+},
+{
+"name": "Static Link",
+"file": "staticlink.2",
+"author": "kan",
+"preview": "staticlink.2.png"
+},
+{
+"name": "Steamed Hams",
+"file": "steamedhams.1",
+"author": "AFewGoodTaters",
+"preview": "steamedhams.1.png"
+},
+{
+"name": "Stick Man",
+"file": "stick_man.1",
+"author": "skovacs1",
+"preview": "stick_man.1.png"
+},
+{
+"name": "Stitch",
+"file": "stitch.1",
+"author": "NO_Body_The_Dragon"
+},
+{
+"name": "Super Bomb",
+"file": "superbomb.1",
+"author": "Ninjakauz",
+"preview": "superbomb.1.png"
+},
+{
+"name": "Super Bunny",
+"file": "superbunny.2",
+"author": "TheOkayGuy",
+"preview": "superbunny.2.png"
+},
+{
+"name": "Super Meat Boy",
+"file": "supermeatboy.1",
+"author": "Achy",
+"preview": "supermeatboy.1.png"
+},
+{
+"name": "Susie",
+"file": "susie.1",
+"author": "Zandra",
+"preview": "susie.1.png"
+},
+{
+"name": "Swatchy",
+"file": "swatchy.2",
+"author": "Minnie Trethewey",
+"preview": "swatchy.2.png"
+},
+{
+"name": "Swiper",
+"file": "swiper.2",
+"author": "Purple Peak",
+"preview": "swiper.2.png"
+},
+{
+"name": "SwirlDrop",
+"file": "swirldrop.1",
+"author": "happytoaster",
+"preview": "swirldrop.1.png"
+},
+{
+"name": "Tanooki Mario",
+"file": "mario_tanooki.2",
+"author": "Nocturnesthesia",
+"preview": "mario_tanooki.2.png"
+},
+{
+"name": "TASBot",
+"file": "tasbot.1",
+"author": "GenoCL",
+"preview": "tasbot.1.png"
+},
+{
+"name": "Tea Time",
+"file": "teatime.1",
+"author": "SirCzah",
+"preview": "teatime.1.png"
+},
+{
+"name": "Teddiursa",
+"file": "teddiursa.1",
+"author": "Charmander106",
+"preview": "teddiursa.1.png"
+},
+{
+"name": "Terra (Esper)",
+"file": "terra.1",
+"author": "All-in-one Mighty",
+"preview": "terra.1.png"
+},
+{
+"name": "Terry (Contact DS)",
+"file": "terry.1",
+"author": "CD-Mestay",
+"preview": "terry.1.png"
+},
+{
+"name": "Tetra",
+"file": "tetra.1",
+"author": "Ferelheart",
+"preview": "tetra.1.png"
+},
+{
+"name": "TGH",
+"file": "tgh.1",
+"author": "Drew Wise, pizza_for_free",
+"preview": "tgh.1.png"
+},
+{
+"name": "The Professor",
+"file": "professor.1",
+"author": "PlaguedOne",
+"preview": "professor.1.png"
+},
+{
+"name": "The Pug",
+"file": "pug.1",
+"author": "Achy",
+"preview": "pug.1.png"
+},
+{
+"name": "The Robot",
+"file": "the-robot.1",
+"author": "The Corgi King",
+"preview": "the-robot.1.png"
+},
+{
+"name": "Thief",
+"file": "thief.1",
+"author": "Devan2002",
+"preview": "thief.1.png"
+},
+{
+"name": "ThinkDorm",
+"file": "thinkdorm.1",
+"author": "PlaguedOne",
+"preview": "thinkdorm.1.png"
+},
+{
+"name": "Thomcrow",
+"file": "thomcrow.1",
+"author": "Thom",
+"preview": "thomcrow.1.png"
+},
+{
+"name": "Tile",
+"file": "tile.3",
+"author": "kan",
+"preview": "tile.3.png"
+},
+{
+"name": "Tingle",
+"file": "tingle.1",
+"author": "Xenobond",
+"preview": "tingle.1.png"
+},
+{
+"name": "TMNT",
+"file": "tmnt.1",
+"author": "SirCzah",
+"preview": "tmnt.1.png"
+},
+{
+"name": "Toad",
+"file": "toad.2",
+"author": "Zarby89",
+"preview": "toad.2.png"
+},
+{
+"name": "Toadette",
+"file": "toadette.2",
+"author": "Devan2002",
+"preview": "toadette.2.png"
+},
+{
+"name": "TotemLinks",
+"file": "totem-links.1",
+"author": "Yotohan",
+"preview": "totem-links.1.png"
+},
+{
+"name": "TP Zelda",
+"file": "twilightprincesszelda.2",
+"author": "Fish_waffle64",
+"preview": "twilightprincesszelda.2.png"
+},
+{
+"name": "Trogdor the Burninator",
+"file": "trogdor.3",
+"author": "Minnie Trethewey/kan",
+"preview": "trogdor.3.png"
+},
+{
+"name": "Tueffel",
+"file": "tueffel.1",
+"author": "Tueffelchen",
+"preview": "tueffel.1.png"
+},
+{
+"name": "Tunic",
+"file": "tunic.2",
+"author": "tosh"
+},
+{
+"name": "Tunic Color Link",
+"file": "linktuniccolor.1",
+"author": "Damon",
+"preview": "linktuniccolor.1.png"
+},
+{
+"name": "TwoFaced",
+"file": "two_faced.2",
+"author": "Devan2002",
+"preview": "two_faced.2.png"
+},
+{
+"name": "Ty the Tasmanian Tiger",
+"file": "ty.1",
+"author": "Fish_waffle64",
+"preview": "ty.1.png"
+},
+{
+"name": "UFO Kirby",
+"file": "ufo-kirby.1",
+"author": "PlaguedOne",
+"preview": "ufo-kirby.1.png"
+},
+{
+"name": "Ultros",
+"file": "ultros.2",
+"author": "PlaguedOne",
+"preview": "ultros.2.png"
+},
+{
+"name": "Umbreon",
+"file": "umbreon.2",
+"author": "Drieky",
+"preview": "umbreon.2.png"
+},
+{
+"name": "Unicorn",
+"file": "unicorn.1",
+"author": "Myric"
+},
+{
+"name": "Valeera",
+"file": "valeera.1",
+"author": "Glan",
+"preview": "valeera.1.png"
+},
+{
+"name": "VanillaLink",
+"file": "vanillalink.2",
+"author": "Gwenegade",
+"preview": "vanillalink.2.png"
+},
+{
+"name": "Vaporeon",
+"file": "vaporeon.1",
+"author": "Aquana",
+"preview": "vaporeon.1.png"
+},
+{
+"name": "Vegeta",
+"file": "vegeta.1",
+"author": "Merciter",
+"preview": "vegeta.1.png"
+},
+{
+"name": "Vera",
+"file": "vera.1",
+"author": "aitchFactor",
+"preview": "vera.1.png"
+},
+{
+"name": "Vitreous",
+"file": "vitreous.1",
+"author": "Glan",
+"preview": "vitreous.1.png"
+},
+{
+"name": "Vivi",
+"file": "vivi.1",
+"author": "RyuTech",
+"preview": "vivi.1.png"
+},
+{
+"name": "Vivian",
+"file": "vivian.1",
+"author": "SirCzah",
+"preview": "vivian.1.png"
+},
+{
+"name": "Wackerly",
+"file": "wackerly.1",
+"author": "Wackerly"
+},
+{
+"name": "Wario",
+"file": "wario.1",
+"author": "Deagans",
+"preview": "wario.1.png"
+},
+{
+"name": "White Mage",
+"file": "whitemage.1",
+"author": "TheRedMage",
+"preview": "whitemage.1.png"
+},
+{
+"name": "Will",
+"file": "will.1",
+"author": "Xenobond",
+"preview": "will.1.png"
+},
+{
+"name": "Wizzrobe",
+"file": "wizzrobe.2",
+"author": "iBazly",
+"preview": "wizzrobe.2.png"
+},
+{
+"name": "Wolf Link (Festive)",
+"file": "wolf_link.1",
+"author": "Fish/Beef-Chan",
+"preview": "wolf_link.1.png"
+},
+{
+"name": "Wolf Link (TP)",
+"file": "wolf_link_tp.1",
+"author": "Gfish59",
+"preview": "wolf_link_tp.1.png"
+},
+{
+"name": "Wolf O' Donnell",
+"file": "wolf.1",
+"author": "Lougaroc",
+"preview": "wolf.1.png"
+},
+{
+"name": "WuZaiiii",
+"file": "wuzaiiii.1",
+"author": "Nekoni_Hoozuki",
+"preview": "wuzaiiii.1.png"
+},
+{
+"name": "Yoshi",
+"file": "yoshi.1",
+"author": "Yotohan",
+"preview": "yoshi.1.png"
+},
+{
+"name": "Yunica Tovah",
+"file": "yunica.2",
+"author": "Fish_waffle64",
+"preview": "yunica.2.png"
+},
+{
+"name": "Zagreus",
+"file": "zagreus.1",
+"author": "Gwenegade",
+"preview": "zagreus.1.png"
+},
+{
+"name": "Zandra",
+"file": "zandra.2",
+"author": "ZandraVandra",
+"preview": "zandra.2.png"
+},
+{
+"name": "Zaruvyen",
+"file": "zaruvyen.2",
+"author": "Drieky",
+"preview": "zaruvyen.2.png"
+},
+{
+"name": "Zebra Unicorn",
+"file": "zebraunicorn.1",
+"author": "Brass Man",
+"preview": "zebraunicorn.1.png"
+},
+{
+"name": "Zeck",
+"file": "zeck.3",
+"author": "aitchFactor",
+"preview": "zeck.3.png"
+},
+{
+"name": "Zekrom",
+"file": "zekrom.1",
+"author": "Lougaroc",
+"preview": "zekrom.1.png"
+},
+{
+"name": "Zelda",
+"file": "zelda.1",
+"author": "Myriachan",
+"preview": "zelda.1.png"
+},
+{
+"name": "Zero Suit Samus",
+"file": "zerosuitsamus.2",
+"author": "Fish_waffle64",
+"preview": "zerosuitsamus.2.png"
+},
+{
+"name": "Zora",
+"file": "zora.2",
+"author": "Zarby, InTheBeef",
+"preview": "zora.2.png"
+}
+]
