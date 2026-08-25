@@ -96,6 +96,25 @@ session). Reliable method:
   selected sprite, stopwatch, and 61 linked MSU files. `Zelda & Chill` is not
   installed because its public archive contains recipes only and explicitly
   requires the separately purchased GameChops albums.
+- **Exit loop fixed**: the v9 refresh worker raced Recalbox 10's native file
+  watcher by stopping/starting ES from the `endgame` child. Generation and
+  cleanup no longer rewrite gamelists, create refresh flags, or restart ES.
+  Legacy hooks on external storage are removed. The endgame hook retains only
+  `setsid timeout 15 sync`, preserving the original storage-freeze mitigation.
+- **Expanded Python DR menu**: 66 rows now include entrance and door shuffle,
+  door intensity/types/traps/key logic, overworld shuffle/layout/crossing/
+  terrain/mixed-world/whirlpools, flute spots, dungeon item/prize/counter
+  placement, shops/followers/key drops, enemy logic, and related options.
+  Entrance, door, and overworld/flute modes generated successfully. The upstream
+  DR build cannot combine non-vanilla entrance and overworld shuffle; the menu
+  now rejects that combination with an explicit error.
+- **MSU runtime verified**: Snes9x reported `ROM+RAM+BAT+MSU-1` and opened the
+  selected `.msu` plus all PCM files. New MSU seeds also enable DR's
+  `msu_resume` patch.
+- **Timer and preview follow-up**: Stopwatch remains the default with Disabled
+  second. Deterministic fixed-seed tests prove Stopwatch changes ROM bytes.
+  All 513 sprites now have previews; the 27 forbidden upstream preview URLs are
+  rendered locally from their ZSPR standing frame using the stdlib PNG writer.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device

@@ -37,29 +37,77 @@ case "$MODE" in
   custom)
     CHOICES=/tmp/alttpr_choices.env
     # defaults (align with DR valid values)
-    MODE_V=open GOAL=ganon SWORDS=random DIFFICULTY=normal ITEM_FUNCTIONALITY=normal
+    MODE_V=open GOAL=ganon SWORDS=random FLUTE_MODE=normal BOW_MODE=progressive
+    DIFFICULTY=normal ITEM_FUNCTIONALITY=normal
     LOGIC=noglitches ACCESSIBILITY=items PROGRESSIVE=on ALGORITHM=balanced
     SHUFFLEBOSSES=none SHUFFLEENEMIES=none ENEMY_HEALTH=default ENEMY_DAMAGE=default
+    SHUFFLE_FOLLOWERS=off SHOPSANITY=off KEYDROPSHUFFLE=off DROPSHUFFLE=none
+    MIXED_TRAVEL=prevent
     KEYSHUFFLE=none BIGKEYSHUFFLE=none MAPSHUFFLE=none COMPASSSHUFFLE=none
+    PRIZESHUFFLE=none DUNGEON_COUNTERS=default RESTRICT_BOSS_ITEMS=none
     CRYSTALS_GANON=7 CRYSTALS_GT=7 SPRITE="(default)" HEARTCOLOR=red
-    OW_SHUFFLE=vanilla OW_LAYOUT=vanilla OW_FLUTESHUFFLE=vanilla DOOR_SHUFFLE=vanilla
-    SHUFFLE=vanilla NICKNAME="" TIMER=stopwatch POTTERY=none
+    OW_SHUFFLE=vanilla OW_LAYOUT=vanilla OW_CROSSED=none
+    OW_FLUTESHUFFLE=vanilla OW_UNPARALLEL=off OW_TERRAIN=off
+    OW_KEEPSIMILAR=off OW_MIXED=off OW_WHIRLPOOL=off
+    DOOR_SHUFFLE=vanilla INTENSITY=1 DOOR_TYPE_MODE=original
+    TRAP_DOOR_MODE=vanilla KEY_LOGIC_ALGORITHM=strict
+    DECOUPLEDOORS=off DOOR_SELF_LOOPS=off
+    ENTRANCE_SHUFFLE=vanilla NICKNAME="" TIMER=stopwatch POTTERY=none
+    ANY_ENEMY_LOGIC=none SKULLWOODS=original LINKED_DROPS=unset
+    OVERWORLD_MAP=default SHUFFLELINKS=off SHUFFLETAVERN=off
+    PSEUDOBOOTS=off MIRRORSCROLL=off BOMBBAG=off TAKE_ANY=none
+    REDUCE_FLASHING=off SHUFFLE_SFX=off
     HINTS=on QUICKSWAP=true SPOILER=on MSU=Default
     # shellcheck disable=SC1090
     [ -f "$CHOICES" ] && . "$CHOICES"
-    FLAGS="--mode $MODE_V --goal $GOAL --swords $SWORDS --difficulty $DIFFICULTY \
+    if [ "$ENTRANCE_SHUFFLE" != "vanilla" ] && \
+       [ "$OW_SHUFFLE" != "vanilla" ]; then
+      echo "ERROR: Entrance Shuffle and Overworld Shuffle cannot be combined in this DR build."
+      echo "SEED:"
+      exit 2
+    fi
+    FLAGS="--mode $MODE_V --goal $GOAL --swords $SWORDS \
+--flute_mode $FLUTE_MODE --bow_mode $BOW_MODE --difficulty $DIFFICULTY \
 --item_functionality $ITEM_FUNCTIONALITY --logic $LOGIC --accessibility $ACCESSIBILITY \
 --progressive $PROGRESSIVE --algorithm $ALGORITHM \
+--dropshuffle $DROPSHUFFLE --mixed_travel $MIXED_TRAVEL \
 --shufflebosses $SHUFFLEBOSSES --shuffleenemies $SHUFFLEENEMIES \
 --enemy_health $ENEMY_HEALTH --enemy_damage $ENEMY_DAMAGE \
+--any_enemy_logic $ANY_ENEMY_LOGIC \
 --keyshuffle $KEYSHUFFLE --bigkeyshuffle $BIGKEYSHUFFLE \
 --mapshuffle $MAPSHUFFLE --compassshuffle $COMPASSSHUFFLE \
+--prizeshuffle $PRIZESHUFFLE --dungeon_counters $DUNGEON_COUNTERS \
+--restrict_boss_items $RESTRICT_BOSS_ITEMS \
 --crystals_ganon $CRYSTALS_GANON --crystals_gt $CRYSTALS_GT \
---ow_shuffle $OW_SHUFFLE --ow_layout $OW_LAYOUT --ow_fluteshuffle $OW_FLUTESHUFFLE \
---door_shuffle $DOOR_SHUFFLE --shuffle $SHUFFLE --pottery $POTTERY"
+--ow_shuffle $OW_SHUFFLE --ow_layout $OW_LAYOUT --ow_crossed $OW_CROSSED \
+--ow_fluteshuffle $OW_FLUTESHUFFLE \
+--door_shuffle $DOOR_SHUFFLE --shuffle $ENTRANCE_SHUFFLE \
+--intensity $INTENSITY --door_type_mode $DOOR_TYPE_MODE \
+--trap_door_mode $TRAP_DOOR_MODE --key_logic_algorithm $KEY_LOGIC_ALGORITHM \
+--pottery $POTTERY --skullwoods $SKULLWOODS \
+--linked_drops $LINKED_DROPS --overworld_map $OVERWORLD_MAP \
+--take_any $TAKE_ANY"
     EXTRA="--create_rom"
     [ "$HINTS" = "on" ] && FLAGS="$FLAGS --hints"
     [ "$QUICKSWAP" = "true" ] && EXTRA="$EXTRA --quickswap"
+    [ "$SHUFFLE_FOLLOWERS" = "on" ] && EXTRA="$EXTRA --shuffle_followers"
+    [ "$SHOPSANITY" = "on" ] && EXTRA="$EXTRA --shopsanity"
+    [ "$KEYDROPSHUFFLE" = "on" ] && EXTRA="$EXTRA --keydropshuffle"
+    [ "$DECOUPLEDOORS" = "on" ] && EXTRA="$EXTRA --decoupledoors"
+    [ "$DOOR_SELF_LOOPS" = "on" ] && EXTRA="$EXTRA --door_self_loops"
+    [ "$OW_UNPARALLEL" = "on" ] && EXTRA="$EXTRA --ow_unparallel"
+    [ "$OW_TERRAIN" = "on" ] && EXTRA="$EXTRA --ow_terrain"
+    [ "$OW_KEEPSIMILAR" = "on" ] && EXTRA="$EXTRA --ow_keepsimilar"
+    [ "$OW_MIXED" = "on" ] && EXTRA="$EXTRA --ow_mixed"
+    [ "$OW_WHIRLPOOL" = "on" ] && EXTRA="$EXTRA --ow_whirlpool"
+    [ "$SHUFFLELINKS" = "on" ] && EXTRA="$EXTRA --shufflelinks"
+    [ "$SHUFFLETAVERN" = "on" ] && EXTRA="$EXTRA --shuffletavern"
+    [ "$PSEUDOBOOTS" = "on" ] && EXTRA="$EXTRA --pseudoboots"
+    [ "$MIRRORSCROLL" = "on" ] && EXTRA="$EXTRA --mirrorscroll"
+    [ "$BOMBBAG" = "on" ] && EXTRA="$EXTRA --bombbag"
+    [ "$REDUCE_FLASHING" = "on" ] && EXTRA="$EXTRA --reduce_flashing"
+    [ "$SHUFFLE_SFX" = "on" ] && EXTRA="$EXTRA --shuffle_sfx"
+    [ "$MSU" != "Default" ] && EXTRA="$EXTRA --msu_resume"
     if [ "$SPOILER" = "on" ]; then
       EXTRA="$EXTRA --spoiler full"
     else
@@ -144,31 +192,9 @@ PY
   fi
 fi
 
-# --- register the seed for the ES gamelist (root gamelist + durable pending) --
-GL="$ROOT/gamelist.xml"
-PENDING=/tmp/alttpr_gamelist_pending
-IMG="./.art/seed.png"
-RELPATH="SEEDS/$(basename "$FINAL")"
-NAME="ALTTPR ${MODE} - ${STAMP} (${NICK_SPACED})"
-[ -f "$GL" ] || printf '<?xml version="1.0"?>\n<gameList>\n</gameList>\n' > "$GL"
-python3 - "$GL" "$RELPATH" "$NAME" "$IMG" "$MODE" "$STAMP" "$RELEASEDATE" "$PENDING" <<'PY' 2>/dev/null || true
-import sys, re
-gl, path, name, img, mode, stamp, releasedate, pending = sys.argv[1:9]
-entry = (f"  <game>\n    <path>{path}</path>\n    <name>{name}</name>\n"
-         f"    <image>{img}</image>\n"
-         f"    <releasedate>{releasedate}</releasedate>\n"
-         f"    <desc>A Link to the Past Randomizer seed ({mode}). Generated {stamp}.</desc>\n  </game>\n")
-data = open(gl, encoding="utf-8").read()
-pat = r"\s*<game(?:\s[^>]*)?>(?:(?!</game>).)*?<path>" + re.escape(path) + r"</path>.*?</game>"
-data = re.sub(pat, "", data, flags=re.S)
-open(gl, "w", encoding="utf-8").write(data.replace("</gameList>", entry + "</gameList>"))
-with open(pending, "a", encoding="utf-8") as f:
-    f.write(entry)
-PY
-
-# --- signal the ES event hook to refresh gamelists after this game exits ------
-touch /tmp/alttpr_refresh 2>/dev/null || true
-sync 2>/dev/null || true
+# Recalbox 10's native file watcher discovers the new ROM. Do not rewrite the
+# gamelist or restart ES from the game-launch process; doing so races its safe
+# relaunch lifecycle. The boot self-heal adds friendly metadata deterministically.
 
 echo "generated: $FINAL"
 echo "SEED:$FINAL"

@@ -40,8 +40,11 @@ not shell out to an x86 EnemizerCLI for any enemy/boss option.
 - `alttpr-cleanup.py` / `.sh` — KEEP (housekeeping)
 - `alttpr-name.py` + `words/` — KEEP (nickname UX)
 - `alttpr-btime.py` — KEEP (seed birth-time via statx; works on ext4)
-- `alttpr-gamelist-merge.py`, `alttpr-refresh-worker.sh`, `alttpr-refresh.sh` —
-  KEEP (ES gamelist glue; endgame hook already fixed to detached/timeout sync)
+- `alttpr-refresh.sh` — KEEP only as a detached/time-bounded durability flush.
+  Recalbox 10 owns ROM/gamelist watching and relaunches; the old
+  `alttpr-refresh-worker.sh` was removed because force-restarting ES from an
+  endgame child caused restart/reboot loops.
+- `alttpr-gamelist-merge.py` — retained as a repair utility, not called at exit.
 
 ## REWRITE — core engine swap
 - `alttpr-generate.sh` — replace `php artisan alttp:randomize` with

@@ -31,20 +31,6 @@ class AlttprGenerator:
         except Exception:
             pass
 
-    def _refresh_es(self):
-        try:
-            os.remove("/tmp/alttpr_refresh")
-        except OSError:
-            pass
-        try:
-            subprocess.Popen(
-                ["/bin/sh", "-c",
-                 "sleep 2; /etc/init.d/S31emulationstation restart >/dev/null 2>&1"],
-                start_new_session=True,
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except Exception:
-            pass
-
     def generate(self, system, playersControllers, recalboxOptions, args):
         rom = args.rom
         seed = ""
@@ -70,8 +56,6 @@ class AlttprGenerator:
                 return Command(videomode=system.VideoMode, array=["/bin/true"])
             elif mode == "cleanup":
                 self._run_pygame(self.CLEANUP)
-                if os.path.exists("/tmp/alttpr_refresh"):
-                    self._refresh_es()
                 return Command(videomode=system.VideoMode, array=["/bin/true"])
             elif mode == "practice":
                 if os.path.exists(self.PRACTICE):

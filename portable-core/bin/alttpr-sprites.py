@@ -18,8 +18,10 @@ import argparse
 import concurrent.futures as cf
 import json
 import os
+import struct
 import sys
 import urllib.request
+import zlib
 
 ENGINE = "/recalbox/share/alttpr"
 DEF_DIR = ENGINE + "/sprites"
@@ -77,6 +79,91 @@ def download_previews(entries, preview_dir, workers=16):
             todo.append((url, dst))
     got, fail = _download_set(todo, workers=workers, minbytes=40)
     return got, fail, len(todo)
+
+
+def _png_chunk(kind, data):
+    return (struct.pack(">I", len(data)) + kind + data +
+            struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff))
+
+
+def render_preview(zspr_path, png_path):
+    """Render the standard 16x24 standing frame directly from a ZSPR.
+
+    Uses only the stdlib so it works on Recalbox without Pillow. Offsets match
+    the player standing frame used by the official static previews.
+    """
+    data = open(zspr_path, "rb").read()
+    fmt = "<4xBHHIHIHH6x"
+    if not data.startswith(b"ZSPR") or len(data) < struct.calcsize(fmt):
+        return False
+    _ver, _csum, _icsum, sprite_off, sprite_size, pal_off, pal_size, kind = \
+        struct.unpack_from(fmt, data)
+    if kind != 1 or sprite_size < 0x5a40 or pal_size < 30:
+        return False
+    sprite = data[sprite_off:sprite_off + sprite_size]
+    raw_palette = data[pal_off:pal_off + pal_size]
+
+    colors = [(0, 0, 0, 0)]
+    for i in range(0, 30, 2):
+        value = raw_palette[i + 1] << 8 | raw_palette[i]
+        colors.append(((value & 0x1f) * 8,
+                       ((value >> 5) & 0x1f) * 8,
+                       ((value >> 10) & 0x1f) * 8, 255))
+
+    def tile(pos):
+        pixels = []
+        for y in range(8):
+            for x in range(8):
+                bit = 1 << (7 - x)
+                value = int(bool(sprite[pos + y * 2] & bit))
+                value += 2 * int(bool(sprite[pos + y * 2 + 1] & bit))
+                value += 4 * int(bool(sprite[pos + y * 2 + 16] & bit))
+                value += 8 * int(bool(sprite[pos + y * 2 + 17] & bit))
+                pixels.append(colors[value])
+        return pixels
+
+    canvas = [[(0, 0, 0, 0) for _x in range(16)] for _y in range(24)]
+    offsets = ((0x40, 0x60), (0x59c0, 0x59e0), (0x5a00, 0x5a20))
+    for block_y, row in enumerate(offsets):
+        for block_x, offset in enumerate(row):
+            pixels = tile(offset)
+            for y in range(8):
+                for x in range(8):
+                    canvas[block_y * 8 + y][block_x * 8 + x] = \
+                        pixels[y * 8 + x]
+
+    scanlines = b"".join(
+        b"\x00" + b"".join(bytes(pixel) for pixel in row)
+        for row in canvas)
+    png = b"\x89PNG\r\n\x1a\n"
+    png += _png_chunk(b"IHDR", struct.pack(">IIBBBBB",
+                                           16, 24, 8, 6, 0, 0, 0))
+    png += _png_chunk(b"IDAT", zlib.compress(scanlines, 9))
+    png += _png_chunk(b"IEND", b"")
+    with open(png_path, "wb") as f:
+        f.write(png)
+    return True
+
+
+def generate_missing_previews(entries, sprite_dir, preview_dir):
+    generated = 0
+    failures = []
+    os.makedirs(preview_dir, exist_ok=True)
+    for entry in entries:
+        filename = basename(entry["file"])
+        stem = filename[:-5] if filename.endswith(".zspr") else filename
+        preview = os.path.join(preview_dir, stem + ".png")
+        if os.path.isfile(preview):
+            continue
+        source = os.path.join(sprite_dir, filename)
+        try:
+            if os.path.isfile(source) and render_preview(source, preview):
+                generated += 1
+            else:
+                failures.append(stem)
+        except Exception:
+            failures.append(stem)
+    return generated, failures
 
 
 def fetch_list(url):
@@ -200,6 +287,10 @@ def main():
                   % (pmiss, pgot, len(pfail)))
             for fn, err in pfail[:10]:
                 print("  PREVIEW FAIL %s: %s" % (fn, err))
+            generated, gfail = generate_missing_previews(
+                entries, args.sprite_dir, args.preview_dir)
+            print("previews: %d generated locally, %d still missing"
+                  % (generated, len(gfail)))
     n = build_manifest(entries, args.sprite_dir, args.manifest,
                        preview_dir=args.preview_dir)
     print("manifest: %d entries -> %s" % (n, args.manifest))

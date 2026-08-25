@@ -32,6 +32,10 @@ docs/                 Build notes, portability audit, reproduction steps
 build/                Flashing + provisioning scripts (Windows-side)
 ```
 
+The on-console menu exposes Python DR's item, entrance, door, dungeon, overworld,
+flute-spot, enemy, sprite, timer, and MSU options. Recalbox 10's native file
+watcher owns library refreshes; the ALTTPR endgame hook never restarts ES.
+
 ## Base image
 
 - Recalbox **10.0.8** for rpi5_64 (`recalbox-rpi5_64.img.xz`, SHA1

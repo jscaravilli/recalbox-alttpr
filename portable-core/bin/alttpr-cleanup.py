@@ -3,9 +3,8 @@
 
 Launched by the configgen alttpr generator for the "Clean Old Seeds" tile. Shows
 how many seeds are older than the cutoff and a preview list, then requires you to
-land on Delete or Cancel and press A or B to execute. On confirm it runs
-alttpr-cleanup.sh and drops /tmp/alttpr_refresh so ES refreshes the gamelists
-when it resumes.
+land on Delete or Cancel and press A or B to execute. Recalbox 10's native file
+watcher observes deleted ROMs; this dialog never restarts EmulationStation.
 
 Controls (shared with the Custom Seed menu):
   Up/Down     move between the age selector, Delete, and Cancel
@@ -25,7 +24,6 @@ os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 import pygame  # noqa: E402
 
 CLEANUP = "/recalbox/share/alttpr/bin/alttpr-cleanup.sh"
-REFRESH_FLAG = "/tmp/alttpr_refresh"
 
 # Age presets: (label, cleanup-arg). Default focus starts on "2 days".
 AGE_OPTIONS = [
@@ -253,10 +251,6 @@ class Dialog:
                             subprocess.call(
                                 ["/bin/bash", CLEANUP, AGE_OPTIONS[age_idx][1]],
                                 timeout=180)
-                        except Exception:
-                            pass
-                        try:
-                            open(REFRESH_FLAG, "w").close()  # ES refresh on resume
                         except Exception:
                             pass
                         self.message("Deleted %d seed%s."

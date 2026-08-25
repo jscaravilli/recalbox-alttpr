@@ -15,6 +15,8 @@ LOG=/recalbox/share/system/logs/alttpr-install.log
 say(){ echo "$(date) $*" >>"$LOG"; echo "$*"; }
 
 mkdir -p "$(dirname "$LOG")"
+rm -f /tmp/alttpr_refresh /tmp/alttpr_gamelist_pending
+rm -f "$ENGINE/bin/alttpr-refresh-worker.sh"
 
 # --- 1. make rootfs writable so we can drop the generator into configgen ------
 mount -o remount,rw / 2>/dev/null || true
@@ -218,6 +220,15 @@ for EXT in /recalbox/share/externals/*/recalbox/roms/alttpr \
   rm -rf "$EXT" 2>/dev/null && say "removed duplicate external ALTTPR tree: $EXT"
 done
 
+# Remove legacy external event hooks too. Recalbox 10 must have exactly one
+# ALTTPR endgame hook, and it must never restart EmulationStation.
+for EXTUS in /recalbox/share/externals/*/recalbox/userscripts \
+             /recalbox/share/externals/*/userscripts; do
+  [ -d "$EXTUS" ] || continue
+  rm -f "$EXTUS"/alttpr-refresh.sh "$EXTUS"/alttpr-refresh.sh.bak-* \
+    2>/dev/null || true
+done
+
 # --- 5. retroarch: flush SRAM during play; no savestate autoload --------------
 RACFG=/recalbox/share/system/configs/retroarch/retroarchcustom.cfg
 if [ -f "$RACFG" ]; then
@@ -231,7 +242,10 @@ say "alttpr integration installed/verified"
 # sprites/previews. Guarded so normal self-healing boots do not hit the network.
 SPRITE_COUNT="$(find "$ENGINE/sprites" -maxdepth 1 -type f -name '*.zspr' \
   2>/dev/null | wc -l)"
-if [ "${SPRITE_COUNT:-0}" -lt 500 ] && \
+PREVIEW_COUNT="$(find "$ENGINE/bin/sprite-previews" -maxdepth 1 -type f \
+  -name '*.png' 2>/dev/null | wc -l)"
+if { [ "${SPRITE_COUNT:-0}" -lt 500 ] || \
+     [ "${PREVIEW_COUNT:-0}" -lt 500 ]; } && \
    [ -x "$ENGINE/bin/alttpr-sprites.py" ]; then
   python3 "$ENGINE/bin/alttpr-sprites.py" >>"$LOG" 2>&1 || \
     say "sprite population failed; cached/default sprites remain available"
