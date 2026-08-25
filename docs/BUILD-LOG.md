@@ -75,6 +75,18 @@ session). Reliable method:
 
 ## Notes / gotchas
 
+- **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
+  reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device
+  reads must be 512-byte aligned. Recovered logo, sprites, overlays, sprites.json,
+  msu-packs.json, full tracker app, and all KEEP scripts — now committed to the
+  repo (were never in git before). Deployed the art PNGs to the Pi.
+- **Recalbox 10 theme system differs from v9**: `recalbox-next` uses unified
+  `_views/_partials/systems/<sys>.xml` + `data/arts/<sys>` instead of per-system
+  folders. The old `build_theme.sh` (clone the `snes` folder) does NOT apply.
+  Current systemlist uses `theme="snes"` so the ALTTPR system shows functionally
+  with the SNES logo/art. A custom ALTTPR carousel logo on v10 needs a new
+  systems partial + iconset + art entries — deferred as polish (not a blocker).
+
 - Recalbox only serves the *latest* image per board; 9.2.3-Pulstar (live Pi)
   isn't downloadable, so the rebuild targets 10.0.8.
 - Recalbox 10 uses a newer EmulationStation — validate the ES restart +
