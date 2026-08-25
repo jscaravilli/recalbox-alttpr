@@ -1,22 +1,9 @@
-**A Link to the Past Randomizer**
+**What is ALTTPR?**
 
-Every seed reshuffles Nintendo's 1991 classic into a new puzzle while preserving
-the original SNES adventure.
-
-__**Project**__
-- Original game: Nintendo
-- Randomizer engine: codemann8's ALttPDoorRandomizer
-- Based on: Aerinon's Door Randomizer and the ALttPR community
-- Recalbox integration: jscaravilli
-
-__**This build**__
-- Native Python 3.11 seed generation
-- Item, dungeon, door, entrance, and overworld shuffle support
-- Controller-driven configuration and seed library
-- Spoiler viewer, custom sprites, MSU-1 music, and phone autotracker
+ALTTPR reshuffles items and progression in Nintendo's 1991 SNES adventure,
+*The Legend of Zelda: A Link to the Past*. Each generated seed turns the familiar
+world into a new puzzle, with optional dungeon, door, entrance, and overworld
+shuffles. Choose **Generate Custom Seed** to configure and play.
 
 __**Live tracker**__
 http://recalbox.local:8080/itemtracker.html
-
-Choose **Generate Custom Seed** to configure a run, create it locally, and launch
-straight into the game.

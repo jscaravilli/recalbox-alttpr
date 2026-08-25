@@ -122,6 +122,10 @@ session). Reliable method:
   RetroArch launch config: it reported Bobbing Hootenanny / standard / ganon.
   Tracker process management now matches exact `/proc` script arguments instead
   of broad `pgrep -f`, which previously confused invoking shells with services.
+- **System helper refresh**: both themes now present a concise “What is ALTTPR?”
+  explanation instead of build metadata. A committed off-white/near-black QR for
+  the permanent tracker URL is composed beside the sprite montage. The source QR
+  and composition script are committed so the URL/art can be regenerated.
 - **Timer and preview follow-up**: Stopwatch remains the default with Disabled
   second. Deterministic fixed-seed tests prove Stopwatch changes ROM bytes.
   All 513 sprites now have previews; the 27 forbidden upstream preview URLs are

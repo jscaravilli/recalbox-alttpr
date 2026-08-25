@@ -331,16 +331,16 @@ import re, sys
 p = sys.argv[1]
 d = open(p, encoding="utf-8").read()
 info = [
-    "Original game : Nintendo, 1991",
-    "Randomizer engine : codemann8 / ALttPDoorRandomizer",
-    "Based on : Aerinon's Door Randomizer + ALttPR community",
-    "Recalbox integration : jscaravilli",
-    "Runtime : Native Python 3.11 on Raspberry Pi 5",
-    "Modes : Items, dungeons, doors, entrances, overworld",
-    "Features : Spoilers, custom sprites, MSU-1, autotracker",
-    "Tracker : recalbox.local:8080/itemtracker.html",
-    "Workflow : Configure locally, generate, then play",
-    "Start with : Generate Custom Seed",
+    "WHAT IS ALTTPR?",
+    "ALTTPR reshuffles items and progression in",
+    "Nintendo's 1991 SNES adventure.",
+    "Each seed becomes a new puzzle with a unique",
+    "route to victory.",
+    "This build also shuffles dungeons, doors,",
+    "entrances, and the overworld.",
+    "Configure locally, generate, then play.",
+    "Live tracker:",
+    "recalbox.local:8080/itemtracker.html",
 ]
 for index, text in enumerate(info, 1):
     pattern = (r'(<text name="info%d" extra="true">\s*<text>).*?(</text>)'
