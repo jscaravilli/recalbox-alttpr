@@ -1,0 +1,16 @@
+# build artifacts / large binaries — never commit these
+*.img
+*.img.xz
+*.tgz
+*.zip
+*.sfc
+*.srm
+*.state*
+build/*.log
+live-backup/
+adminq/
+
+# secrets
+*.pem
+*.key
+secrets.*
