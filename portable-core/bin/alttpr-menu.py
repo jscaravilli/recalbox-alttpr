@@ -139,10 +139,8 @@ def load_msu_manifest():
 # entrance/door/overworld options are added in a separate menu expansion; this
 # first pass restores the proven controller UI with a clean baseline option set.
 def build_options(sprite_names=None, msu_names=None):
-    # Row order and the default (index 0) for each row are curated in
-    # docs/option-help.md; keep this list in sync with that doc's block order
-    # and first-listed value. The right-hand help panel text is loaded from
-    # option-help.json (generated from the same doc).
+    # Keep the fixed rows and values in sync with data/option-help.json. Sprite
+    # and MSU descriptions are built dynamically from their manifests.
     sprites = sprite_names if sprite_names is not None else sprite_options()
     msus = msu_names if msu_names is not None else load_msu_manifest()[0]
     def section(title, description):
@@ -289,110 +287,9 @@ def load_help():
         import json
         with open(path, encoding="utf-8") as f:
             return json.load(f)
-    except Exception:
-        return {}
-
-
-ROW_HELP = {
-    "MODE_V": "Controls the starting world state and opening sequence.",
-    "GOAL": "Selects the condition required to finish the seed.",
-    "CRYSTALS_GT": "Sets how many crystals open Ganon's Tower.",
-    "CRYSTALS_GANON": "Sets how many crystals make Ganon vulnerable.",
-    "SWORDS": "Controls how swords enter the item pool and starting logic.",
-    "FLUTE_MODE": "Controls whether the flute starts inactive or already activated.",
-    "BOW_MODE": "Controls bow progression and Silver Arrow availability.",
-    "DIFFICULTY": "Changes item-pool generosity, health, and resource availability.",
-    "ITEM_FUNCTIONALITY": "Changes how strongly selected items behave in combat.",
-    "LOGIC": "Defines which movement glitches the placement logic may require.",
-    "ALGORITHM": "Chooses the strategy used to distribute progression items.",
-    "PROGRESSIVE": "Controls whether equipment upgrades appear progressively.",
-    "ACCESSIBILITY": "Sets how much of the world logic guarantees can be reached.",
-    "HINTS": "Enables or disables in-game hint text.",
-    "SHUFFLE_FOLLOWERS": "Adds follower-related interactions to the shuffled pool.",
-    "SHOPSANITY": "Moves shop inventory into the randomized location pool.",
-    "KEYDROPSHUFFLE": "Shuffles keys normally dropped by enemies or objects.",
-    "DROPSHUFFLE": "Controls which enemy and underworld drops are shuffled.",
-    "MIXED_TRAVEL": "Controls travel between Light and Dark World entrance pools.",
-    "ENTRANCE_SHUFFLE": "Rewires where overworld caves, houses, and dungeons lead.",
-    "DOOR_SHUFFLE": "Rewires room-to-room connections inside dungeons.",
-    "INTENSITY": "Sets how aggressively dungeon rooms are rearranged.",
-    "DOOR_TYPE_MODE": "Controls which door types participate in door shuffle.",
-    "TRAP_DOOR_MODE": "Controls how shutter and one-way doors behave.",
-    "KEY_LOGIC_ALGORITHM": "Sets how conservatively the generator validates key usage.",
-    "DECOUPLEDOORS": "Allows paired doors to lead to independent destinations.",
-    "DOOR_SELF_LOOPS": "Allows a shuffled door path to loop back into itself.",
-    "OW_SHUFFLE": "Rewires transitions between overworld screens.",
-    "OW_LAYOUT": "Changes the large-scale arrangement of overworld tiles.",
-    "OW_CROSSED": "Controls how Light and Dark World transitions cross.",
-    "OW_FLUTESHUFFLE": "Randomizes the destinations of flute landing spots.",
-    "OW_UNPARALLEL": "Lets corresponding Light/Dark World screens differ.",
-    "OW_TERRAIN": "Shuffles terrain and traversal features between screens.",
-    "OW_KEEPSIMILAR": "Biases shuffled screens toward similar terrain types.",
-    "OW_MIXED": "Allows entrances to cross between Light and Dark World.",
-    "OW_WHIRLPOOL": "Randomizes whirlpool connections.",
-    "MAPSHUFFLE": "Controls where dungeon maps may be placed.",
-    "COMPASSSHUFFLE": "Controls where dungeon compasses may be placed.",
-    "KEYSHUFFLE": "Controls where dungeon small keys may be placed.",
-    "BIGKEYSHUFFLE": "Controls where dungeon big keys may be placed.",
-    "PRIZESHUFFLE": "Controls where crystals and pendants may be awarded.",
-    "DUNGEON_COUNTERS": "Controls when remaining dungeon-item counts are shown.",
-    "RESTRICT_BOSS_ITEMS": "Keeps selected dungeon items away from boss rewards.",
-    "SHUFFLEBOSSES": "Randomizes which bosses appear in each dungeon.",
-    "SHUFFLEENEMIES": "Randomizes normal enemy placements.",
-    "ENEMY_DAMAGE": "Changes or randomizes damage dealt by enemies.",
-    "ENEMY_HEALTH": "Changes enemy health values.",
-    "POTTERY": "Controls which pot contents and pot locations are shuffled.",
-    "ANY_ENEMY_LOGIC": "Controls how shuffled enemy drops affect progression logic.",
-    "SKULLWOODS": "Changes how Skull Woods' unusual door network is linked.",
-    "LINKED_DROPS": "Controls whether related enemy-drop locations share results.",
-    "OVERWORLD_MAP": "Changes the information displayed by the overworld map.",
-    "SHUFFLELINKS": "Shuffles the Link's House start/return locations.",
-    "SHUFFLETAVERN": "Adds the Kakariko tavern entrance to applicable shuffles.",
-    "PSEUDOBOOTS": "Allows logic to simulate limited boots-like movement.",
-    "MIRRORSCROLL": "Enables mirror-assisted screen scrolling techniques.",
-    "BOMBBAG": "Uses bomb capacity upgrades instead of standard bomb carrying.",
-    "TAKE_ANY": "Adds Zelda-1-style take-any caves to the world.",
-    "REDUCE_FLASHING": "Reduces intense flashing effects for accessibility.",
-    "SHUFFLE_SFX": "Randomizes in-game sound-effect assignments.",
-    "QUICKSWAP": "Lets L/R cycle items without opening the inventory.",
-    "TIMER": "Controls the in-game HUD Stopwatch.",
-    "HEARTCOLOR": "Changes Link's heart-meter color.",
-    "SPOILER": "Controls whether a detailed text spoiler is written.",
-}
-
-VALUE_HELP = {
-    "vanilla": "Leaves this system unchanged.",
-    "none": "Disables this shuffle or restriction.",
-    "off": "Disables this feature.",
-    "on": "Enables this feature.",
-    "random": "Chooses a supported value randomly for each seed.",
-    "simple": "Uses a conservative shuffle with fewer surprising connections.",
-    "restricted": "Shuffles broadly while preserving additional structural rules.",
-    "full": "Uses the broadest standard shuffle pool.",
-    "basic": "Shuffles dungeon rooms within the basic door ruleset.",
-    "partitioned": "Builds shuffled dungeon sections as constrained partitions.",
-    "crossed": "Allows connections to cross larger logical boundaries.",
-    "strict": "Uses the safest, most conservative key-logic validation.",
-    "partial": "Allows moderately aggressive key layouts.",
-    "dangerous": "Allows the most aggressive key layouts; expert setting.",
-    "parallel": "Shuffles screens while keeping Light/Dark World correspondence.",
-    "grid": "Arranges overworld tiles into a randomized grid.",
-    "wild": "Allows placement across the broadest applicable pool.",
-    "balanced": "Uses the recommended balanced behavior.",
-    "nearby": "Allows placement outside the home dungeon but within a nearby pool.",
-    "universal": "Uses keys that can open compatible locks across dungeons.",
-    "pickup": "Shows the counter after its enabling item is collected.",
-    "shuffled": "Randomizes this property among compatible choices.",
-    "allow_drops": "Logic may require items dropped by shuffled enemies.",
-    "allow_all": "Logic may require any supported shuffled-enemy interaction.",
-    "linked": "Related drop locations share their randomized result.",
-    "independent": "Related drop locations randomize separately.",
-    "prevent": "Prevents mixed-world travel in this shuffle.",
-    "allow": "Allows mixed-world travel when the shuffle creates it.",
-    "force": "Forces mixed-world travel to be part of the layout.",
-    "stopwatch": "Shows a count-up HUD clock; the DB=$7E freeze fix is applied.",
-    "disabled": "Generates without an on-screen timer.",
-}
+    except Exception as exc:
+        raise RuntimeError("cannot load option help from %s: %s" %
+                           (path, exc))
 
 
 class Menu:
@@ -662,16 +559,19 @@ class Menu:
                 bits.append("Cosmetic audio only — no effect on logic or gameplay.")
                 text = "\n".join(bits)
             return ("MSU=%s" % val, "%s: %s" % (label, val), text)
-        # Reuse the curated old help copy after renaming PHP-era keys to their
-        # Python DR equivalents.
+        # Read current DR keys first. The aliases keep older help files usable;
+        # value aliases must match the legacy JSON spellings exactly.
         aliases = {
             "MODE_V": ("STATE", {}),
             "CRYSTALS_GT": ("CRYSTALS_TOWER", {}),
             "SWORDS": ("WEAPONS", {"random": "randomized"}),
             "DIFFICULTY": ("ITEM_POOL", {}),
+            "GOAL": ("GOAL", {
+                "crystals": "fast_ganon",
+                "triforcehunt": "triforce-hunt",
+            }),
             "LOGIC": ("GLITCHES", {
                 "noglitches": "none",
-                "minorglitches": "none",
                 "owglitches": "overworld_glitches",
                 "hybridglitches": "hybrid_major_glitches",
                 "nologic": "no_logic",
@@ -691,17 +591,17 @@ class Menu:
             "HEARTCOLOR": ("HEART_COLOR", {}),
             "TIMER": ("TIMER", {"disabled": "off"}),
         }
-        help_key, value_aliases = aliases.get(key, (key, {}))
-        help_val = value_aliases.get(val, val)
-        block = self.help.get(help_key, {})
-        text = block.get(help_val)
+        block = self.help.get(key, {})
+        text = block.get(val)
         if text is None:
             text = block.get("_row", "")
         if not text:
-            text = ROW_HELP.get(key, "")
-            detail = VALUE_HELP.get(val)
-            if detail:
-                text += ("\n\nSelected value: " + detail)
+            help_key, value_aliases = aliases.get(key, (key, {}))
+            help_val = value_aliases.get(val, val)
+            legacy_block = self.help.get(help_key, {})
+            text = legacy_block.get(help_val)
+            if text is None:
+                text = legacy_block.get("_row", "")
         if not text:
             raise KeyError("missing help text for %s=%s" % (key, val))
         title = "%s: %s" % (label, val)

@@ -49,6 +49,10 @@ for reg in ('','us','eu','jp'):
 info_names=', '.join('info%d'%i for i in range(1, 13))
 compact=('<scrolltext name="%s" extra="true">'
          '<fontSize>0.018</fontSize></scrolltext>')%info_names
+# Vertical-left only positions ten metadata rows. Continue its 0.04 spacing so
+# the two ALTTPR tracker rows render beneath the description instead of at 0,0.
+compact+=('<text name="info11" extra="true"><pos>0.33 0.46</pos></text>'
+         '<text name="info12" extra="true"><pos>0.33 0.50</pos></text>')
 override='<view name="system, basic, detailed, gameclip">%s%s%s</view>'%(imgs,hidden,compact)
 m=re.search(r"</formatVersion>", d)
 if m:

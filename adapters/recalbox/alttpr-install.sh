@@ -331,17 +331,36 @@ import re, sys
 p = sys.argv[1]
 d = open(p, encoding="utf-8").read()
 info = [
+    "A LINK TO THE PAST RANDOMIZER",
+    "Original Game: The Legend of Zelda: A Link to the Past | Platform: Super Nintendo Entertainment System",
+    "Original Release: 1991 | Genre: Action-Adventure / Randomizer",
+    "Objective: Find the key items and complete the game based on the options you choose.",
+    "Replayability: Practically unlimited",
     "WHAT IS ALTTPR?",
-    "ALTTPR reshuffles items and progression in Nintendo's 1991",
-    "SNES adventure, creating a new puzzle and route to victory.",
-    "",
-    "Customize enemies, bosses, entrances, dungeon layouts, and more.",
-    "",
-    "Engine : codemann8's ALttPDoorRandomizer",
-    "Features : 513 sprites, MSU-1 music, and live autotracking",
-    "",
-    "Tracker : QR or recalbox.local:8080/itemtracker.html",
+    "A Link to the Past Randomizer takes Nintendo's classic SNES adventure and reshuffles the items needed to complete the game.",
+    'Through an interactive menu, you create a "seed" - a unique, randomized ROM of ALTTP. Each generated seed becomes a new puzzle.',
+    "Customize each adventure with shuffled key items, dungeon items, enemies, bosses and entrances, four world modes, multiple difficulty settings and seven different win conditions.",
+    "Players must explore Hyrule and determine which locations are reachable with the equipment they've found.",
+    "LIVE ITEM AUTO-TRACKER",
+    "The auto-tracker follows your game in real time, automatically recording collected items and updating remaining dungeon chests as you progress through the seed. Scan the QR code to open the tracker on another device, or visit: http://recalbox.local:8080/itemtracker.html",
 ]
+# The stock SNES custom.xml supplies only info1-info10 even though the v9
+# defaults style twelve rows. Add the missing content elements before filling
+# them so the tracker heading and description are not silently dropped.
+system_view = re.search(r'(<view name="system">)(.*?)(</view>)', d, re.S)
+if system_view:
+    body = system_view.group(2)
+    missing = [
+        index for index in range(1, len(info) + 1)
+        if not re.search(r'<text name="info%d"\s+extra="true">' % index, body)
+    ]
+    if missing:
+        extra = ''.join(
+            '\n\t\t<text name="info%d" extra="true"><text></text></text>' % index
+            for index in missing
+        )
+        body += extra + '\n\t'
+        d = d[:system_view.start(2)] + body + d[system_view.end(2):]
 for index, text in enumerate(info, 1):
     pattern = (r'(<text name="info%d" extra="true">\s*<text>).*?(</text>)'
                % index)

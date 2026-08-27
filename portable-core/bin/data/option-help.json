@@ -1,108 +1,353 @@
 {
- "ACCESSIBILITY": {
-  "items": "Guarantees you can obtain 100% of items (100% inventory possible).",
-  "locations": "Guarantees every location/check is reachable (100% locations reachable).",
-  "none": "Only guarantees the seed is beatable — some items or locations may be unreachable."
- },
- "BOSS_SHUFFLE": {
-  "full": "Same as Simple except the 3 bosses which appear twice are chosen randomly.",
-  "none": "Bosses are not randomized. All bosses remain in their original dungeons.",
-  "random": "All bosses are chosen entirely at random. You may see one boss multiple times and some bosses may not feature at all.",
-  "simple": "All boss locations (except both Agahnim's and Ganon) are randomly shuffled, including the 3 Ganon's Tower refights. Simple boss shuffle always has you fight Armos Knights, Lanmolas, and Moldorm twice."
- },
- "CRYSTALS_GANON": {
-  "_row": "How many of the 7 crystals you must collect before Ganon can be damaged. Lower values let you finish the fight with fewer crystals. \"random\" picks a value 0–7 when the seed is generated.\n\nApplies to goals where crystals make Ganon vulnerable:\n- Defeat Ganon\n- Fast Ganon\n\nHas no effect on: All Dungeons (Ganon is made vulnerable by beating every dungeon boss instead), Master Sword Pedestal, Triforce Hunt, or Ganon Hunt."
- },
- "CRYSTALS_TOWER": {
-  "_row": "How many of the 7 crystals you must collect before the barrier at Ganon's Tower opens. Lower values let you enter (and start the final dungeon) sooner. \"random\" picks a value 0–7 when the seed is generated.\n\nApplies to goals where you climb Ganon's Tower:\n- Defeat Ganon\n- Fast Ganon\n- All Dungeons (you may need to enter the tower before completing all dungeons)\n\nHas no effect on: Master Sword Pedestal, Triforce Hunt, or Ganon Hunt (those don't require entering the Tower)."
- },
- "DUNGEON_ITEMS": {
-  "full": "Keysanity — Maps, Compasses, Small keys, and Big keys are all shuffled into the world and can be anywhere.",
-  "mc": "Maps and Compasses are shuffled into the world and can be found anywhere; keys stay in-dungeon.",
-  "mcs": "Maps, Compasses, and Small keys are shuffled into the world; big keys stay in-dungeon.",
-  "standard": "Maps, compasses, and keys stay inside their own dungeon (normal)."
- },
- "ENEMY_DAMAGE": {
-  "default": "Enemies deal normal damage.",
-  "random": "Damage is fully randomized and can be very swingy — a hit might tickle or nearly kill you.",
-  "shuffled": "Damage values are reshuffled among enemies within reasonable bounds."
- },
- "ENEMY_HEALTH": {
-  "default": "Normal enemy health.",
-  "easy": "Enemies have reduced health.",
-  "expert": "Enemies have greatly increased health.",
-  "hard": "Enemies have increased health."
- },
- "ENEMY_SHUFFLE": {
-  "none": "Enemies are not randomized. All enemies remain in their original locations.",
-  "random": "Same as Shuffled except enemies under bushes, as well as the percentage chance that they spawn an enemy, are also randomized. This may not seem like much of a difference but in practice it affects playability drastically. In addition tile rooms spawn tiles in random patterns and Thieves' have a 50% chance for being killable or invincible.",
-  "shuffled": "All enemies are randomized but there are some caveats to note:\n- Not all enemies can appear everywhere due to game limitations.\n- Rooms where killing all enemies is required will never include enemies which need specific weapons to kill (e.g. Mimics requiring Bow, etc).\n- Thieves' can now be killed.\n- Tile rooms are not randomized.\n- Enemies under bushes are not randomized."
- },
- "GLITCHES": {
-  "hybrid_major_glitches": "A mix of overworld and major glitches may be required by logic.",
-  "major_glitches": "Major Glitches (MG). Logic may require major glitches, including more advanced techniques.",
-  "no_logic": "No Logic. Items are placed with no guarantee of accessibility — the seed may be brutal or require deep glitch knowledge.",
-  "none": "No Glitches (aka No Major Glitches/NMG). The seed is guaranteed completable without any glitches.",
-  "overworld_glitches": "Overworld Glitches (OWG). Logic may require overworld glitches such as boots clips and screen transitions."
- },
- "GOAL": {
-  "dungeons": "All-dungeons goal. You must clear every dungeon (including Hyrule Castle Tower and Ganon's Tower) before Ganon can be beaten, then defeat Ganon.",
-  "fast_ganon": "Same as Ganon, but Ganon becomes vulnerable as soon as you have the required crystals — you skip Ganon's Tower and the Agahnim 2 fight and can go straight to him.",
-  "ganon": "The standard goal. Collect the required crystals, clear Ganon's Tower and defeat Agahnim atop it, then defeat Ganon at the Pyramid.",
-  "ganonhunt": "Triforce pieces are scattered across the world. Collect the required number to make Ganon vulnerable, then defeat him.",
-  "pedestal": "Pull the Triforce from the Master Sword pedestal in the Lost Woods. Requires the three pendants; reaching the pedestal wins — no Ganon fight.",
-  "triforce-hunt": "Collect the required number of scattered Triforce pieces and turn them in to Murahdahla (in front of Hyrule Castle) to win. No Ganon fight needed."
- },
- "HEART_COLOR": {
-  "_row": "Sets the color of the HUD hearts. Purely cosmetic."
- },
- "HINTS": {
-  "off": "Disable hints on the telepathic tiles throughout the world.",
-  "on": "Enable hints which can be found on the telepathic tiles throughout the world."
- },
- "ITEM_FUNCTIONALITY": {
-  "expert": "Item effects are nerfed further, removing most defensive \"crutches.\"",
-  "hard": "Some item effects are nerfed (e.g. the Cape and Cane of Byrna give less protection and drain more magic; silver arrows become limited).",
-  "normal": "Items work as in the normal game."
- },
- "ITEM_PLACEMENT": {
-  "advanced": "This setting is aimed at experienced players. The intention of this setting is to maximize glitchless item placement reach. Dark rooms with torches are considered accessible with the Fire Rod; other dark rooms remain logically accessible with the Lamp. No other consideration is given to the obscurity of item placements or the level of execution required to access locations. The expectation is a player choosing this setting is decently familiar and practiced with the original game.",
-  "basic": "This setting is aimed at new players or people looking for a more casual experience. Logical restrictions are in place to prevent items being placed in obscure locations which require niche knowledge to access (e.g. accessing Bumper Cave ledge without the Hookshot). Other logical restrictions also ensure excessively difficult execution is not required in order to progress. For example if you need to beat a late-game Dark World dungeon you will always have access to some sword and defense upgrades somewhere in the world."
- },
- "ITEM_POOL": {
-  "expert": "Even more restricted (sword to Master, no shield or armor upgrades, minimal consumables).",
-  "hard": "Power items are capped and consumables reduced (sword to Tempered, shield to Red, armor to Blue; less magic help and fewer refills).",
-  "normal": "The standard, full item pool."
- },
- "POT_SHUFFLE": {
-  "off": "Whatever hides under pots is normal.",
-  "on": "Shuffles what's hidden under pots within each room."
- },
- "QUICKSWAP": {
-  "false": "No quick swapping — change items from the menu.",
-  "true": "Cycle equipped items with the L/R shoulder buttons without opening the menu."
- },
- "SPOILER": {
-  "off": "No spoiler log is saved.",
-  "on": "Saves a full spoiler log next to the seed, viewable in the \"View Spoiler Logs\" browser."
- },
- "SPRITE": {
-  "_row": "Choose the character sprite (skin) for Link. Purely cosmetic — no effect on logic or gameplay."
- },
- "STATE": {
-  "inverted": "In this setting Link starts in the Dark World and must navigate his way to the Light World in order to defeat Ganon! There are several major changes for this to work:\n- Ganon's Tower and Agahnim's Tower have traded places.\n- Ganon has abandoned the Pyramid and is hiding underneath Hyrule Castle.\n- All portals now take you from the Dark World to the Light World.\n- Link will be a bunny in the Light World without the Moon Pearl.\n- The Magic Mirror now transports you from the Light World to the Dark World.\n- The crystals now unlock the door to Hyrule Castle Tower (not Ganon's Tower).\nOther modifications were required to make this work: Link's House and the Bomb Shop have traded places; the flute only works in the Dark World; lots of Light World terrain is modified to retain accessibility; the Death Mountain cave system changed; the Old Man is lost in the Dark World; Ice Palace and Turtle Rock have new access. Bunny Link can still use the Book of Mudora, talk to NPCs, and collect freestanding items. Inverted games can be really difficult — we recommend starting with some of the other world states.",
-  "open": "This setting starts as if the initial prologue has already been beaten. Zelda has already been rescued and you are free to start in either Link's House or at the Sanctuary. All the chests in Hyrule Castle (including the item Link's Uncle has) have not been collected yet, so you must decide when and whether to visit.",
-  "retro": "This setting is a throwback to the original The Legend of Zelda. The main concepts:\n- Rupee Bow: the bow no longer uses arrows for ammo and instead uses rupees. The first Progressive Bow shoots Wooden Arrows; the second can also shoot Silver Arrows. Neither works until a Rupee Quiver is purchased. The Quiver costs 80 rupees and appears in one randomly chosen shop. Wooden Arrows cost 10 rupees each; Silver Arrows cost 50.\n- Shops: five of nine possible shops are randomly chosen to contain new stock (excluding the Bomb Shop and Potion Shop). One holds the Rupee Quiver; small keys are also buyable in multiple shops for 100 rupees with no limit.\n- Small Keys: no longer dungeon-specific — they open key doors in any dungeon and may be found anywhere. Big keys, maps, and compasses remain dungeon-specific.\n- Take-Any Caves: five randomly chosen single-entrance caves now lead to take-any caves. Four offer a choice between a Heart Container and a Blue Potion refill; the fifth gives a sword upgrade (taken from the pool), leaving only 3 swords in the regular item pool.",
-  "standard": "This setting is the closest to the original game. You wake in Link's house, and go through the Escape sequence (rescuing Zelda in Hyrule Castle and delivering her to the Sanctuary). This must be completed before you are free to explore Hyrule. Your uncle is guaranteed to give you a weapon which lets you clear the prologue (although not necessarily a sword). You are given a light cone for navigating the dark rooms of the Sewers even without the Lamp (although any future visits to other dark rooms, except for the Sewers, will be in total darkness until you find the Lamp)."
- },
- "TIMER": {
-  "off": "No on-screen timer.",
-  "stopwatch": "A stopwatch timer in the HUD for practicing speed runs."
- },
- "WEAPONS": {
-  "assured": "You start with the Fighter's Sword guaranteed; the remaining sword upgrades stay in the pool.",
-  "randomized": "Swords are shuffled into the item pool like any other item and can be found anywhere (or be gated behind progression). In this mode, you may be forced to use a non-sword weapon (e.g., Bow, Cane, Bombs, etc.) until a sword is found.",
-  "swordless": "No swords exist at all. You beat the game without one — the Hammer covers most sword-only interactions (including damaging Ganon). Any curtains that require being cut (e.g., Agahnim 1 and Skull Woods.)",
-  "vanilla": "The four sword upgrades sit in their original normal spots (Uncle, pedestal, blacksmiths, and the cursed fairy)."
- }
+  "MODE_V": {
+    "standard": "Begins with the rainy Hyrule Castle escape. Rescue Zelda and deliver her to Sanctuary before the wider world opens; Uncle supplies a weapon that can clear the escape.",
+    "open": "Begins after Zelda's rescue, at Link's House or Sanctuary. Hyrule Castle's checks, including Uncle's item, remain available whenever you choose to visit.",
+    "inverted": "Starts in the Dark World and reverses much of normal world travel: the Moon Pearl is needed to be human in the Light World, the Mirror sends you to the Dark World, and major tower locations and access rules change. Intended for experienced players.",
+    "retro": "Uses Zelda-1-inspired rules: universal small keys, arrows purchased with rupees, randomized shop stock, and take-any caves. Selecting this mode also forces Universal Small Keys and converts compatible Bow/Take-Any settings to their retro forms."
+  },
+  "GOAL": {
+    "ganon": "Defeat Ganon after meeting the Ganon crystal requirement, entering Ganon's Tower, and defeating Agahnim 2. This is the standard finish.",
+    "crystals": "Fast Ganon: meet the Ganon crystal requirement and defeat Ganon without climbing Ganon's Tower or fighting Agahnim 2. The tower-entry crystal setting does not gate the finish.",
+    "dungeons": "Clear every dungeon, including both Agahnim fights and Ganon's Tower, then defeat Ganon. The separate Ganon crystal requirement does not replace the all-dungeons requirement.",
+    "pedestal": "Collect all three pendants and pull the Triforce from the Master Sword pedestal. Reaching the pedestal ends the seed; Ganon and Ganon's Tower are not required.",
+    "ganonhunt": "Find the required Triforce Pieces scattered through the world, then defeat Ganon. The normal default places 30 pieces and requires 20.",
+    "triforcehunt": "Find the required Triforce Pieces and deliver them to Murahdahla outside Hyrule Castle. The normal default places 30 and requires 20; no Ganon fight is needed.",
+    "trinity": "Three victory routes are active: defeat Ganon, pull the pedestal, or deliver enough Triforce Pieces. Complete whichever route becomes available first.",
+    "completionist": "Find every item/location required by the randomizer's completionist goal, then defeat Ganon. Expect substantially more world clearance than a standard Ganon seed."
+  },
+  "CRYSTALS_GT": {
+    "7": "All 7 crystals are required to open Ganon's Tower. In Inverted mode, this requirement opens Hyrule Castle Tower instead.",
+    "6": "Any 6 crystals open Ganon's Tower, allowing one crystal dungeon to remain uncleared at entry. In Inverted mode, this gates Hyrule Castle Tower.",
+    "5": "Any 5 crystals open Ganon's Tower, allowing two crystal dungeons to remain uncleared at entry. In Inverted mode, this gates Hyrule Castle Tower.",
+    "4": "Any 4 crystals open Ganon's Tower, so the tower may become available around the middle of crystal progression. In Inverted mode, this gates Hyrule Castle Tower.",
+    "3": "Any 3 crystals open Ganon's Tower, permitting an early tower climb if its entrance is reachable. In Inverted mode, this gates Hyrule Castle Tower.",
+    "2": "Any 2 crystals open Ganon's Tower, making its checks available very early. In Inverted mode, this gates Hyrule Castle Tower.",
+    "1": "The first crystal opens Ganon's Tower. In Inverted mode, the first crystal instead opens Hyrule Castle Tower.",
+    "0": "No crystals are needed to open Ganon's Tower; reaching the entrance is enough. In Inverted mode, Hyrule Castle Tower likewise has no crystal gate.",
+    "random": "The generator chooses a tower-entry requirement from 0 through 7 for this seed. In Inverted mode, the rolled value applies to Hyrule Castle Tower."
+  },
+  "CRYSTALS_GANON": {
+    "7": "All 7 crystals are required before Ganon can be damaged. Other requirements from the selected goal still apply; All Dungeons ignores this setting.",
+    "6": "Any 6 crystals make Ganon vulnerable, so one crystal dungeon may be skipped unless the goal requires it. All Dungeons ignores this setting.",
+    "5": "Any 5 crystals make Ganon vulnerable, so two crystal dungeons may be skipped unless the goal requires them. All Dungeons ignores this setting.",
+    "4": "Any 4 crystals make Ganon vulnerable, allowing a shorter finish when the selected goal permits it. All Dungeons ignores this setting.",
+    "3": "Any 3 crystals make Ganon vulnerable, creating a low-crystal Ganon route when the selected goal permits it. All Dungeons ignores this setting.",
+    "2": "Any 2 crystals make Ganon vulnerable, creating a very short crystal requirement when the selected goal permits it. All Dungeons ignores this setting.",
+    "1": "The first crystal makes Ganon vulnerable. Access and every other requirement imposed by the selected goal still apply; All Dungeons ignores this setting.",
+    "0": "Ganon has no crystal vulnerability gate. You must still reach him and satisfy the selected goal's other requirements; All Dungeons ignores this setting.",
+    "random": "The generator chooses Ganon's vulnerability requirement from 0 through 7 for this seed. Other goal requirements still apply; All Dungeons ignores the roll."
+  },
+  "SWORDS": {
+    "random": "All sword upgrades are shuffled into the item pool. Early progression may require using another weapon until a sword is found.",
+    "assured": "Start with the Fighter's Sword; the remaining upgrades stay in the randomized item pool. This guarantees an immediate reusable weapon.",
+    "vanilla": "Sword upgrades remain at Uncle, the Master Sword pedestal, the blacksmiths, and the cursed fairy instead of joining the general item pool.",
+    "swordless": "Removes every sword. The randomizer adapts sword-gated interactions: the Hammer can damage Ganon and replace several sword uses, and required curtains or barriers are adjusted."
+  },
+  "FLUTE_MODE": {
+    "normal": "The Flute enters the pool inactive. After finding it, you must complete the normal activation step before using fast travel.",
+    "active": "The Flute is already activated when found, so fast travel becomes usable immediately without visiting the activation location."
+  },
+  "BOW_MODE": {
+    "progressive": "Places two Progressive Bows: the first grants the Bow and the second adds Silver Arrows. Their order is determined by pickup order.",
+    "silvers": "Places the Bow and Silver Arrow upgrade as separate items. Finding Silvers does not substitute for finding the Bow.",
+    "retro": "Uses a Zelda-1-style Bow that spends rupees per shot and needs the retro quiver/ammo setup. Retro game state can force this value from Progressive.",
+    "retro_silvers": "Uses the rupee-powered retro Bow while keeping the Silver Arrow upgrade separate. Retro game state can force this value from Silvers."
+  },
+  "DIFFICULTY": {
+    "normal": "Uses the full standard item pool, including normal equipment upgrades, health, magic help, and consumable resources.",
+    "hard": "Restricts upgrades and resources: swords cap at Tempered, shields at Red, armor upgrades are removed, and magic/consumable support is reduced.",
+    "expert": "Uses the leanest pool: swords cap at Master, shield and armor upgrades are removed, and consumable support is minimal. Routing and combat are less forgiving."
+  },
+  "ITEM_FUNCTIONALITY": {
+    "normal": "Items retain their normal randomizer behavior, including standard protection, magic costs, and Silver Arrow use.",
+    "hard": "Weakens selected powerful items: Cape and Cane of Byrna protection costs more magic, and Silver Arrow use is more limited.",
+    "expert": "Applies the strongest item nerfs and removes most defensive safety tools. Choose this for demanding combat rather than a smaller item pool."
+  },
+  "LOGIC": {
+    "noglitches": "Placement guarantees completion without requiring glitches. Optional sequence breaks remain possible but are never logically necessary.",
+    "minorglitches": "Logic may require minor techniques such as Fake Flippers, Bunny Revival, and dark-room navigation. It does not open the full overworld-glitch ruleset.",
+    "owglitches": "Logic may require overworld clips and teleports, including boots clips and screen-transition techniques. Familiarity with Overworld Glitches is expected.",
+    "hybridglitches": "Logic may require overworld techniques plus underworld/major-glitch routes. This is more demanding and less constrained than Overworld Glitches.",
+    "nologic": "Items are distributed without accessibility requirements. A seed is not guaranteed beatable and may demand arbitrary glitches or contain inaccessible progression."
+  },
+  "ALGORITHM": {
+    "balanced": "Uses the balanced VT26-derived fill, intended to avoid consistently favoring either overworld or dungeon locations for progression.",
+    "vanilla_fill": "Prefers each item's original location first, then other preferred locations if needed. The result keeps more vanilla placement flavor while still respecting logic.",
+    "major_only": "Preferentially places major items at the set of locations that held major items in the original game. Remaining placements still follow logic.",
+    "dungeon_only": "Preferentially places major items in dungeon locations. Expect more required dungeon exploration than with the balanced fill.",
+    "district": "Selects designed groups of locations as progression districts. Discoveries can provide stronger clues about where other advancement items are concentrated."
+  },
+  "PROGRESSIVE": {
+    "on": "Swords, shields, armor, and gloves upgrade one tier per pickup. The same progressive icon always grants the next level in that equipment family.",
+    "off": "Equipment tiers are placed directly rather than progressively. A high tier can appear early, and later lower-tier pickups do not downgrade equipment.",
+    "random": "For each equipment family, the generator independently chooses progressive or direct-tier behavior. The result can mix both systems in one seed."
+  },
+  "ACCESSIBILITY": {
+    "items": "Guarantees every unique inventory item can be reached. Some checks and surplus dungeon items may remain inaccessible after the seed is beatable.",
+    "locations": "Guarantees every item location/check is reachable. This is the strongest accessibility promise and can constrain placements more heavily.",
+    "none": "Guarantees only enough access to complete the selected goal. Optional items and locations may be permanently unreachable."
+  },
+  "HINTS": {
+    "on": "Telepathic tiles and storyteller NPCs provide generated clues about useful items or locations, giving routing information without opening the spoiler log.",
+    "off": "Telepathic tiles and storytellers do not reveal generated item-location clues. Progress must come from exploration or an external spoiler."
+  },
+  "SHUFFLE_FOLLOWERS": {
+    "off": "Follower interactions such as the Purple Chest and Old Man keep their normal routing behavior.",
+    "on": "Follower interactions such as the Purple Chest and Old Man participate in the shuffle, adding escort-routing considerations to the seed."
+  },
+  "SHOPSANITY": {
+    "off": "Shops retain their normal stock rules; shop slots do not become general randomized item locations.",
+    "on": "Shop inventory joins the main item pool, and other items can occupy shop slots. Rupees and access to shops may become progression considerations."
+  },
+  "KEYDROPSHUFFLE": {
+    "off": "Keys normally dropped by enemies or objects stay as local key drops. Enemy Drop Shuffle and Pot Shuffle keep their separately selected behavior.",
+    "on": "Key drops join the shuffled pool. If Enemy Drop Shuffle or Pot Shuffle is None, the engine promotes that setting to Keys so those key locations can participate."
+  },
+  "DROPSHUFFLE": {
+    "none": "Enemies retain normal prize-pack and key drops. No enemy-drop locations are added to the randomized item pool.",
+    "keys": "Enemies that normally drop keys can receive other items, while those keys move into the item pool. This adds a limited set of enemy checks.",
+    "underworld": "All killable underworld enemies can become item-drop locations, greatly expanding the pool and making enemy clearing more important."
+  },
+  "MIXED_TRAVEL": {
+    "prevent": "In Crossed door shuffle, rails remain where needed to stop bomb jumps or hovering from crossing between dungeons. Glitched logic may still permit such routes.",
+    "allow": "In Crossed door shuffle, protective rails are removed, so player-executed bomb jumps or hovering may cross dungeon boundaries; these crossings are not forced into logic.",
+    "force": "Groups troublesome Crossed-door connections into the same dungeon while removing the protective rails. The advanced movement itself is still not required by logic."
+  },
+  "ENTRANCE_SHUFFLE": {
+    "vanilla": "Every cave, house, and dungeon entrance leads to its original interior. Door and overworld shuffles can still change their own separate connections.",
+    "simple": "Shuffles dungeon entrances with each other while keeping multi-entrance dungeons together. Most caves shuffle in matched pairs and by original type.",
+    "restricted": "Uses Simple's dungeon rules, but connects the remaining cave and house entrances more freely. Multi-entrance structure remains more constrained than Full.",
+    "full": "Mixes cave and dungeon entrances in one broad pool while keeping each multi-entrance cave within a single world.",
+    "lite": "Beginner-oriented pools keep dungeons/connectors, drop-downs, and item locations separate. Non-item locations stay vanilla and connectors remain in the same world.",
+    "lean": "Uses Lite's separated pools, but connectors may carry you between Light and Dark World. Non-item locations remain vanilla.",
+    "district": "Shuffles entrances only within their overworld districts. Navigation changes, but useful destinations remain in the same broad geographic area.",
+    "swapped": "Uses Crossed-style cave/dungeon mixing, but entrances exchange places in pairs. The paired structure is more predictable than full decoupling.",
+    "crossed": "Mixes cave and dungeon entrances freely and allows multi-entrance caves to span Light and Dark World, increasing route complexity.",
+    "insanity": "Decouples entrances from exits and shuffles each direction freely. Single-entrance caves still return to the entrance used, but most bidirectional assumptions are gone.",
+    "dungeonsfull": "Applies Full-style mixing only to dungeon entrances; caves, houses, and other entrances remain in their original locations.",
+    "dungeonssimple": "Applies Simple-style swapping only to dungeon entrances, keeping multi-entrance dungeons together; non-dungeon entrances remain vanilla."
+  },
+  "DOOR_SHUFFLE": {
+    "vanilla": "Room-to-room dungeon doors keep their original destinations. Other dungeon settings can still affect keys, prizes, counters, and entrances.",
+    "basic": "Shuffles supported doors within each individual dungeon. Dungeon identity stays intact while room routes and key order change.",
+    "partitioned": "Mixes doors within three large dungeon partitions: Light-world dungeons/towers, early Dark-world dungeons, and late Dark-world dungeons.",
+    "crossed": "Mixes supported doors across all dungeons. Rooms can form cross-dungeon layouts, producing the most extensive dungeon-routing changes."
+  },
+  "INTENSITY": {
+    "1": "Door shuffle includes normal doors and spiral staircases. Open edges, straight stairs, and dungeon lobbies stay out of the shuffle.",
+    "2": "Includes level 1 connections plus open room edges and both straight-stair types, creating more varied internal routes.",
+    "3": "Includes level 2 connections plus dungeon lobbies. This is the broadest fixed door-shuffle intensity.",
+    "random": "Chooses door intensity 1, 2, or 3 when the seed is generated, so the participating connection types are unknown in advance."
+  },
+  "DOOR_TYPE_MODE": {
+    "original": "Shuffles the original supported set: key doors, bombable doors, and dashable doors. Big-key and trap doors retain their normal type roles.",
+    "big": "Adds big-key doors to the Original door-type pool, allowing more door identities and lock requirements to move.",
+    "all": "Adds trap doors to the Big pool, along with any other supported door types introduced by the engine.",
+    "chaos": "Increases the variety of door types placed throughout every dungeon pool. Expect the least predictable lock and doorway composition."
+  },
+  "TRAP_DOOR_MODE": {
+    "vanilla": "Keeps trap/shutter doors in place even when they block a shuffled route, preserving their original closure behavior.",
+    "optional": "Removes trap doors when they would block required traversal, while otherwise retaining them. This is the safer shuffled-door treatment.",
+    "boss": "Uses Optional removal and also removes boss-room trap doors when applicable, reducing post-boss shutter restrictions.",
+    "oneway": "Removes all supported troublesome trap doors, minimizing one-way or unexpectedly closed routes in shuffled dungeons."
+  },
+  "KEY_LOGIC_ALGORITHM": {
+    "strict": "Uses the strongest small-key availability checks, ensuring keys are available before the logic expects their locks to be opened.",
+    "partial": "Provides partial key protection while accommodating certain minor-glitch routes. It is less conservative than Strict.",
+    "dangerous": "Requires the player to follow the generated safe key-use logic. Spending keys on a different route can create avoidable key problems."
+  },
+  "DECOUPLEDOORS": {
+    "off": "A paired dungeon doorway remains two-way: returning through it leads back to the room you came from.",
+    "on": "Each direction of a dungeon doorway can receive an independent destination. Backtracking through the same doorway may lead somewhere else."
+  },
+  "DOOR_SELF_LOOPS": {
+    "off": "Spiral staircases cannot be assigned a destination that loops directly back to themselves.",
+    "on": "Spiral staircases may self-loop, adding dead-end-looking connections that return to the same staircase."
+  },
+  "OW_SHUFFLE": {
+    "vanilla": "Uses the current Overworld Layout and Unparallel Worlds selections without applying a legacy override. This compatibility setting does not itself rearrange screens.",
+    "parallel": "Legacy compatibility mode: forces Wild Overworld Layout and matching Light/Dark World layouts. It overrides the separate Layout and Unparallel selections.",
+    "full": "Legacy compatibility mode: forces Wild Overworld Layout and independent Light/Dark World layouts. It overrides the separate Layout and Unparallel selections."
+  },
+  "OW_LAYOUT": {
+    "vanilla": "Overworld edge transitions retain the original screen arrangement. Legacy Overworld Shuffle values Parallel or Full override this selection.",
+    "grid": "Rearranges overworld screens on 8×8 grids, so cardinal screen edges connect according to their new grid positions. Legacy Parallel/Full overrides this to Wild.",
+    "wild": "Shuffles overworld transitions without preserving geometric coherence. A screen edge may lead to a geographically unrelated edge."
+  },
+  "OW_CROSSED": {
+    "none": "Overworld walking transitions stay within their current world; no screen edge directly crosses between Light and Dark World.",
+    "grouped": "Allows cross-world walking edges while preserving two separated planes, preventing ordinary walking from simply reaching the counterpart plane.",
+    "polar": "For tile-flip configurations, preserves original edge relationships when overworld tiles are flipped. Outside that configuration it has no distinct effect.",
+    "unrestricted": "Each eligible overworld transition has a 50/50 chance to cross between Light and Dark World, creating frequent world changes while walking."
+  },
+  "OW_FLUTESHUFFLE": {
+    "vanilla": "Each flute number lands at its original destination. Overworld layout changes may still alter the surrounding routes.",
+    "balanced": "Generates new flute destinations while preventing landing spots from appearing on adjacent screens, spreading fast-travel access around the map.",
+    "random": "Generates new flute destinations with minimal placement bias. Landing spots can cluster more closely than in Balanced."
+  },
+  "OW_UNPARALLEL": {
+    "off": "With Overworld Layout Shuffle, Light and Dark World use matching layouts. Legacy Overworld Shuffle Full overrides this choice.",
+    "on": "With Overworld Layout Shuffle, Light and Dark World layouts may differ, weakening counterpart-screen navigation. Legacy Parallel/Full overrides this choice."
+  },
+  "OW_TERRAIN": {
+    "off": "Overworld layout shuffle connects compatible terrain edges; land and water edges are not freely joined.",
+    "on": "Overworld layout shuffle may connect land edges to water edges, creating less natural terrain joins and more unusual traversal."
+  },
+  "OW_KEEPSIMILAR": {
+    "off": "Eligible overworld edges shuffle without preserving multi-edge shapes such as a screen's paired west exits.",
+    "on": "Keeps similar edge groups together during overworld shuffle, such as pairing a screen's two west edges with another comparable pair."
+  },
+  "OW_MIXED": {
+    "off": "Overworld tiles retain their original Light- or Dark-World identity.",
+    "on": "Randomly assigns some overworld tiles to the opposite world. This changes world identity at the tile level, not merely an entrance destination."
+  },
+  "OW_WHIRLPOOL": {
+    "off": "Whirlpools retain their normal pairings and destinations.",
+    "on": "Whirlpool endpoints are shuffled and re-paired, turning them into randomized water-travel connections."
+  },
+  "MAPSHUFFLE": {
+    "none": "Each dungeon map remains restricted to its own dungeon.",
+    "nearby": "Maps may leave their home dungeon but use the engine's narrower nearby placement pool rather than the unrestricted world pool.",
+    "wild": "Dungeon maps join the unrestricted item pool and can appear at any logically valid world location."
+  },
+  "COMPASSSHUFFLE": {
+    "none": "Each dungeon compass remains restricted to its own dungeon.",
+    "nearby": "Compasses may leave their home dungeon but use the engine's narrower nearby placement pool rather than the unrestricted world pool.",
+    "wild": "Dungeon compasses join the unrestricted item pool and can appear at any logically valid world location."
+  },
+  "KEYSHUFFLE": {
+    "none": "Each small key remains restricted to its own dungeon and only opens that dungeon's locks.",
+    "nearby": "Dungeon-specific small keys may leave their home dungeon but use the engine's narrower nearby placement pool.",
+    "wild": "Dungeon-specific small keys join the unrestricted item pool. Keys for late dungeons can appear anywhere logic permits.",
+    "universal": "Replaces dungeon-specific small keys with universal keys that open compatible locks in any dungeon. Retro game state forces this setting."
+  },
+  "BIGKEYSHUFFLE": {
+    "none": "Each big key remains restricted to its own dungeon.",
+    "nearby": "Big keys may leave their home dungeon but use the engine's narrower nearby placement pool rather than the unrestricted world pool.",
+    "wild": "Dungeon big keys join the unrestricted item pool and can appear at any logically valid world location."
+  },
+  "PRIZESHUFFLE": {
+    "none": "Crystals and pendants remain boss rewards in their assigned dungeons.",
+    "dungeon": "Dungeon prizes can move from bosses to other dungeon locations, adding prize checks inside dungeons.",
+    "nearby": "Crystals and pendants may leave their boss locations but use the engine's narrower nearby placement pool.",
+    "wild": "Crystals and pendants join the unrestricted item pool and can appear at any logically valid world location."
+  },
+  "DUNGEON_COUNTERS": {
+    "default": "Uses pickup-gated counters when door, drop, pot, or widely shuffled dungeon-item settings make them useful; otherwise leaves counters hidden.",
+    "off": "Hides remaining dungeon-item/chest counts, so dungeon completion must be tracked manually.",
+    "on": "Shows dungeon counters without requiring the counter's associated pickup, providing immediate information about remaining checks.",
+    "pickup": "Reveals a dungeon's counter only after its associated counter-enabling dungeon item is collected, making the information itself a reward."
+  },
+  "RESTRICT_BOSS_ITEMS": {
+    "none": "Boss rewards may contain maps, compasses, and keys when those items' shuffle settings permit it.",
+    "mapcompass": "Requires a dungeon's Map and Compass before its boss can be fought, and keeps both items off that boss reward.",
+    "dungeon": "Requires a dungeon's Map and Compass before its boss can be fought, and keeps Maps, Compasses, Small Keys, and Big Keys off that boss reward. Small- or Big-Key shuffle settings can override the corresponding item restriction."
+  },
+  "SHUFFLEBOSSES": {
+    "none": "Every boss remains in its original dungeon, including the three Ganon's Tower refights.",
+    "simple": "Shuffles all non-Agahnim/Ganon boss slots. Armos Knights, Lanmolas, and Moldorm each appear twice, matching the original duplicate set.",
+    "unique": "Uses each boss at most once among regular dungeon slots and avoids repeats among the three Ganon's Tower slots. A boss can still appear once in each group.",
+    "full": "Shuffles every supported boss slot and randomly chooses which three bosses receive a second appearance, rather than always duplicating the vanilla trio.",
+    "random": "Chooses every supported boss slot independently. A boss may appear many times while another may not appear at all; location compatibility rules still apply."
+  },
+  "SHUFFLEENEMIES": {
+    "none": "Normal enemies remain in their original rooms and positions.",
+    "shuffled": "Replaces normal enemies with compatible randomized enemies. Placement restrictions protect required kill rooms from impossible weapon requirements; tile rooms and bush enemies stay unchanged."
+  },
+  "ENEMY_DAMAGE": {
+    "default": "Each enemy deals its normal damage amount.",
+    "shuffled": "Reassigns existing damage values among enemies within the randomizer's bounded shuffle, changing threat levels without fully arbitrary damage.",
+    "random": "Randomizes enemy damage broadly. A normally weak enemy may deal severe damage, making safe routing and defense less predictable."
+  },
+  "ENEMY_HEALTH": {
+    "default": "Each enemy keeps its original health value.",
+    "easy": "Applies the lowest randomized health range, generally shortening fights and reducing combat resource use.",
+    "normal": "Randomizes health within the standard range rather than preserving each enemy's original value.",
+    "hard": "Uses a higher randomized health range, making many enemies take more hits and consume more ammunition or magic.",
+    "expert": "Uses the highest randomized health range. Long fights and heavy resource demands can occur even against ordinary enemies."
+  },
+  "POTTERY": {
+    "none": "Pot contents stay in their original places and no pot becomes a randomized item location.",
+    "keys": "Pots that originally hold keys join the location pool; other items can replace those keys, and the displaced keys are shuffled.",
+    "dungeon": "Pots inside dungeons join the randomized location pool, while cave and house pots stay normal.",
+    "cave": "Pots in houses and caves join the randomized location pool, while dungeon pots stay normal.",
+    "cavekeys": "Combines Cave and Keys: house/cave pots and original key pots join the randomized location pool.",
+    "reduced": "Uses CaveKeys plus roughly 25% of dungeon pots, dynamically adding a smaller sample of dungeon pot checks.",
+    "clustered": "Uses CaveKeys plus roughly 50% of dungeon pots selected in logical groups, so added pot checks tend to occur in clusters.",
+    "nonempty": "Every pot that originally contained something joins the location pool; originally empty pots remain empty.",
+    "lottery": "Every pot becomes part of the randomized location pool. This creates the maximum number of pot checks and substantially lengthens exhaustive search."
+  },
+  "ANY_ENEMY_LOGIC": {
+    "none": "Required doors, chests, and key drops avoid enemies needing unusual weapons. Logic does not depend on specialized shuffled-enemy kills.",
+    "allow_drops": "Unusual enemies may guard required enemy drops, and logic requires access to a weapon that can defeat them. Other protected interactions remain conservative.",
+    "allow_all": "Any supported enemy may guard doors, chests, or drops; placement logic adapts weapon requirements to the chosen enemy. This permits the broadest enemy layouts."
+  },
+  "SKULLWOODS": {
+    "original": "Shuffles Skull Woods' entrances and drop-downs within its own special network rather than placing them in the main entrance pool.",
+    "restricted": "Keeps Skull Woods drop-downs vanilla and confines its entrances to Skull Woods, preserving the dungeon's local structure.",
+    "loose": "Keeps Skull Woods drop-downs vanilla but moves its entrances into the main entrance-shuffle pool.",
+    "followlinked": "When drop-downs are Linked, keeps pinball/left-side access vanilla and pairs other drops with entrances; otherwise puts all Skull Woods entrances in the main pool."
+  },
+  "LINKED_DROPS": {
+    "unset": "Lets the selected entrance-shuffle mode decide whether drop-down entrances stay linked to cave entrances.",
+    "linked": "Pairs drop-down entrances with entrance caves, preserving a relationship between where you fall and the associated cave route.",
+    "independent": "Shuffles drop-down entrances separately from cave entrances, removing the paired relationship and increasing route uncertainty."
+  },
+  "OVERWORLD_MAP": {
+    "default": "Uses the original dungeon-indicator behavior and omits the added Hyrule Castle, Agahnim's Tower, and Ganon's Tower icons.",
+    "compass": "Ties overworld dungeon-location indicators to the relevant Compass pickup, making Compasses useful for map information.",
+    "map": "Ties overworld dungeon-location indicators to the relevant Dungeon Map pickup, making Maps useful for overworld information."
+  },
+  "SHUFFLELINKS": {
+    "off": "Link's House is excluded from the entrance-shuffle pool, preserving its normal start/return entrance behavior.",
+    "on": "Includes Link's House in the applicable entrance-shuffle pool. Starting and returning home can connect to a randomized interior route."
+  },
+  "SHUFFLETAVERN": {
+    "off": "The back of the Kakariko tavern is excluded from the entrance-shuffle pool and keeps its normal connection.",
+    "on": "Includes the tavern's back entrance in applicable entrance shuffles, adding another one-way-style entrance to route."
+  },
+  "PSEUDOBOOTS": {
+    "off": "Link cannot dash until the real Pegasus Boots are found, and Boots item checks retain their normal requirement.",
+    "on": "Link starts able to dash, but logic does not count this ability as owning Pegasus Boots for Boots-specific item checks."
+  },
+  "MIRRORSCROLL": {
+    "off": "The Magic Mirror cannot be used in dungeons until the actual Mirror is found.",
+    "on": "Link starts with a Mirror Scroll that permits dungeon mirroring but not overworld world-switching. The actual Mirror is still needed for overworld use."
+  },
+  "BOMBBAG": {
+    "off": "Uses normal bomb capacity and the standard bomb-capacity upgrade pool.",
+    "on": "Starts with zero bomb capacity and adds two +10 Bomb Bag upgrades to the pool. Bomb use is unavailable until an upgrade is found."
+  },
+  "TAKE_ANY": {
+    "none": "No Zelda-1-style take-any caves are added.",
+    "random": "Replaces a random selection of eligible low-interest caves with take-any caves, so their locations vary by seed.",
+    "fixed": "Places take-any caves at the engine's fixed eligible locations rather than choosing replacement caves randomly."
+  },
+  "REDUCE_FLASHING": {
+    "off": "Keeps the original game's flashing visual effects.",
+    "on": "Reduces supported intense in-game flashes for visual accessibility. This is a cosmetic patch and does not alter seed logic."
+  },
+  "SHUFFLE_SFX": {
+    "off": "Sound effects retain their normal assignments.",
+    "on": "Randomly reassigns supported in-game sound effects. This changes audio feedback only and does not affect item logic or music."
+  },
+  "QUICKSWAP": {
+    "true": "L/R cycles the equipped inventory item without opening the menu, speeding item changes during movement and combat.",
+    "false": "L/R quick item cycling is unavailable; change the equipped item from the inventory menu."
+  },
+  "TIMER": {
+    "stopwatch": "Displays a count-up timer in the HUD for practice or speedrun timing. The portable build applies its verified timer safety patch to this ROM.",
+    "disabled": "Leaves the HUD timer hidden and does not add clock items or timed win conditions."
+  },
+  "HEARTCOLOR": {
+    "red": "Draws the HUD heart meter in the original red palette. This is cosmetic and does not change health.",
+    "blue": "Draws the HUD heart meter in blue. This is cosmetic and does not change health.",
+    "green": "Draws the HUD heart meter in green. This is cosmetic and does not change health.",
+    "yellow": "Draws the HUD heart meter in yellow. This is cosmetic and does not change health.",
+    "random": "Chooses one supported heart-meter color when generating the ROM. The rolled color is cosmetic and does not change health."
+  },
+  "SPOILER": {
+    "on": "Writes a full spoiler text file beside the generated ROM, including settings and item placements; it can be opened from View Spoiler Logs.",
+    "off": "Writes no spoiler log beside the ROM. The seed remains playable, but its placements cannot be reviewed through the built-in spoiler browser."
+  }
 }
