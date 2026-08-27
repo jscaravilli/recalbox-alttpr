@@ -330,48 +330,30 @@ for THEME in \
 import sys
 import xml.etree.ElementTree as ET
 p = sys.argv[1]
-info = """A LINK TO THE PAST RANDOMIZER
-
-Original Game: The Legend of Zelda: A Link to the Past
-Platform: Super Nintendo Entertainment System
-Original Release: 1991
-Genre: Action-Adventure / Randomizer
-Objective: Find the key items and complete the game based on the options you choose.
-Replayability: Practically unlimited
-
-WHAT IS ALTTPR?
-
-A Link to the Past Randomizer takes Nintendo's classic SNES adventure and
-reshuffles the items needed to complete the game.
-
-Through an interactive menu, you create a "seed"—a unique, randomized ROM
-of ALTTP. Each generated seed becomes a new puzzle.
-
-Customize each adventure with shuffled key items, dungeon items, enemies,
-bosses and entrances, four world modes, multiple difficulty settings and
-seven different win conditions.
-
-Players must explore Hyrule and determine which locations are reachable
-with the equipment they've found.
-
-LIVE ITEM AUTO-TRACKER
-
-The auto-tracker follows your game in real time, automatically recording
-collected items and updating remaining dungeon chests as you progress
-through the seed.
-
-Scan the QR code to open the tracker on another device, or visit:
-http://recalbox.local:8080/itemtracker.html"""
+info = [
+    "A LINK TO THE PAST RANDOMIZER",
+    "Original: A Link to the Past | SNES | 1991",
+    "Create a unique seed from the interactive menu.",
+    "Shuffle items, enemies, bosses, and entrances.",
+    "Choose world, difficulty, and win conditions.",
+    "Explore Hyrule with the equipment you find.",
+    "LIVE ITEM AUTO-TRACKER",
+    "Tracks collected items and dungeon chests.",
+    "Scan the QR code or visit:",
+    "recalbox.local:8080/itemtracker.html",
+]
 tree = ET.parse(p)
 root = tree.getroot()
-fixed = [element for element in root.iter("text")
-         if element.get("name") == "alttpr_info"]
-if len(fixed) != 1:
-    raise RuntimeError("fixed ALTTPR text element is missing")
-content = fixed[0].find("text")
-if content is None:
-    content = ET.SubElement(fixed[0], "text")
-content.text = info
+for index, line in enumerate(info, 1):
+    name = "info%d" % index
+    fixed = [element for element in root.iter("text")
+             if element.get("name") == name]
+    if len(fixed) != 1:
+        raise RuntimeError("ALTTPR theme text element is missing: " + name)
+    content = fixed[0].find("text")
+    if content is None:
+        content = ET.SubElement(fixed[0], "text")
+    content.text = line
 tree.write(p, encoding="unicode")
 PY
   if [ $? -ne 0 ]; then

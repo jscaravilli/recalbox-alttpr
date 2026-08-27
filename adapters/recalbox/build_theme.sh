@@ -46,17 +46,7 @@ hidden=''
 for reg in ('','us','eu','jp'):
     r=(' region="%s"'%reg) if reg else ''
     hidden+='<image name="controller" extra="true"%s><pos>2 2</pos></image>'%r
-info_names=', '.join('info%d'%i for i in range(1, 13))
-# Hide the inherited single-line metadata rows and replace them with one fixed
-# multiline field. A normal text element wraps but never marquee-scrolls.
-fixed=('<text name="%s" extra="true"><pos>2 2</pos></text>'
-       '<text name="alttpr_info" extra="true">'
-       '<pos>0.33 0.055</pos><size>0.39 0.56</size>'
-       '<fontPath>./data/arts/Exo2-SemiBoldCondensed.otf</fontPath>'
-       '<fontSize>0.014</fontSize><lineSpacing>1.08</lineSpacing>'
-       '<alignment>left</alignment><color>ffffff</color>'
-       '</text>')%info_names
-override='<view name="system, basic, detailed, gameclip">%s%s%s</view>'%(imgs,hidden,fixed)
+override='<view name="system, basic, detailed, gameclip">%s%s</view>'%(imgs,hidden)
 m=re.search(r"</formatVersion>", d)
 if m:
     d=d[:m.end()]+override+d[m.end():]
