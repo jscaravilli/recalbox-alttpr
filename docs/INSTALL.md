@@ -252,6 +252,8 @@ Every required check must report `PASS`, ending with:
 ALTTPR health check passed.
 ```
 
+Continue with the [user guide](USER-GUIDE.md).
+
 On the television:
 
 1. Confirm **ALTTPR - Link to the Past Randomizer** appears as a system.

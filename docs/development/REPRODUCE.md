@@ -134,7 +134,7 @@ watcher owns library refreshes; this hook never restarts EmulationStation.
 ## 7. Golden image
 
 Once verified, power off and image the whole card (all 3 partitions) to a `.img`
-for one-step re-flash / cloning. See docs/BUILD-LOG.md.
+for one-step re-flash / cloning. See `BUILD-LOG.md`.
 
 ## Overlay-install profile (existing Pi, no reformat)
 
