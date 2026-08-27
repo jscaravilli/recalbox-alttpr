@@ -21,13 +21,9 @@ Linux already provide a compatible shell and SSH client.
 Clone this repository:
 
 ```sh
-git clone https://github.com/jscaravilli/recalbox-alttpr-portable.git
-cd recalbox-alttpr-portable
+git clone https://github.com/jscaravilli/recalbox-alttpr.git
+cd recalbox-alttpr
 ```
-
-If the repository is private, the owner must first grant your GitHub account
-access or provide a source archive. The installation contains no credentials or
-private ROM data.
 
 Have your legally obtained, unheadered Japanese v1.0 ROM available on the PC.
 This guide calls it `alttp-jp10.sfc`.

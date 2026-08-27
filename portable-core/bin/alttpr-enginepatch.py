@@ -14,10 +14,17 @@ STOPWATCH_TRAMPOLINE_PC = (
 STOPWATCH_TRAMPOLINE_SIZE = 0x10
 PINNED_DR_COMMIT = "7e14fddab00b847d6eccf0931b365a5774c5476a"
 PRISTINE_SHA256 = "e9d6c6914896bb7eb387298e20a806fb90f2a1051176b66f0dacfa6ed5ab8295"
-PATCHED_SHA256 = "5866dac0f24b89abb35ddd84db37081a3a092aa264d67a5f79eba266156d8941"
+LEGACY_PATCHED_SHA256 = "5866dac0f24b89abb35ddd84db37081a3a092aa264d67a5f79eba266156d8941"
+PATCHED_SHA256 = "a4affa17b8d1e4c7ae4f816871f21f2e6b71a4a9364fe3cd5815d27f25348db6"
+LEGACY_COMMENT = (
+    "# Reserved by recalbox-alttpr-portable for the HUD Stopwatch DB wrapper."
+)
+CURRENT_COMMENT = (
+    "# Reserved by recalbox-alttpr for the HUD Stopwatch DB wrapper."
+)
 
 CONSTANTS = """\
-# Reserved by recalbox-alttpr-portable for the HUD Stopwatch DB wrapper.
+# Reserved by recalbox-alttpr for the HUD Stopwatch DB wrapper.
 STOPWATCH_TRAMPOLINE_SNES = 0x37FFF0
 STOPWATCH_TRAMPOLINE_PC = snes_to_pc(STOPWATCH_TRAMPOLINE_SNES)
 STOPWATCH_TRAMPOLINE_SIZE = 0x10
@@ -39,7 +46,8 @@ def main():
     source = pathlib.Path(sys.argv[1]) / "source" / "rom" / "DataTables.py"
     text = source.read_text(encoding="utf-8")
     digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
-    if digest not in (PRISTINE_SHA256, PATCHED_SHA256):
+    if digest not in (
+            PRISTINE_SHA256, LEGACY_PATCHED_SHA256, PATCHED_SHA256):
         raise RuntimeError(
             "pinned DataTables.py provenance check failed; expected DR commit "
             + PINNED_DR_COMMIT)
@@ -49,6 +57,8 @@ def main():
             raise RuntimeError("DataTables import anchor changed")
         text = text.replace(IMPORT_ANCHOR, IMPORT_ANCHOR + CONSTANTS, 1)
         text = text.replace(OLD_GUARD, NEW_GUARD, 1)
+    elif digest == LEGACY_PATCHED_SHA256:
+        text = text.replace(LEGACY_COMMENT, CURRENT_COMMENT, 1)
     if text.count(NEW_GUARD) != 1:
         raise RuntimeError("room allocator guard changed")
     if text.count("STOPWATCH_TRAMPOLINE_SNES = 0x37FFF0") != 1:
