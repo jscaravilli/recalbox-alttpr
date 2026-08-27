@@ -1,4 +1,4 @@
-# Recalbox ALTTPR Console
+# ALTTPR on Recalbox
 
 *Generate on the TV. Track from your phone, tablet, or computer.*
 
@@ -7,16 +7,14 @@ A controller-first **A Link to the Past Randomizer** experience for Raspberry Pi
 ![ALTTPR system page in Recalbox](docs/images/alttpr-system.png)
 
 ## Highlights
-
+- Single, microSD card (ext4) deployment; no USB or NVMe storage requirement.
 - Native Python Door/Overworld Randomizer integration with no PHP, box64, or x86 runtime dependencies.
 - Controller-driven configuration menu with 66 options covering items, entrances, dungeon doors, overworld layouts, enemies, bosses, cosmetics, accessibility, and more.
 - Official sprite library with on-screen previews.
-- Optional curated MSU-1 music packs without unnecessary audio duplication.
-- Controller-driven import and removal of user-owned MSU-1 music packs.
+- Import MSU-1 music packs.
 - Built-in browser-based live tracker available at `http://recalbox.local:8080/itemtracker.html`.
 - Persistent Recalbox integration automatically restored at boot when required.
-- Guarded Stopwatch patch with explicit ROM-space reservation and fail-closed validation.
-- Single-card ext4 deployment with no USB or NVMe storage requirement.
+
 
 |  |  |
 |---|---|
@@ -39,9 +37,8 @@ See **[docs/INSTALL.md](docs/INSTALL.md)** for complete installation and validat
 ### Requirements
 
 - Raspberry Pi 5
-- 256 GB A2/U3/V30 microSD card or equivalent supported storage
+- A2/U3/V30 microSD card (tested on 256GB)
 - Recalbox 10.0.8 for `rpi5_64`
-- Network access
 - SSH client
 - A legally obtained, unheadered Japanese v1.0 ALTTP ROM
 
