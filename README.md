@@ -13,6 +13,7 @@ immediately, and follow it from another device with the built-in live tracker.
   overworld layouts, enemies, bosses, cosmetics, and accessibility.
 - Official sprite library with television previews.
 - Optional curated MSU-1 music packs attached without duplicating audio.
+- Controller-driven import and removal of user-owned MSU-1 packs.
 - Permanent live-tracker URL: `http://recalbox.local:8080/itemtracker.html`.
 - Self-healing Recalbox integration reapplied from persistent storage at boot.
 - Safe Stopwatch patch with a guarded ROM reservation and fail-closed checks.
@@ -21,6 +22,15 @@ immediately, and follow it from another device with the built-in live tracker.
 | Generate on the TV | Track from a phone, tablet, or computer |
 |---|---|
 | ![Generate Custom Seed menu](docs/images/generate-custom-seed.png) | ![ALTTPR live tracker](docs/images/alttpr-tracker.png) |
+
+### Bring your own MSU music
+
+Copy an extracted pack, ZIP, 7Z, or RAR into the network folder
+`SHARE/import/msu`, then open **Manage MSU Music** on the television. Imported
+packs immediately appear in the seed menu and remain separate from curated
+content.
+
+![Manage user-owned MSU music](docs/images/manage-msu-music.png)
 
 ## Install
 
@@ -71,6 +81,7 @@ overlay root filesystem.
 |---|---|
 | [INSTALL.md](docs/INSTALL.md) | Exact clean-card installation and validation |
 | [BUGS-AND-FIXES.md](docs/BUGS-AND-FIXES.md) | Reproductions, root causes, and regression evidence |
+| [MSU-IMPORT.md](docs/MSU-IMPORT.md) | Import and manage user-owned music packs |
 | [REPRODUCE.md](docs/REPRODUCE.md) | Engineering-level reproduction notes |
 | [COMPONENT-MANIFEST.md](docs/COMPONENT-MANIFEST.md) | Component decisions and boundaries |
 | [BUILD-LOG.md](docs/BUILD-LOG.md) | Reference build history |

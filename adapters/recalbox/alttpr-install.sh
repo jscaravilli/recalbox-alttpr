@@ -139,12 +139,24 @@ fi
 PFX="ƒ "
 SEEDS="$ROOT/SEEDS"
 ART="$ROOT/.art"
-mkdir -p "$SEEDS" "$ART"
+MSU_IMPORT=/recalbox/share/import/msu
+mkdir -p "$SEEDS" "$ART" "$MSU_IMPORT/processed" "$ENGINE/msu"
 
 rm -f "$ROOT"/*.alttpr 2>/dev/null
 printf '%s\n' custom  > "$ROOT/${PFX}Generate Custom Seed.alttpr"
+printf '%s\n' msu     > "$ROOT/${PFX}Manage MSU Music.alttpr"
 printf '%s\n' spoiler > "$ROOT/${PFX}View Spoiler Logs.alttpr"
 printf '%s\n' cleanup > "$ROOT/${PFX}Clean Old Seeds.alttpr"
+cat > "$MSU_IMPORT/README.txt" <<'EOF'
+USER MSU IMPORT DROP FOLDER
+
+Copy an extracted MSU pack, ZIP, 7Z, or RAR here, then open:
+ALTTPR > Manage MSU Music > Import Drop Folder
+
+A pack must contain numbered PCM tracks such as music-1.pcm, music-2.pcm.
+The .msu marker is optional. Successful imports move into processed/.
+Imported music must be legally obtained; this project does not provide it.
+EOF
 
 # Original curated artwork recovered from the prior Recalbox installation.
 ARTSRC="$ENGINE/es/gamelist-art"
@@ -199,6 +211,9 @@ entries = [
     (f"{pfx}Generate Custom Seed.alttpr", f"{pfx}Generate Custom Seed",
      "Configure a Python Door Randomizer seed in the controller-driven menu, "
      "then generate and play it immediately."),
+    (f"{pfx}Manage MSU Music.alttpr", f"{pfx}Manage MSU Music",
+     "Import legally owned MSU-1 packs from the network drop folder, or "
+     "remove previously imported user packs."),
     (f"{pfx}View Spoiler Logs.alttpr", f"{pfx}View Spoiler Logs",
      "Browse spoiler logs for generated seeds on the TV."),
     (f"{pfx}Clean Old Seeds.alttpr", f"{pfx}Clean Old Seeds",

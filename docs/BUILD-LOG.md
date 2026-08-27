@@ -148,6 +148,10 @@ session). Reliable method:
   embeds `/run/user/0` plus `unix:/run/user/0/pulse/native`. Verified with an
   actual nested SNES launch: RetroArch created a live Pulse sink-input on the
   HDMI sink.
+- **User MSU management**: a network drop folder at `SHARE/import/msu` accepts
+  extracted packs, ZIP, 7Z, and RAR. The controller-driven **Manage MSU Music**
+  tile validates and atomically installs user-namespaced packs, rebuilds the
+  runtime manifest, and can remove only user-imported content.
 
 - **Art assets recovered from the removed NVMe** (ext4) using a pure-python ext4
   reader on Windows (WSL had no distro; `wsl --mount` unavailable). Raw device

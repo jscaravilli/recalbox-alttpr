@@ -41,6 +41,7 @@ ENGINE = "/recalbox/share/alttpr"
 SELECTION = ENGINE + "/bin/data/msu-packs.json"
 MSU_DIR = ENGINE + "/msu"
 MANIFEST = MSU_DIR + "/packs.json"
+USER_METADATA = MSU_DIR + "/user-packs.json"
 DL_DIR = ENGINE + "/_msu_dl"
 SEVENZR = ENGINE + "/bin/7zz"
 SEVENZZ_URL = "https://www.7-zip.org/a/7z2602-linux-arm64.tar.xz"
@@ -310,6 +311,8 @@ def build_manifest():
     packs = []
     if os.path.isdir(MSU_DIR):
         for d in sorted(os.listdir(MSU_DIR)):
+            if d.startswith("."):
+                continue
             pd = os.path.join(MSU_DIR, d)
             if not os.path.isdir(pd):
                 continue
@@ -327,18 +330,26 @@ def build_manifest():
             meta[slug(p["name"])] = p
     except Exception:
         pass
+    try:
+        for p in json.load(open(USER_METADATA, encoding="utf-8")):
+            meta[p["slug"]] = p
+    except Exception:
+        pass
     out = []
     for p in packs:
         m = meta.get(p["slug"], {})
         out.append({"name": m.get("name", p["slug"]),
                     "author": m.get("author", ""),
                     "slug": p["slug"], "dir": p["dir"],
-                    "basename": p["basename"], "tracks": p["tracks"]})
+                    "basename": p["basename"], "tracks": p["tracks"],
+                    "user": bool(m.get("user", False))})
     out.sort(key=lambda d: d["name"].lower())
     os.makedirs(MSU_DIR, exist_ok=True)
-    with open(MANIFEST, "w", encoding="utf-8") as f:
+    manifest_tmp = MANIFEST + ".tmp"
+    with open(manifest_tmp, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
         f.write("\n")
+    os.replace(manifest_tmp, MANIFEST)
     return out
 
 

@@ -229,6 +229,9 @@ ssh root@$PI "/recalbox/share/alttpr/install-content.sh msu"
 One unavailable third-party pack does not affect the original SNES soundtrack
 or packs already installed.
 
+Users can later add their own legally obtained packs over the network without
+SSH. See [MSU-IMPORT.md](MSU-IMPORT.md).
+
 Reboot:
 
 ```sh

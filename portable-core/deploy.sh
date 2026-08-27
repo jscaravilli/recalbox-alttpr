@@ -11,7 +11,7 @@ SCP="scp"
 
 echo "== creating target dirs =="
 $SSH "mkdir -p /recalbox/share/alttpr/bin/words /recalbox/share/alttpr/es/gamelist-art \
-      /recalbox/share/alttpr/tracker \
+      /recalbox/share/alttpr/tracker /recalbox/share/import/msu/processed \
       /recalbox/share/roms/alttpr/SEEDS /recalbox/share/userscripts"
 
 echo "== copying engine bin =="

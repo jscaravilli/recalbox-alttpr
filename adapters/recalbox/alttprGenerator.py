@@ -17,6 +17,7 @@ class AlttprGenerator:
     MENU = "/recalbox/share/alttpr/bin/alttpr-menu.py"
     SPOILER = "/recalbox/share/alttpr/bin/alttpr-spoiler.py"
     CLEANUP = "/recalbox/share/alttpr/bin/alttpr-cleanup.py"
+    MSU_MANAGER = "/recalbox/share/alttpr/bin/alttpr-msu-manager.py"
     PRACTICE = "/recalbox/share/alttpr/practice/Practice.sfc"
     SEEDOUT = "/tmp/alttpr_seed"
     CORE = "snes9x"
@@ -56,6 +57,9 @@ class AlttprGenerator:
                 return Command(videomode=system.VideoMode, array=["/bin/true"])
             elif mode == "cleanup":
                 self._run_pygame(self.CLEANUP)
+                return Command(videomode=system.VideoMode, array=["/bin/true"])
+            elif mode == "msu":
+                self._run_pygame(self.MSU_MANAGER)
                 return Command(videomode=system.VideoMode, array=["/bin/true"])
             elif mode == "practice":
                 if os.path.exists(self.PRACTICE):

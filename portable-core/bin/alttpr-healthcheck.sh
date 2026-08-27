@@ -50,6 +50,8 @@ fi
 for path in \
   "$ENGINE/bin/alttpr-menu.py" \
   "$ENGINE/bin/alttpr-generate.sh" \
+  "$ENGINE/bin/alttpr-msu-import.py" \
+  "$ENGINE/bin/alttpr-msu-manager.py" \
   "$ENGINE/bin/alttpr-timerpatch.py" \
   "$ENGINE/es/alttpr-install.sh" \
   /recalbox/share/system/custom.sh \
@@ -60,6 +62,13 @@ for path in \
     fail "executable ${path#/recalbox/share/}"
   fi
 done
+
+if [ -d /recalbox/share/import/msu ] &&
+   [ -f /recalbox/share/import/msu/README.txt ]; then
+  pass "user MSU network drop folder"
+else
+  fail "user MSU network drop folder"
+fi
 
 SYSTEMLIST=/recalbox/share/system/.emulationstation/systemlist.xml
 if grep -q 'name="alttpr"' "$SYSTEMLIST" 2>/dev/null; then
