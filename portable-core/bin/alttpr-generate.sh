@@ -134,6 +134,11 @@ STAGE="$(mktemp -d)"
 TOKEN="gen$$"
 
 cd "$DR" || { echo "SEED:"; exit 1; }
+python3 "$BIN/alttpr-enginepatch.py" "$DR" >/dev/null || {
+  echo "ERROR: Stopwatch room-data reservation could not be enforced."
+  echo "SEED:"
+  exit 1
+}
 DR_LOG="$STAGE/engine.log"
 ATTEMPT=1
 MAX_ATTEMPTS=1

@@ -30,9 +30,10 @@ not shell out to an x86 EnemizerCLI for any enemy/boss option.
   icons; DR emits a proper per-seed hash. Likely unneeded.
 - `alttpr-timerpatch.py` — KEEP, reworked for the current Python-DR base patch.
   The same DB bug remains at relocated addresses. The current patch retargets
-  `$20:DB75` to a verified-free DB=$7E trampoline at `$20:E000`, then calls the
-  relocated timer routine at `$20:D85B`. Stopwatch seeds are patched after
-  generation; Disabled seeds remain untouched.
+  `$20:DB75` to a DB=$7E trampoline in the explicitly reserved final 16 bytes
+  of room-data bank `$37` (`$37:FFF0-$37:FFFF`), then calls the relocated timer
+  routine at `$20:D85B`. The room allocator is capped at `$37:FFF0`, and exact
+  pre/post byte assertions fail closed if upstream reclaims the reservation.
 
 ## KEEP — engine-independent
 - `alttpr-menu.py` (pygame UI) — KEEP; remap option flags to DR CLI names

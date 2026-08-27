@@ -10,13 +10,19 @@ set -euo pipefail
 
 ENGINE=/recalbox/share/alttpr
 DEPS="$ENGINE/pydeps/site"
-DR_ZIP_URL="https://github.com/codemann8/ALttPDoorRandomizer/archive/refs/heads/OverworldShuffle.zip"
+DR_COMMIT=7e14fddab00b847d6eccf0931b365a5774c5476a
+DR_DIR="$ENGINE/ALttPDoorRandomizer-OverworldShuffle"
+DR_ZIP_URL="https://github.com/codemann8/ALttPDoorRandomizer/archive/$DR_COMMIT.zip"
 
 mkdir -p "$ENGINE" "$DEPS"
 
 # 1. Door Randomizer source
-python3 -c "import urllib.request; urllib.request.urlretrieve('$DR_ZIP_URL','/tmp/dr.zip')"
-python3 -c "import zipfile; zipfile.ZipFile('/tmp/dr.zip').extractall('$ENGINE')"
+if [ ! -d "$DR_DIR" ]; then
+  python3 -c "import urllib.request; urllib.request.urlretrieve('$DR_ZIP_URL','/tmp/dr.zip')"
+  python3 -c "import zipfile; zipfile.ZipFile('/tmp/dr.zip').extractall('/tmp')"
+  mv "/tmp/ALttPDoorRandomizer-$DR_COMMIT" "$DR_DIR"
+  printf '%s\n' "$DR_COMMIT" > "$DR_DIR/.portable-source-commit"
+fi
 
 # 2. pip (Recalbox ships none) — bootstrap to the user base on the share
 export PYTHONUSERBASE="$ENGINE/pydeps"

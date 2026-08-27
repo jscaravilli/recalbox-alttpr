@@ -18,6 +18,15 @@ mkdir -p "$(dirname "$LOG")"
 rm -f /tmp/alttpr_refresh /tmp/alttpr_gamelist_pending
 rm -f "$ENGINE/bin/alttpr-refresh-worker.sh"
 
+# Reserve $37:FFF0-$37:FFFF before any seed can be generated. Fail closed if
+# upstream DataTables.py changes and the allocator guard cannot be installed.
+DR="$ENGINE/ALttPDoorRandomizer-OverworldShuffle"
+if [ -d "$DR" ] && ! python3 "$ENGINE/bin/alttpr-enginepatch.py" "$DR" \
+    >>"$LOG" 2>&1; then
+  say "failed to reserve Stopwatch trampoline space in Door Randomizer"
+  exit 1
+fi
+
 # --- 1. make rootfs writable so we can drop the generator into configgen ------
 mount -o remount,rw / 2>/dev/null || true
 

@@ -60,8 +60,9 @@ share), so your SSH client will see a changed host key — expected.
 ## 3. Install the engine (Python Door Randomizer)
 
 `portable-core/install-deps.sh` — run it on the Pi. It:
-1. downloads codemann8/ALttPDoorRandomizer (OverworldShuffle branch) to
-   `/recalbox/share/alttpr/`,
+1. downloads pinned codemann8/ALttPDoorRandomizer commit
+   `7e14fddab00b847d6eccf0931b365a5774c5476a` from the OverworldShuffle
+   branch to `/recalbox/share/alttpr/`,
 2. bootstraps pip (Recalbox ships none) to `/recalbox/share/alttpr/pydeps`,
 3. installs DR's deps (`aenum fast-enum python-bps-continued colorama aioconsole
    websockets pyyaml`) into `/recalbox/share/alttpr/pydeps/site`.
@@ -102,6 +103,8 @@ Copy onto the Pi (strip CRLF, chmod +x):
 | `adapters/recalbox/userscripts/alttpr-refresh.sh` | `/recalbox/share/userscripts/` |
 
 Then run `bash /recalbox/share/alttpr/es/alttpr-install.sh` once. It:
+- installs a fail-closed `$37:FFF0-$37:FFFF` room-allocator reservation for the
+  Stopwatch trampoline,
 - remounts `/` rw and installs the configgen generator at
   `configgen/generators/alttpr/`,
 - patches `emulatorlauncher.py` getGenerator dispatch + `recalboxFiles.py`
