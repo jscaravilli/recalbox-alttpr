@@ -326,47 +326,57 @@ for THEME in \
   fi
   CUSTOM="$THEME/alttpr/custom.xml"
   [ -f "$CUSTOM" ] || continue
-  python3 - "$CUSTOM" <<'PY' 2>/dev/null || true
-import re, sys
+  python3 - "$CUSTOM" <<'PY' >>"$LOG" 2>&1
+import sys
+import xml.etree.ElementTree as ET
 p = sys.argv[1]
-d = open(p, encoding="utf-8").read()
-info = [
-    "A LINK TO THE PAST RANDOMIZER",
-    "Original Game: The Legend of Zelda: A Link to the Past | Platform: Super Nintendo Entertainment System",
-    "Original Release: 1991 | Genre: Action-Adventure / Randomizer",
-    "Objective: Find the key items and complete the game based on the options you choose.",
-    "Replayability: Practically unlimited",
-    "WHAT IS ALTTPR?",
-    "A Link to the Past Randomizer takes Nintendo's classic SNES adventure and reshuffles the items needed to complete the game.",
-    'Through an interactive menu, you create a "seed" - a unique, randomized ROM of ALTTP. Each generated seed becomes a new puzzle.',
-    "Customize each adventure with shuffled key items, dungeon items, enemies, bosses and entrances, four world modes, multiple difficulty settings and seven different win conditions.",
-    "Players must explore Hyrule and determine which locations are reachable with the equipment they've found.",
-    "LIVE ITEM AUTO-TRACKER",
-    "The auto-tracker follows your game in real time, automatically recording collected items and updating remaining dungeon chests as you progress through the seed. Scan the QR code to open the tracker on another device, or visit: http://recalbox.local:8080/itemtracker.html",
-]
-# The stock SNES custom.xml supplies only info1-info10 even though the v9
-# defaults style twelve rows. Add the missing content elements before filling
-# them so the tracker heading and description are not silently dropped.
-system_view = re.search(r'(<view name="system">)(.*?)(</view>)', d, re.S)
-if system_view:
-    body = system_view.group(2)
-    missing = [
-        index for index in range(1, len(info) + 1)
-        if not re.search(r'<text name="info%d"\s+extra="true">' % index, body)
-    ]
-    if missing:
-        extra = ''.join(
-            '\n\t\t<text name="info%d" extra="true"><text></text></text>' % index
-            for index in missing
-        )
-        body += extra + '\n\t'
-        d = d[:system_view.start(2)] + body + d[system_view.end(2):]
-for index, text in enumerate(info, 1):
-    pattern = (r'(<text name="info%d" extra="true">\s*<text>).*?(</text>)'
-               % index)
-    d = re.sub(pattern, lambda m: m.group(1) + text + m.group(2),
-               d, count=1, flags=re.S)
-open(p, "w", encoding="utf-8").write(d)
+info = """A LINK TO THE PAST RANDOMIZER
+
+Original Game: The Legend of Zelda: A Link to the Past
+Platform: Super Nintendo Entertainment System
+Original Release: 1991
+Genre: Action-Adventure / Randomizer
+Objective: Find the key items and complete the game based on the options you choose.
+Replayability: Practically unlimited
+
+WHAT IS ALTTPR?
+
+A Link to the Past Randomizer takes Nintendo's classic SNES adventure and
+reshuffles the items needed to complete the game.
+
+Through an interactive menu, you create a "seed"—a unique, randomized ROM
+of ALTTP. Each generated seed becomes a new puzzle.
+
+Customize each adventure with shuffled key items, dungeon items, enemies,
+bosses and entrances, four world modes, multiple difficulty settings and
+seven different win conditions.
+
+Players must explore Hyrule and determine which locations are reachable
+with the equipment they've found.
+
+LIVE ITEM AUTO-TRACKER
+
+The auto-tracker follows your game in real time, automatically recording
+collected items and updating remaining dungeon chests as you progress
+through the seed.
+
+Scan the QR code to open the tracker on another device, or visit:
+http://recalbox.local:8080/itemtracker.html"""
+tree = ET.parse(p)
+root = tree.getroot()
+fixed = [element for element in root.iter("text")
+         if element.get("name") == "alttpr_info"]
+if len(fixed) != 1:
+    raise RuntimeError("fixed ALTTPR text element is missing")
+content = fixed[0].find("text")
+if content is None:
+    content = ET.SubElement(fixed[0], "text")
+content.text = info
+tree.write(p, encoding="unicode")
 PY
+  if [ $? -ne 0 ]; then
+    say "failed to write fixed ALTTPR text in $CUSTOM"
+    continue
+  fi
   say "built ALTTPR system view in recalbox-next-v9"
 done

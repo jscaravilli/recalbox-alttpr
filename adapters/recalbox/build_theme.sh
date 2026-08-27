@@ -47,13 +47,16 @@ for reg in ('','us','eu','jp'):
     r=(' region="%s"'%reg) if reg else ''
     hidden+='<image name="controller" extra="true"%s><pos>2 2</pos></image>'%r
 info_names=', '.join('info%d'%i for i in range(1, 13))
-compact=('<scrolltext name="%s" extra="true">'
-         '<fontSize>0.018</fontSize></scrolltext>')%info_names
-# Vertical-left only positions ten metadata rows. Continue its 0.04 spacing so
-# the two ALTTPR tracker rows render beneath the description instead of at 0,0.
-compact+=('<text name="info11" extra="true"><pos>0.33 0.46</pos></text>'
-         '<text name="info12" extra="true"><pos>0.33 0.50</pos></text>')
-override='<view name="system, basic, detailed, gameclip">%s%s%s</view>'%(imgs,hidden,compact)
+# Hide the inherited single-line metadata rows and replace them with one fixed
+# multiline field. A normal text element wraps but never marquee-scrolls.
+fixed=('<text name="%s" extra="true"><pos>2 2</pos></text>'
+       '<text name="alttpr_info" extra="true">'
+       '<pos>0.33 0.055</pos><size>0.39 0.56</size>'
+       '<fontPath>./data/arts/Exo2-SemiBoldCondensed.otf</fontPath>'
+       '<fontSize>0.014</fontSize><lineSpacing>1.08</lineSpacing>'
+       '<alignment>left</alignment><color>ffffff</color>'
+       '</text>')%info_names
+override='<view name="system, basic, detailed, gameclip">%s%s%s</view>'%(imgs,hidden,fixed)
 m=re.search(r"</formatVersion>", d)
 if m:
     d=d[:m.end()]+override+d[m.end():]
