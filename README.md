@@ -102,6 +102,7 @@ The randomizer source is intentionally pinned to a validated upstream revision. 
 
 ## Credits
 
+- [sporchia/alttp_vt_randomizer](https://github.com/sporchia/alttp_vt_randomizer) — the randomizer engine.
 - [codemann8/ALttPDoorRandomizer](https://github.com/codemann8/ALttPDoorRandomizer) — native Door and Overworld Randomizer engine.
 - [hutchch/ALTTPR-Tracker](https://github.com/hutchch/ALTTPR-Tracker) — browser item/location tracker adapted for live Recalbox memory.
 - The Recalbox, EmulationStation, RetroArch, and Snes9x projects.
