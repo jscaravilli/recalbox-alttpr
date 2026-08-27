@@ -6,6 +6,10 @@ A controller-first **A Link to the Past Randomizer** experience for Raspberry Pi
 
 ![ALTTPR system page in Recalbox](docs/images/system-overview.png)
 
+<p align="center">
+  <img src="docs/images/system-library.png" width="760" alt="Themed ALTTPR game library">
+</p>
+
 ## Highlights
 - Single, microSD card (ext4) deployment; no USB or NVMe storage requirement.
 - Native Python Door/Overworld Randomizer integration with no PHP, box64, or x86 runtime dependencies.
@@ -20,17 +24,40 @@ A controller-first **A Link to the Past Randomizer** experience for Raspberry Pi
 |---|---|
 | ![Generate Custom Seed menu](docs/images/generate-custom-seed.png) | ![ALTTPR live tracker](docs/images/alttpr-tracker.png) |
 
-![Themed ALTTPR game library](docs/images/system-library.png)
-
 ## See It in Action
 
 | Live autotracking | HUD Stopwatch |
 |---|---|
 | ![Items updating from live game memory](docs/images/live-autotracker.gif) | ![Stopwatch running in the game HUD](docs/images/hud-stopwatch.gif) |
 
-| Character preview | On-TV spoiler viewer |
-|---|---|
-| ![Character sprite picker](docs/images/sprite-picker.png) | ![Controller-driven spoiler viewer](docs/images/spoiler-viewer.png) |
+<p align="center">
+  <img src="docs/images/sprite-picker.png" width="760" alt="Character sprite picker with live preview">
+</p>
+
+## Tools
+
+### Manage MSU Music
+
+Import legally owned MSU-1 packs from the network drop folder, view installed
+user packs, and remove packs with a two-step confirmation. Imported music
+appears immediately in **Generate Custom Seed**.
+
+![Controller-driven MSU music manager](docs/images/manage-msu-music.png)
+
+### View Spoiler Logs
+
+Browse human-readable spoiler logs by region directly on the television using
+the controller. Logs are available for seeds generated with **Spoiler Log**
+enabled.
+
+![On-TV spoiler-log viewer](docs/images/spoiler-viewer.png)
+
+### Clean Old Seeds
+
+Delete generated seeds by age—All, 1 day, 2 days, or 1 week—behind an on-screen
+confirmation. Saved games and launcher tiles are kept.
+
+![Clean Old Seeds confirmation](docs/images/clean-old-seeds.png)
 
 ## Installation
 
