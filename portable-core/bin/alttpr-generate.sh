@@ -134,9 +134,33 @@ STAGE="$(mktemp -d)"
 TOKEN="gen$$"
 
 cd "$DR" || { echo "SEED:"; exit 1; }
-# shellcheck disable=SC2086
-timeout 300 python3 DungeonRandomizer.py --rom "$BASE" $FLAGS $EXTRA \
-  --outputpath "$STAGE" --outputname "$TOKEN" >/dev/null 2>&1
+DR_LOG="$STAGE/engine.log"
+ATTEMPT=1
+MAX_ATTEMPTS=1
+# Entrance layouts can occasionally produce an impossible dungeon-item fill.
+# That failure depends on the random seed, not the selected settings, so retry
+# only this known FillError with a fresh seed instead of rejecting a valid mode.
+[ "${ENTRANCE_SHUFFLE:-vanilla}" != "vanilla" ] && MAX_ATTEMPTS=5
+while :; do
+  # shellcheck disable=SC2086
+  timeout 300 python3 DungeonRandomizer.py --rom "$BASE" $FLAGS $EXTRA \
+    --outputpath "$STAGE" --outputname "$TOKEN" >"$DR_LOG" 2>&1
+  DR_RC=$?
+  [ "$DR_RC" -eq 0 ] && break
+  if grep -qE '/Fill\.py|source/overworld/EntranceShuffle2\.py' "$DR_LOG" && \
+     [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; then
+    ATTEMPT=$((ATTEMPT + 1))
+    rm -f "$STAGE"/*.sfc "$STAGE"/*_Spoiler.txt
+    continue
+  fi
+  DETAIL="$(grep 'FillError:' "$DR_LOG" | tail -1)"
+  [ -z "$DETAIL" ] && DETAIL="$(tail -1 "$DR_LOG")"
+  [ "$DR_RC" -eq 124 ] && DETAIL="Door Randomizer timed out after 300 seconds."
+  rm -rf "$STAGE"
+  echo "ERROR: ${DETAIL:-Door Randomizer failed.}"
+  echo "SEED:"
+  exit 1
+done
 
 NEW="$(ls -1t "$STAGE"/*.sfc 2>/dev/null | head -1)"
 if [ -z "$NEW" ]; then rm -rf "$STAGE"; echo "SEED:"; exit 1; fi
