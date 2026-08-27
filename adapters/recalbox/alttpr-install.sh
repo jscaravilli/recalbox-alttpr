@@ -28,7 +28,10 @@ if [ -d "$DR" ] && ! python3 "$ENGINE/bin/alttpr-enginepatch.py" "$DR" \
 fi
 
 # --- 1. make rootfs writable so we can drop the generator into configgen ------
-mount -o remount,rw / 2>/dev/null || true
+if ! mount -o remount,rw / 2>/dev/null; then
+  say "failed to remount rootfs writable"
+  exit 1
+fi
 
 # --- 2. install the custom generator + register the emulator ------------------
 mkdir -p "$CG/generators/alttpr"
@@ -81,6 +84,12 @@ if "'alttpr'" not in src:
 PY
   rm -f "$CG/__pycache__/recalboxFiles."*.pyc 2>/dev/null || true
   say "registered alttpr in recalboxBins"
+fi
+
+if ! grep -q 'configgen.generators.alttpr.alttprGenerator' "$EL" ||
+   [ "$(python3 -c "import sys; sys.path.insert(0,'$CG/..'); import configgen.recalboxFiles as r; print('yes' if 'alttpr' in r.recalboxBins else 'no')" 2>/dev/null)" != "yes" ]; then
+  say "configgen ALTTPR registration validation failed"
+  exit 1
 fi
 
 # --- 3. build the systemlist.xml with an ALTTPR system ------------------------
@@ -219,29 +228,30 @@ with open(gl, "w", encoding="utf-8") as f:
     f.write("</gameList>\n")
 PY
 
-# Recalbox merges every mounted storage root. The old USB share may still carry
-# an obsolete ALTTPR tree, which duplicates the action tiles and seed library.
-# The authoritative tree is the new ext4 SHARE; remove only stale external
-# ALTTPR trees. This also self-heals if Recalbox recreates the directory later.
+# Recalbox merges every mounted storage root. Warn about external ALTTPR trees,
+# but never delete user content from an attached device.
 for EXT in /recalbox/share/externals/*/recalbox/roms/alttpr \
            /recalbox/share/externals/*/roms/alttpr; do
   [ -e "$EXT" ] || continue
-  rm -rf "$EXT" 2>/dev/null && say "removed duplicate external ALTTPR tree: $EXT"
+  say "warning: external ALTTPR tree may create duplicate entries: $EXT"
 done
 
-# Remove legacy external event hooks too. Recalbox 10 must have exactly one
-# ALTTPR endgame hook, and it must never restart EmulationStation.
+# Likewise, report legacy external hooks instead of modifying attached storage.
 for EXTUS in /recalbox/share/externals/*/recalbox/userscripts \
              /recalbox/share/externals/*/userscripts; do
   [ -d "$EXTUS" ] || continue
-  rm -f "$EXTUS"/alttpr-refresh.sh "$EXTUS"/alttpr-refresh.sh.bak-* \
-    2>/dev/null || true
+  [ -e "$EXTUS/alttpr-refresh.sh" ] && \
+    say "warning: external ALTTPR endgame hook should be removed manually: $EXTUS/alttpr-refresh.sh"
 done
 
 # --- 5. retroarch: flush SRAM during play; no savestate autoload --------------
 RACFG=/recalbox/share/system/configs/retroarch/retroarchcustom.cfg
 if [ -f "$RACFG" ]; then
-  grep -qE '^autosave_interval = "10"' "$RACFG" || sed -i 's/^autosave_interval.*/autosave_interval = "10"/' "$RACFG" 2>/dev/null || echo 'autosave_interval = "10"' >> "$RACFG"
+  if grep -q '^autosave_interval' "$RACFG"; then
+    sed -i 's/^autosave_interval.*/autosave_interval = "10"/' "$RACFG"
+  else
+    echo 'autosave_interval = "10"' >> "$RACFG"
+  fi
 fi
 
 say "alttpr integration installed/verified"

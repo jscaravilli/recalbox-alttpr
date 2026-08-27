@@ -40,20 +40,20 @@ read-only audio.
 - [x] Flash SD (Raspberry Pi Imager GUI; scripted raw writes blocked by Windows)
 - [x] Back up live saves/seeds/config to PC (`live-saves-seeds.tgz`, 30 MB)
 - [x] Remove NVMe (user)
-- [x] Boot Pi on new card; SSH in (192.168.68.79, Wi-Fi)
+- [x] Boot Pi on new card; SSH in over Wi-Fi
 - [x] Convert share to ext4 (RAM-share method; DEV <uuid> auto-detect; survives reboot)
 - [x] Install DR + deps on ext4 share; VALIDATED seed generation on Python 3.11
 - [x] Wire DR into Recalbox 10 configgen (self-healed through `custom.sh`)
 - [x] Restore polished menus + curated ES layout; map baseline options to DR
-- [ ] Verify seed gen / MSU / tracker / saves end-to-end in ES
+- [x] Verify seed gen / MSU / tracker / saves end-to-end in ES
 - [ ] Capture golden .img
 
 ## VALIDATED (engine swap proven)
 
 On Recalbox 10.0.8 / Python 3.11.8, ext4 share:
-- DR deps (aenum, fast-enum, python-bps-continued, colorama, aioconsole,
-  websockets, pyyaml) pip-installed to `/recalbox/share/alttpr/pydeps/site`
-  (pip bootstrapped via get-pip; rootfs site-packages is read-only).
+- Hashed DR deps are pinned in `portable-core/requirements-recalbox.txt` and
+  installed to `/recalbox/share/alttpr/pydeps/site` (rootfs site-packages is
+  read-only).
 - `DungeonRandomizer.py --rom base --mode open --goal ganon --swords random
   --create_rom --spoiler full` produced a 2 MB patched playable ROM +
   41 KB spoiler in ~12s. Native item/dungeon/boss/enemy/overworld shuffle —

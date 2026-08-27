@@ -1,49 +1,91 @@
-# recalbox-alttpr-portable
+# Recalbox ALTTPR Console
 
-Reproducible build of an **A Link to the Past Randomizer (ALTTPR)** console on
-Recalbox / Raspberry Pi 5, using the **Python Door Randomizer**
-([codemann8/ALttPDoorRandomizer](https://github.com/codemann8/ALttPDoorRandomizer),
-`OverworldShuffle` branch) instead of the legacy PHP + box64 generator chain.
+A reproducible, controller-first **A Link to the Past Randomizer** appliance for
+Raspberry Pi 5 and Recalbox 10. Generate a seed from the television, launch it
+immediately, and follow it from another device with the built-in live tracker.
 
-## Why this repo exists
+![ALTTPR system page in Recalbox](docs/images/alttpr-system.png)
 
-The original system ran on a 3-device storage split (SD boot + USB share + NVMe
-app). A flaky WD_BLACK SN850X NVMe intermittently dropped off the PCIe bus,
-freezing EmulationStation on game exit (a global `sync` in the endgame hook
-blocked on the downed drive). This rebuild consolidates everything onto a single
-256 GB A2 SD card with an **ext4 share**, swaps in a reproducible Python engine,
-and captures a **golden image** so the whole console can be re-flashed in minutes.
+## Highlights
 
-## Target hardware
+- Native Python Door/Overworld Randomizer; no PHP, box64, or x86 binaries.
+- 66-option controller menu covering items, entrances, dungeon doors,
+  overworld layouts, enemies, bosses, cosmetics, and accessibility.
+- Official sprite library with television previews.
+- Optional curated MSU-1 music packs attached without duplicating audio.
+- Permanent live-tracker URL: `http://recalbox.local:8080/itemtracker.html`.
+- Self-healing Recalbox integration reapplied from persistent storage at boot.
+- Safe Stopwatch patch with a guarded ROM reservation and fail-closed checks.
+- Single-card ext4 design—no USB or NVMe dependency.
 
-- Raspberry Pi 5 (8 GB), aarch64
-- 256 GB A2 / U3 / V30 microSD (Samsung PRO Plus / SanDisk Extreme Pro)
-- Base ROM: *Zelda no Densetsu - Kamigami no Triforce (Japan) v1.0* (not stored
-  here; installed root-only and immutable at
-  `/recalbox/share/system/.alttpr-private/base/alttp-jp10.sfc`)
+| Generate on the TV | Track from a phone, tablet, or computer |
+|---|---|
+| ![Generate Custom Seed menu](docs/images/generate-custom-seed.png) | ![ALTTPR live tracker](docs/images/alttpr-tracker.png) |
 
-## Layout
+## Install
 
+Start with **[docs/INSTALL.md](docs/INSTALL.md)**. It is written for a clean
+Raspberry Pi with no access to the reference console and includes every PC and
+Pi command.
+
+> The repository is currently private. An unrelated installer needs collaborator
+> access or a source archive before following the guide.
+
+You need:
+
+- Raspberry Pi 5
+- 256 GB A2/U3/V30 microSD card
+- Recalbox 10.0.8 for `rpi5_64`
+- Network access and an SSH client
+- A legally obtained, unheadered Japanese v1.0 ALTTP ROM
+
+The ROM is never downloaded or stored in this repository. Its required MD5 is
+`03a63945398191337e896e5771f77173`.
+
+## How it works
+
+```text
+EmulationStation
+    │
+    ├── Generate Custom Seed ──> pygame menu
+    │                                │
+    │                                v
+    │                    Python Door Randomizer
+    │                                │
+    │                                v
+    └────────────────────────> Snes9x / RetroArch
+                                     │
+                                     └── read-only WRAM bridge
+                                              │
+                                              v
+                                      browser live tracker
 ```
-adapters/recalbox/    Recalbox-specific integration (ES event hooks, storage layer)
-  userscripts/        EmulationStation event-driver scripts (endgame hook, etc.)
-portable-core/        Distro-agnostic logic (engine driver, gamelist merge)
-docs/                 Build notes, portability audit, reproduction steps
-build/                Flashing + provisioning scripts (Windows-side)
-```
 
-The on-console menu exposes Python DR's item, entrance, door, dungeon, overworld,
-flute-spot, enemy, sprite, timer, and MSU options. Recalbox 10's native file
-watcher owns library refreshes; the ALTTPR endgame hook never restarts ES.
+The persistent implementation lives under `/recalbox/share/alttpr`. A boot hook
+repairs the small configgen and theme integrations that reside on Recalbox’s
+overlay root filesystem.
 
-The phone autotracker uses one permanent URL and follows the ROM currently loaded
-in RetroArch: `http://recalbox.local:8080/itemtracker.html`.
+## Documentation
 
-## Base image
+| Document | Purpose |
+|---|---|
+| [INSTALL.md](docs/INSTALL.md) | Exact clean-card installation and validation |
+| [BUGS-AND-FIXES.md](docs/BUGS-AND-FIXES.md) | Reproductions, root causes, and regression evidence |
+| [REPRODUCE.md](docs/REPRODUCE.md) | Engineering-level reproduction notes |
+| [COMPONENT-MANIFEST.md](docs/COMPONENT-MANIFEST.md) | Component decisions and boundaries |
+| [BUILD-LOG.md](docs/BUILD-LOG.md) | Reference build history |
 
-- Recalbox **10.0.8** for rpi5_64 (`recalbox-rpi5_64.img.xz`, SHA1
-  `1eb7892530927cc868b08b07e68ca006f8c0e8b2`). The image itself is not committed.
+## Tested target
 
-## Status
+| Component | Version |
+|---|---|
+| Hardware | Raspberry Pi 5, 8 GB |
+| Recalbox | 10.0.8, `rpi5_64` |
+| Python | 3.11.8 |
+| Door Randomizer | 1.5.6-u |
+| Overworld Randomizer | 0.7.1.5 |
+| Upstream source | `7e14fddab00b847d6eccf0931b365a5774c5476a` |
 
-See `docs/BUILD-LOG.md` for the staged build progress.
+This project intentionally pins its upstream generator. Updating the pin requires
+revalidating the ROM patch contracts documented in
+[BUGS-AND-FIXES.md](docs/BUGS-AND-FIXES.md).

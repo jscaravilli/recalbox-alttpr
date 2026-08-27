@@ -128,8 +128,8 @@ selection in `portable-core/bin/data/msu-packs.json`. The pinned official ARM64
 
 `adapters/recalbox/userscripts/alttpr-refresh.sh` runs on ES `endgame`: a
 DETACHED, time-bounded `sync` (never a bare blocking `sync` — that froze the
-frontend when the old NVMe dropped off the bus), plus the gamelist refresh
-worker when a new seed was generated.
+frontend when the old NVMe dropped off the bus). Recalbox 10's native file
+watcher owns library refreshes; this hook never restarts EmulationStation.
 
 ## 7. Golden image
 

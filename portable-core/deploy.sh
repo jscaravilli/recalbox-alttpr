@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Deploy the ALTTPR integration from this repo onto a running Recalbox 10 Pi.
-# Usage:  ./deploy.sh <pi-ip> [ssh-pass]
+# Usage:  ./deploy.sh <pi-ip>
 # Requires: ssh/scp (or run the scp/ssh lines by hand). Assumes steps 1-3 of
-# docs/REPRODUCE.md are done (ext4 share + engine + base ROM already in place).
+# docs/INSTALL.md are done (ext4 share + engine + base ROM already in place).
 set -euo pipefail
 PI="${1:?usage: deploy.sh <pi-ip> [pass]}"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -41,7 +41,7 @@ $SCP "$REPO"/portable-core/install-content.sh "root@${PI}:/recalbox/share/alttpr
 echo "== normalize line endings + perms, then install =="
 $SSH "cd /recalbox/share/alttpr; \
       find bin es -type f \( -name '*.sh' -o -name '*.py' \) -exec sed -i 's/\r\$//' {} +; \
-      sed -i 's/\r\$//' /recalbox/share/system/custom.sh /recalbox/share/userscripts/alttpr-refresh.sh; \
+      sed -i 's/\r\$//' install-content.sh /recalbox/share/system/custom.sh /recalbox/share/userscripts/alttpr-refresh.sh; \
       chmod +x bin/*.sh bin/*.py es/*.sh es/*.py /recalbox/share/system/custom.sh /recalbox/share/userscripts/alttpr-refresh.sh; \
       chmod +x /recalbox/share/alttpr/install-content.sh; \
       bash /recalbox/share/alttpr/es/alttpr-install.sh"

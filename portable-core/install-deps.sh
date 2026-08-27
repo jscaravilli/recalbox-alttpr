@@ -10,9 +10,11 @@ set -euo pipefail
 
 ENGINE=/recalbox/share/alttpr
 DEPS="$ENGINE/pydeps/site"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DR_COMMIT=7e14fddab00b847d6eccf0931b365a5774c5476a
 DR_DIR="$ENGINE/ALttPDoorRandomizer-OverworldShuffle"
 DR_ZIP_URL="https://github.com/codemann8/ALttPDoorRandomizer/archive/$DR_COMMIT.zip"
+GET_PIP_SHA256=fb24e693bab954209a063d90953621412ccad4a500905a726286e038f508ddf6
 
 mkdir -p "$ENGINE" "$DEPS"
 
@@ -27,11 +29,12 @@ fi
 # 2. pip (Recalbox ships none) — bootstrap to the user base on the share
 export PYTHONUSERBASE="$ENGINE/pydeps"
 python3 -c "import urllib.request; urllib.request.urlretrieve('https://bootstrap.pypa.io/get-pip.py','/tmp/get-pip.py')"
+echo "$GET_PIP_SHA256  /tmp/get-pip.py" | sha256sum -c -
 python3 /tmp/get-pip.py --user
 
-# 3. DR runtime deps -> installed into a target dir on the ext4 share
-python3 -m pip install --target="$DEPS" \
-  aenum fast-enum python-bps-continued colorama aioconsole websockets pyyaml
+# 3. Tested, hashed DR runtime deps -> target dir on the ext4 share
+python3 -m pip install --target="$DEPS" --no-deps \
+  -r "$SCRIPT_DIR/requirements-recalbox.txt"
 
 echo "Done. Run DR with:"
 echo "  PYTHONPATH=$DEPS python3 $ENGINE/ALttPDoorRandomizer-OverworldShuffle/DungeonRandomizer.py --help"
