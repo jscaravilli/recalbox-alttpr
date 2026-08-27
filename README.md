@@ -4,7 +4,7 @@
 
 A controller-first **A Link to the Past Randomizer** experience for Raspberry Pi 5 and Recalbox 10. Generate randomized games directly from the television, launch them immediately, and follow progress from another device using the built-in live tracker.
 
-![ALTTPR system page in Recalbox](docs/images/alttpr-system.png)
+![ALTTPR system page in Recalbox](docs/images/system-overview.png)
 
 ## Highlights
 - Single, microSD card (ext4) deployment; no USB or NVMe storage requirement.
@@ -19,6 +19,8 @@ A controller-first **A Link to the Past Randomizer** experience for Raspberry Pi
 |  |  |
 |---|---|
 | ![Generate Custom Seed menu](docs/images/generate-custom-seed.png) | ![ALTTPR live tracker](docs/images/alttpr-tracker.png) |
+
+![Themed ALTTPR game library](docs/images/system-library.png)
 
 ## See It in Action
 
