@@ -80,20 +80,6 @@ html[data-bg="transparent"] .bbg-bar * {
 .broadcast-meta.visible { display: flex; }
 .broadcast-seed-label { color: #7ab8f5; }
 .broadcast-goal { color: #888; }
-.broadcast-hash {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  margin-left: 18px;
-  color: #888;
-}
-.broadcast-hash img {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-  image-rendering: pixelated;
-}
-.broadcast-hash-label { color: #d08a2e; }
 .broadcast-timer {
   margin-left: auto;
   color: #b98cff;
@@ -543,7 +529,6 @@ html[data-bg="transparent"] .bbg-bar * {
   <span class="broadcast-seed-label">Seed:</span>
   <span class="broadcast-seed" id="broadcast-seed"></span>
   <span class="broadcast-goal" id="broadcast-goal"></span>
-  <span class="broadcast-hash" id="broadcast-hash"></span>
   <span class="broadcast-timer" id="broadcast-timer"></span>
 </div>
 <div class="broadcast-container">
@@ -2210,7 +2195,6 @@ try {
   var meta = document.getElementById('broadcast-meta');
   var seed = document.getElementById('broadcast-seed');
   var goal = document.getElementById('broadcast-goal');
-  var hash = document.getElementById('broadcast-hash');
   var timer = document.getElementById('broadcast-timer');
   function pretty(value) {
     return (value || '').replace(/([a-z])([A-Z])/g, '$1 $2');
@@ -2222,33 +2206,6 @@ try {
     return hours + ':' + String(minutes).padStart(2, '0') + ':' +
       String(seconds).padStart(2, '0');
   }
-  var hashImages = [
-    'bow10','boomerang10','hookshot1','bomb10','mushroom1','powder10','firerod1','greenpendant1',
-    'bombos10','ether10','quake10','lamp1','hammer1','shovel1','flute10','net1',
-    'book1','bottle_empty','bottle_green','caneofsomaria1','cape1','mirror1','boots1','gloves1',
-    'flippers1','moonpearl1','shield1','mail1','unknown0','map1','compass1','smallkey0'
-  ];
-  var hashNames = [
-    'Bow','Boomerang','Hookshot','Bomb','Mushroom','Powder','Rod','Pendant',
-    'Bombos','Ether','Quake','Lamp','Hammer','Shovel','Flute','Bug Net',
-    'Book','Bottle','Potion','Cane','Cape','Mirror','Boots','Gloves',
-    'Flippers','Moon Pearl','Shield','Tunic','Heart','Map','Compass','Key'
-  ];
-  function renderHash(values) {
-    hash.replaceChildren();
-    if (!Array.isArray(values) || values.length !== 5) return;
-    var label = document.createElement('span');
-    label.className = 'broadcast-hash-label';
-    label.textContent = 'Hash:';
-    hash.appendChild(label);
-    values.forEach(function(value) {
-      var image = document.createElement('img');
-      image.src = 'items/' + hashImages[value] + '.png';
-      image.alt = hashNames[value];
-      image.title = hashNames[value];
-      hash.appendChild(image);
-    });
-  }
   function pollSeedInfo() {
     fetch('/seedinfo', { cache: 'no-store' })
       .then(function(response) { return response.ok ? response.json() : null; })
@@ -2259,7 +2216,6 @@ try {
         }
         seed.textContent = pretty(data.nickname);
         goal.textContent = data.goal ? '· ' + data.goal : '';
-        renderHash(data.seed_hash);
         timer.textContent = typeof data.stopwatch_seconds === 'number'
           ? formatTimer(data.stopwatch_seconds) : '';
         meta.classList.add('visible');

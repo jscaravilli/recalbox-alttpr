@@ -45,8 +45,8 @@ http://recalbox.local:8080/itemtracker.html
 ```
 
 The URL is permanent. It follows whichever ALTTPR seed is currently running and
-shows the seed name, goal, seed hash, timer, collected items, dungeon prizes,
-and remaining checks.
+shows the seed name, goal, timer, collected items, dungeon prizes, and remaining
+checks.
 
 ![Items updating from live game memory](images/live-autotracker.gif)
 

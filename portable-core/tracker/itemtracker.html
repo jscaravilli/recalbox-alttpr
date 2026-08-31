@@ -12,9 +12,8 @@
 <div id="seed-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:11000;
   font:600 13px/1.6 system-ui,sans-serif;color:#e8e8e8;background:linear-gradient(#1a1a1a,#0d0d0d);
   border-bottom:1px solid #333;text-align:left;padding:2px 8px;box-sizing:border-box;letter-spacing:.02em;">
-  <span style="color:#7ab8f5;">Seed:</span> <span id="seed-nick">—</span>
+  <span style="color:#7ab8f5;">Seed:</span>   <span id="seed-nick">—</span>
   <span id="seed-goal" style="color:#888;"></span>
-  <span id="seed-hash" style="display:inline-flex;align-items:center;gap:2px;margin-left:18px;color:#888;"></span>
   <span id="seed-crystals" style="color:#b98cff;"></span>
   <span id="seed-timer" style="color:#b98cff;float:right;"></span>
 </div>
@@ -212,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
 (function() {
   var nickEl = document.getElementById('seed-nick');
   var goalEl = document.getElementById('seed-goal');
-  var hashEl = document.getElementById('seed-hash');
   var crysEl = document.getElementById('seed-crystals');
   var timerEl = document.getElementById('seed-timer');
   var banner = document.getElementById('seed-banner');
@@ -234,34 +232,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return hours + ':' + String(minutes).padStart(2, '0') + ':' +
       String(seconds).padStart(2, '0');
   }
-  var hashImages = [
-    'bow10','boomerang10','hookshot1','bomb10','mushroom1','powder10','firerod1','greenpendant1',
-    'bombos10','ether10','quake10','lamp1','hammer1','shovel1','flute10','net1',
-    'book1','bottle_empty','bottle_green','caneofsomaria1','cape1','mirror1','boots1','gloves1',
-    'flippers1','moonpearl1','shield1','mail1','unknown0','map1','compass1','smallkey0'
-  ];
-  var hashNames = [
-    'Bow','Boomerang','Hookshot','Bomb','Mushroom','Powder','Rod','Pendant',
-    'Bombos','Ether','Quake','Lamp','Hammer','Shovel','Flute','Bug Net',
-    'Book','Bottle','Potion','Cane','Cape','Mirror','Boots','Gloves',
-    'Flippers','Moon Pearl','Shield','Tunic','Heart','Map','Compass','Key'
-  ];
-  function renderHash(values) {
-    hashEl.replaceChildren();
-    if (!Array.isArray(values) || values.length !== 5) return;
-    var label = document.createElement('span');
-    label.textContent = 'Hash:';
-    label.style.color = '#d08a2e';
-    hashEl.appendChild(label);
-    values.forEach(function(value) {
-      var image = document.createElement('img');
-      image.src = 'items/' + hashImages[value] + '.png';
-      image.alt = hashNames[value];
-      image.title = hashNames[value];
-      image.style.cssText = 'width:16px;height:16px;object-fit:contain;image-rendering:pixelated;';
-      hashEl.appendChild(image);
-    });
-  }
   function poll() {
     fetch('/seedinfo', { cache: 'no-store' })
       .then(function(r) { return r.ok ? r.json() : null; })
@@ -269,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (d && d.running && d.nickname) {
           nickEl.textContent = pretty(d.nickname);
           goalEl.textContent = d.goal ? '· ' + d.goal : '';
-          renderHash(d.seed_hash);
           // crystal requirements: GT (tower) and Ganon vulnerability
           if (typeof d.gt_crystals === 'number') {
             crysEl.textContent = '· ' + d.gt_crystals + '\u25C6 GT / ' +
