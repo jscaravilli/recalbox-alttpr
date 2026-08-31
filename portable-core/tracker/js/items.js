@@ -877,6 +877,33 @@ function cycleDungeonPrize(dungeonKey, slot) {
     if (window.broadcastItemSnap) window.broadcastItemSnap();
 }
 
+function applyDungeonPrizeAssignments(assignments) {
+    if (!assignments) return false;
+    const _diMode = (new URLSearchParams(window.location.search).get('dungeonitems') || localStorage.getItem('alttp-dungeon-items') || 'standard');
+    const prizeImages = ['keysanity','mapcompass','mapcompasskeys','other'].includes(_diMode)
+        ? ['unknown', 'crystal', 'redcrystal', 'pendant', 'greenpendant']
+        : ['crystal', 'redcrystal', 'pendant', 'greenpendant'];
+    let applied = 0;
+
+    Object.keys(assignments).forEach(dungeonKey => {
+        const dungeon = dungeons[dungeonKey];
+        const slot = document.querySelector('[data-dungeon-key="' + dungeonKey + '"]');
+        const prizeName = assignments[dungeonKey];
+        const prizeState = prizeImages.indexOf(prizeName);
+        if (!dungeon || !slot || prizeState < 0) return;
+        const prizeImg = slot.querySelector('.prize-img');
+        if (!prizeImg) return;
+        const obtained = prizeImg.src.includes('1.png');
+        dungeon.prizeState = prizeState;
+        prizeImg.src = `${BASE_URL}/${prizeName}${obtained ? 1 : 0}.png`;
+        updateBossCircle(dungeonKey);
+        applied++;
+    });
+    if (applied && typeof window.onPrizeCycled === 'function') window.onPrizeCycled();
+    return applied > 0;
+}
+window.applyDungeonPrizeAssignments = applyDungeonPrizeAssignments;
+
 // ── Boss circle ──────────────────────────────────────────────────────────────
 // Each dungeon slot carries a "boss circle": a circle showing one of boss0..10.
 // boss0 is the default '?' (neutral). The user right-clicks to pick a boss.

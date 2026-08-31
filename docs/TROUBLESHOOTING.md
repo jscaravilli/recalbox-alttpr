@@ -45,6 +45,8 @@ launches.
 4. Run the health check and confirm ports `8080` and `23074` pass.
 
 The tracker shows `running: false` when no ALTTPR seed is active; that is normal.
+When served from Recalbox, the tracker automatically replaces stale saved
+connection hosts with the hostname or IP used to open the page.
 
 ## An imported MSU pack is rejected
 

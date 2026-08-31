@@ -63,6 +63,41 @@ html[data-bg="transparent"] .bbg-bar * {
   display: flex; flex-direction: column; gap: 2px;
   flex: 1; overflow: hidden;
 }
+.broadcast-meta {
+  display: none;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 5px;
+  min-height: 26px;
+  padding: 2px 6px 2px 8px;
+  background: linear-gradient(#1a1a1a, #0d0d0d);
+  border-bottom: 1px solid #333;
+  color: #e8e8e8;
+  font: 600 13px/1.6 system-ui, sans-serif;
+  letter-spacing: .02em;
+  flex-shrink: 0;
+}
+.broadcast-meta.visible { display: flex; }
+.broadcast-seed-label { color: #7ab8f5; }
+.broadcast-goal { color: #888; }
+.broadcast-hash {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 18px;
+  color: #888;
+}
+.broadcast-hash img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.broadcast-hash-label { color: #d08a2e; }
+.broadcast-timer {
+  margin-left: auto;
+  color: #b98cff;
+}
 
 /* Image-mode background — driven by --bg-image set from JS */
 [data-bg="image"] body, body[data-bg="image"] {
@@ -364,6 +399,12 @@ html[data-bg="transparent"] .bbg-bar * {
   display: inline-flex; align-items: center; gap: 4px;
 }
 .bsettings-btn:hover { border-color: #4dff88; color: #fff; }
+.broadcast-zoom-label {
+  min-width: 34px;
+  text-align: center;
+  color: #888;
+  font: 600 10px Arial, sans-serif;
+}
 
 /* ── Item Animation overlay ─────────────────────────────────────────────── */
 #item-anim-overlay {
@@ -498,6 +539,13 @@ html[data-bg="transparent"] .bbg-bar * {
 </style>
 </head>
 <body>
+<div class="broadcast-meta" id="broadcast-meta">
+  <span class="broadcast-seed-label">Seed:</span>
+  <span class="broadcast-seed" id="broadcast-seed"></span>
+  <span class="broadcast-goal" id="broadcast-goal"></span>
+  <span class="broadcast-hash" id="broadcast-hash"></span>
+  <span class="broadcast-timer" id="broadcast-timer"></span>
+</div>
 <div class="broadcast-container">
   <div class="bcast-row" id="row1"></div>
   <div class="bcast-row" id="row2"></div>
@@ -505,6 +553,9 @@ html[data-bg="transparent"] .bbg-bar * {
   <div class="bcast-row" id="row4"></div>
 </div>
 <div class="bbg-bar">
+  <button class="bsettings-btn" type="button" onclick="changeBroadcastZoom(-0.1)">&#8722;</button>
+  <span class="broadcast-zoom-label" id="broadcast-zoom-label">100%</span>
+  <button class="bsettings-btn" type="button" onclick="changeBroadcastZoom(0.1)">+</button>
   <button class="bsettings-btn" onclick="openSettings()">⚙ Settings</button>
 </div>
 
@@ -713,7 +764,8 @@ var SETTINGS = {
   animBgImage:      '',          // data URL for anim background image (empty = use triforce.jpg)
   animColorPreset:  'blue',      // 'blue' | 'green' | 'purple' | 'custom'
   animColorA:       '#3498db',   // color A (primary)
-  animColorB:       '#88ccff'    // color B (lighter complement)
+  animColorB:       '#88ccff',   // color B (lighter complement)
+  zoom:             1
 };
 
 var FILL_COLORS = {
@@ -759,6 +811,7 @@ function loadSettings() {
     SETTINGS.animColorPreset = localStorage.getItem('alttp-broadcast-anim-color-preset') || SETTINGS.animColorPreset;
     SETTINGS.animColorA      = localStorage.getItem('alttp-broadcast-anim-color-a')      || SETTINGS.animColorA;
     SETTINGS.animColorB      = localStorage.getItem('alttp-broadcast-anim-color-b')      || SETTINGS.animColorB;
+    SETTINGS.zoom            = parseFloat(localStorage.getItem('alttp-broadcast-zoom') || '1') || 1;
   } catch (e) {}
   // URL bg overrides stored bg
   var p = new URLSearchParams(window.location.search);
@@ -794,7 +847,22 @@ function saveSettings() {
     localStorage.setItem('alttp-broadcast-anim-color-preset', SETTINGS.animColorPreset);
     localStorage.setItem('alttp-broadcast-anim-color-a',      SETTINGS.animColorA);
     localStorage.setItem('alttp-broadcast-anim-color-b',      SETTINGS.animColorB);
+    localStorage.setItem('alttp-broadcast-zoom',              SETTINGS.zoom);
   } catch (e) {}
+}
+
+function applyBroadcastZoom() {
+  var container = document.querySelector('.broadcast-container');
+  var label = document.getElementById('broadcast-zoom-label');
+  if (container) container.style.zoom = SETTINGS.zoom;
+  if (label) label.textContent = Math.round(SETTINGS.zoom * 100) + '%';
+}
+
+function changeBroadcastZoom(delta) {
+  SETTINGS.zoom = Math.min(2, Math.max(0.5,
+    Math.round((SETTINGS.zoom + delta) * 10) / 10));
+  saveSettings();
+  applyBroadcastZoom();
 }
 
 function saveBgImage(dataUrl) {
@@ -2137,8 +2205,74 @@ try {
   };
 } catch(err) { console.error('BroadcastChannel error:', err); }
 
+// ── Seed metadata + authoritative in-game Stopwatch ──────────────────────
+(function() {
+  var meta = document.getElementById('broadcast-meta');
+  var seed = document.getElementById('broadcast-seed');
+  var goal = document.getElementById('broadcast-goal');
+  var hash = document.getElementById('broadcast-hash');
+  var timer = document.getElementById('broadcast-timer');
+  function pretty(value) {
+    return (value || '').replace(/([a-z])([A-Z])/g, '$1 $2');
+  }
+  function formatTimer(totalSeconds) {
+    var hours = Math.floor(totalSeconds / 3600);
+    var minutes = Math.floor(totalSeconds % 3600 / 60);
+    var seconds = totalSeconds % 60;
+    return hours + ':' + String(minutes).padStart(2, '0') + ':' +
+      String(seconds).padStart(2, '0');
+  }
+  var hashImages = [
+    'bow10','boomerang10','hookshot1','bomb10','mushroom1','powder10','firerod1','greenpendant1',
+    'bombos10','ether10','quake10','lamp1','hammer1','shovel1','flute10','net1',
+    'book1','bottle_empty','bottle_green','caneofsomaria1','cape1','mirror1','boots1','gloves1',
+    'flippers1','moonpearl1','shield1','mail1','unknown0','map1','compass1','smallkey0'
+  ];
+  var hashNames = [
+    'Bow','Boomerang','Hookshot','Bomb','Mushroom','Powder','Rod','Pendant',
+    'Bombos','Ether','Quake','Lamp','Hammer','Shovel','Flute','Bug Net',
+    'Book','Bottle','Potion','Cane','Cape','Mirror','Boots','Gloves',
+    'Flippers','Moon Pearl','Shield','Tunic','Heart','Map','Compass','Key'
+  ];
+  function renderHash(values) {
+    hash.replaceChildren();
+    if (!Array.isArray(values) || values.length !== 5) return;
+    var label = document.createElement('span');
+    label.className = 'broadcast-hash-label';
+    label.textContent = 'Hash:';
+    hash.appendChild(label);
+    values.forEach(function(value) {
+      var image = document.createElement('img');
+      image.src = 'items/' + hashImages[value] + '.png';
+      image.alt = hashNames[value];
+      image.title = hashNames[value];
+      hash.appendChild(image);
+    });
+  }
+  function pollSeedInfo() {
+    fetch('/seedinfo', { cache: 'no-store' })
+      .then(function(response) { return response.ok ? response.json() : null; })
+      .then(function(data) {
+        if (!data || !data.running || !data.nickname) {
+          meta.classList.remove('visible');
+          return;
+        }
+        seed.textContent = pretty(data.nickname);
+        goal.textContent = data.goal ? '· ' + data.goal : '';
+        renderHash(data.seed_hash);
+        timer.textContent = typeof data.stopwatch_seconds === 'number'
+          ? formatTimer(data.stopwatch_seconds) : '';
+        meta.classList.add('visible');
+      })
+      .catch(function() { meta.classList.remove('visible'); });
+  }
+  pollSeedInfo();
+  setInterval(pollSeedInfo, 500);
+})();
+
 // ── Init ─────────────────────────────────────────────────────────────────
 loadSettings();
+applyBroadcastZoom();
 applyFillVariable();
 applyDungeonColors();
 buildRows();

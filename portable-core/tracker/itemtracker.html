@@ -5,27 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>ALTTP Item Tracker</title>
 <meta http-equiv="Content-Security-Policy" content="connect-src * ws://*:*;">
-<link rel="stylesheet" href="items.css">
+<link rel="stylesheet" href="items.css?v=20260830-tracker2">
 </head>
 <body>
 
-<div id="seed-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
+<div id="seed-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:11000;
   font:600 13px/1.6 system-ui,sans-serif;color:#e8e8e8;background:linear-gradient(#1a1a1a,#0d0d0d);
-  border-bottom:1px solid #333;text-align:center;padding:2px 8px;letter-spacing:.02em;">
+  border-bottom:1px solid #333;text-align:left;padding:2px 8px;box-sizing:border-box;letter-spacing:.02em;">
   <span style="color:#7ab8f5;">Seed:</span> <span id="seed-nick">—</span>
   <span id="seed-goal" style="color:#888;"></span>
+  <span id="seed-hash" style="display:inline-flex;align-items:center;gap:2px;margin-left:18px;color:#888;"></span>
   <span id="seed-crystals" style="color:#b98cff;"></span>
+  <span id="seed-timer" style="color:#b98cff;float:right;"></span>
 </div>
 
 <div class="tracker-container"></div>
 
+<iframe id="tracker-map-frame" src="map.html?embedded=1&amp;v=20260830-tracker2" title="ALTTP map tracker"
+  style="display:none;position:fixed;top:26px;left:0;width:117.648%;
+  height:calc(117.648% - 51.765px);border:0;background:#000;z-index:10000;
+  transform:scale(.85);
+  transform-origin:top left;"></iframe>
+
 <div class="tracker-bottom-bar">
   <div class="size-group">
     <button class="size-btn" onclick="changeTrackerScale(-0.1)">&#8722;</button>
+    <span id="tracker-zoom-label" style="min-width:28px;text-align:center;font:600 8px Arial,sans-serif;color:#888;">100%</span>
     <button class="size-btn" onclick="changeTrackerScale(0.1)">+</button>
     <button class="item-settings-btn" id="item-settings-btn" title="Settings" onclick="openItemSettings()">⚙</button>
-<button class="size-btn" id="item-broadcast-btn" title="Open Broadcast View" onclick="(function(){ var bg=localStorage.getItem('alttp-tracker-bg')||'black'; if(window.electronAPI&&window.electronAPI.launch){ window.electronAPI.launch({which:'broadcast',trackerBg:bg}); } else { window.open('broadcast.html?bg='+bg,'alttp-broadcast','width=500,height=230,resizable=yes'); } })()" style="background:#1a2e4a;color:#7ab8f5;border:1px solid #2a4e7a;padding:0 6px;">📡</button>
+<button class="size-btn" id="item-broadcast-btn" title="Open Broadcast View" onclick="(function(){ var bg=localStorage.getItem('alttp-tracker-bg')||'black'; if(window.electronAPI&&window.electronAPI.launch){ window.electronAPI.launch({which:'broadcast',trackerBg:bg}); } else { window.open('broadcast.html?v=20260830-tracker3&amp;bg='+bg,'alttp-broadcast','width=500,height=260,resizable=yes'); } })()" style="background:#1a2e4a;color:#7ab8f5;border:1px solid #2a4e7a;padding:0 6px;">📡</button>
   </div>
+  <button class="tracker-view-btn active" id="tracker-view-inv" type="button" onclick="setTrackerView('inv')">INV</button>
+  <button class="tracker-view-btn" id="tracker-view-map" type="button" onclick="setTrackerView('map')">MAP</button>
   <div class="connection-status" id="item-conn-status">○ Disconnected</div>
   <span class="mode-label" id="item-mode-label"></span>
   <button class="mode-toggle-btn" id="item-mode-toggle" title="Toggle Auto/Manual tracking" onclick="toggleTrackingMode()" style="background:#1a2e4a;color:#7ab8f5;border:1px solid #2a4e7a;padding:0 8px;border-radius:3px;cursor:pointer;font-size:12px;">⟲ Auto</button>
@@ -132,7 +143,7 @@
   </div>
 </div>
 
-<script src="js/items.js"></script>
+<script src="js/items.js?v=20260830-tracker2"></script>
 <script>
 // ── Set up BroadcastChannel so items.js can broadcast to map ──────────────────
 try { window._itemsBc = new BroadcastChannel('alttp-tracker'); } catch(e) {}
@@ -160,25 +171,97 @@ try {
 
 // ── Load host/port from launcher settings before items.js connectWebSocket ────
 (function() {
-  // Default the bridge host to whatever host served this page. When the tracker
-  // is opened from the Pi (e.g. http://recalbox.local:8080/) a phone auto-connects
-  // to the bridge at that same host (recalbox.local:23074) with no manual setup.
-  // localhost is only used as a last resort (file:// or blank hostname).
+  // An HTTP-served tracker must always use its serving host. This intentionally
+  // ignores stale launcher/localStorage hosts left by an older installation.
   var served = (location.protocol.indexOf('http') === 0 && location.hostname) ? location.hostname : 'localhost';
-  var host = localStorage.getItem('alttp-ws-host') || served;
+  var params = new URLSearchParams(window.location.search);
+  var host = params.get('host') || (location.protocol.indexOf('http') === 0
+    ? served : (localStorage.getItem('alttp-ws-host') || served));
   var port = parseInt(localStorage.getItem('alttp-ws-port') || '23074');
   wsHost = host;   // items.js `let wsHost`
   wsPort = port;   // items.js `let wsPort`
+  try { localStorage.setItem('alttp-ws-host', host); } catch(e) {}
 })();
+
+// ── Inventory / map switcher ──────────────────────────────────────────────────
+function setTrackerView(view) {
+  view = view === 'map' ? 'map' : 'inv';
+  var frame = document.getElementById('tracker-map-frame');
+  var inv = document.getElementById('tracker-view-inv');
+  var map = document.getElementById('tracker-view-map');
+  frame.style.display = view === 'map' ? 'block' : 'none';
+  inv.classList.toggle('active', view === 'inv');
+  map.classList.toggle('active', view === 'map');
+  try { localStorage.setItem('alttp-tracker-view', view); } catch(e) {}
+  if (view === 'map' && frame.contentWindow) {
+    try {
+      var channel = new BroadcastChannel('alttp-tracker');
+      channel.postMessage({ type: 'requestSnap' });
+      channel.close();
+    } catch(e) {}
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var view = 'inv';
+  try { view = localStorage.getItem('alttp-tracker-view') || 'inv'; } catch(e) {}
+  setTrackerView(view);
+});
 
 // ── Seed nickname banner: poll /seedinfo (served by the Pi tracker server) ─────
 (function() {
   var nickEl = document.getElementById('seed-nick');
   var goalEl = document.getElementById('seed-goal');
+  var hashEl = document.getElementById('seed-hash');
   var crysEl = document.getElementById('seed-crystals');
+  var timerEl = document.getElementById('seed-timer');
   var banner = document.getElementById('seed-banner');
+  var lastPrizeAssignments = '';
   if (!nickEl) return;
   function pretty(s) { return (s || '').replace(/([a-z])([A-Z])/g, '$1 $2'); }
+  function alignBanner() {
+    var tracker = document.querySelector('.tracker-container');
+    if (tracker) {
+      var bounds = tracker.getBoundingClientRect();
+      banner.style.paddingLeft = Math.max(0, bounds.left) + 'px';
+      banner.style.paddingRight = Math.max(0, window.innerWidth - bounds.right) + 'px';
+    }
+  }
+  function formatTimer(totalSeconds) {
+    var hours = Math.floor(totalSeconds / 3600);
+    var minutes = Math.floor(totalSeconds % 3600 / 60);
+    var seconds = totalSeconds % 60;
+    return hours + ':' + String(minutes).padStart(2, '0') + ':' +
+      String(seconds).padStart(2, '0');
+  }
+  var hashImages = [
+    'bow10','boomerang10','hookshot1','bomb10','mushroom1','powder10','firerod1','greenpendant1',
+    'bombos10','ether10','quake10','lamp1','hammer1','shovel1','flute10','net1',
+    'book1','bottle_empty','bottle_green','caneofsomaria1','cape1','mirror1','boots1','gloves1',
+    'flippers1','moonpearl1','shield1','mail1','unknown0','map1','compass1','smallkey0'
+  ];
+  var hashNames = [
+    'Bow','Boomerang','Hookshot','Bomb','Mushroom','Powder','Rod','Pendant',
+    'Bombos','Ether','Quake','Lamp','Hammer','Shovel','Flute','Bug Net',
+    'Book','Bottle','Potion','Cane','Cape','Mirror','Boots','Gloves',
+    'Flippers','Moon Pearl','Shield','Tunic','Heart','Map','Compass','Key'
+  ];
+  function renderHash(values) {
+    hashEl.replaceChildren();
+    if (!Array.isArray(values) || values.length !== 5) return;
+    var label = document.createElement('span');
+    label.textContent = 'Hash:';
+    label.style.color = '#d08a2e';
+    hashEl.appendChild(label);
+    values.forEach(function(value) {
+      var image = document.createElement('img');
+      image.src = 'items/' + hashImages[value] + '.png';
+      image.alt = hashNames[value];
+      image.title = hashNames[value];
+      image.style.cssText = 'width:16px;height:16px;object-fit:contain;image-rendering:pixelated;';
+      hashEl.appendChild(image);
+    });
+  }
   function poll() {
     fetch('/seedinfo', { cache: 'no-store' })
       .then(function(r) { return r.ok ? r.json() : null; })
@@ -186,6 +269,7 @@ try {
         if (d && d.running && d.nickname) {
           nickEl.textContent = pretty(d.nickname);
           goalEl.textContent = d.goal ? '· ' + d.goal : '';
+          renderHash(d.seed_hash);
           // crystal requirements: GT (tower) and Ganon vulnerability
           if (typeof d.gt_crystals === 'number') {
             crysEl.textContent = '· ' + d.gt_crystals + '\u25C6 GT / ' +
@@ -193,7 +277,19 @@ try {
           } else {
             crysEl.textContent = '';
           }
+          timerEl.textContent = typeof d.stopwatch_seconds === 'number'
+            ? formatTimer(d.stopwatch_seconds) : '';
+          var prizeAssignments = JSON.stringify(d.dungeon_prizes || {});
+          if (prizeAssignments !== lastPrizeAssignments) {
+            setTimeout(function() {
+              if (window.applyDungeonPrizeAssignments &&
+                  window.applyDungeonPrizeAssignments(d.dungeon_prizes)) {
+                lastPrizeAssignments = prizeAssignments;
+              }
+            }, 0);
+          }
           banner.style.display = 'block';
+          requestAnimationFrame(alignBanner);
           document.body.style.paddingTop = '22px';
         } else {
           banner.style.display = 'none';
@@ -203,7 +299,7 @@ try {
       .catch(function() { /* endpoint absent (opened as static file) — hide banner */ });
   }
   poll();
-  setInterval(poll, 5000);
+  setInterval(poll, 500);
 })();
 
 // ── Scale and background from URL params ──────────────────────────────────────
@@ -714,7 +810,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // The tracker is a fixed ~1050px-wide grid. On phones we shrink just the item
 // grid (.tracker-container) so it fits edge-to-edge, while the bottom bar and
 // seed banner stay full-size and tappable. Composes with the manual +/- zoom.
-window._manualScale = window._manualScale || 1;
+window._manualScale = parseFloat(localStorage.getItem('alttp-inventory-zoom') || '1') || 1;
 function autoFitTracker() {
   var c = document.querySelector('.tracker-container');
   if (!c) return;
@@ -724,6 +820,14 @@ function autoFitTracker() {
   var fit = (natural > avail) ? (avail / natural) : 1;
   window._autoFitScale = fit;
   c.style.zoom = fit * (window._manualScale || 1);
+  var label = document.getElementById('tracker-zoom-label');
+  if (label) label.textContent = Math.round((window._manualScale || 1) * 100) + '%';
+  var banner = document.getElementById('seed-banner');
+  if (banner) {
+    var bounds = c.getBoundingClientRect();
+    banner.style.paddingLeft = Math.max(0, bounds.left) + 'px';
+    banner.style.paddingRight = Math.max(0, window.innerWidth - bounds.right) + 'px';
+  }
 }
 window.addEventListener('resize', autoFitTracker);
 window.addEventListener('orientationchange', function() { setTimeout(autoFitTracker, 200); });
@@ -737,12 +841,15 @@ function changeTrackerScale(delta) {
   if (isTouch) {
     var m = Math.min(2.0, Math.max(0.5, Math.round(((window._manualScale || 1) + delta) * 10) / 10));
     window._manualScale = m;
+    try { localStorage.setItem('alttp-inventory-zoom', String(m)); } catch(e) {}
     if (typeof autoFitTracker === 'function') autoFitTracker();
     return;
   }
   var current = window._trackerScale || 1;
   var next = Math.min(2.0, Math.max(0.5, Math.round((current + delta) * 10) / 10));
   window._trackerScale = next;
+  var label = document.getElementById('tracker-zoom-label');
+  if (label) label.textContent = Math.round(next * 100) + '%';
   document.body.style.zoom = next;
   // Resize window to fit new scale
   setTimeout(function() {

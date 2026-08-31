@@ -429,8 +429,27 @@ html.no-boss-shuffle .boss-circle:hover {
     right: 0;
     height: 18px;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 12000;
     gap: 4px;
+}
+
+.tracker-view-btn {
+    height: 14px;
+    padding: 0 6px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background: #1a1a1a;
+    color: #aaa;
+    font-size: 8px;
+    font-weight: bold;
+    line-height: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.tracker-view-btn.active {
+    background: #24527a;
+    border-color: #7ab8f5;
+    color: #fff;
 }
 
 .connection-status {

@@ -45,10 +45,14 @@ http://recalbox.local:8080/itemtracker.html
 ```
 
 The URL is permanent. It follows whichever ALTTPR seed is currently running and
-shows the seed name, goal, collected items, dungeon prizes, and remaining
-checks.
+shows the seed name, goal, seed hash, timer, collected items, dungeon prizes,
+and remaining checks.
 
 ![Items updating from live game memory](images/live-autotracker.gif)
+
+Use **INV** and **MAP** in the bottom toolbar to switch views. Drag the map with
+one finger and pinch with two fingers to zoom. Use **-** and **+** to resize the
+inventory. The Broadcast View has separate inventory zoom controls.
 
 No spoiler log is required. The bridge reads game memory but does not write to
 it.

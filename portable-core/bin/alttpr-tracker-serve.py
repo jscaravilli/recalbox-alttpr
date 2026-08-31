@@ -26,6 +26,10 @@ RA_PORT = 55355
 # real seeds: these are the same bytes the Custom Seed menu writes.
 OFF_GT_CRYSTALS = 0x18019A     # crystals required to enter Ganon's Tower
 OFF_GANON_CRYSTALS = 0x1801A6  # crystals required to make Ganon vulnerable
+OFF_TIMER_STYLE = 0x180190      # 2 = Stopwatch
+OFF_SEED_HASH = 0x180215        # five Hash Alphabet item IDs
+WRAM_NMI_FRAMES = 0xF43E
+WRAM_CHALLENGE_TIMER = 0xF454
 
 # Where generated seeds live; the running content name (no extension) is resolved
 # to a .sfc here so we can read its crystal bytes.
@@ -58,6 +62,26 @@ def read_crystals(content):
     return (None, None)
 
 
+def read_seed_hash(content):
+    """Read the five file-select Hash Alphabet item IDs from the seed ROM."""
+    if not content:
+        return None
+    fname = content if content.lower().endswith((".sfc", ".smc")) else content + ".sfc"
+    for directory in SEEDS_DIRS:
+        path = os.path.join(directory, fname)
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, "rb") as rom:
+                rom.seek(OFF_SEED_HASH)
+                values = list(rom.read(5))
+            if len(values) == 5 and all(value <= 0x1F for value in values):
+                return values
+        except OSError:
+            return None
+    return None
+
+
 def ra_status():
     """Return the RetroArch GET_STATUS string, or None if nothing is running."""
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -72,6 +96,56 @@ def ra_status():
         return None
     finally:
         s.close()
+
+
+def ra_read_core_ram(offset, size):
+    """Read bytes from RetroArch core RAM, returning None when unavailable."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(1.0)
+    try:
+        command = "READ_CORE_RAM {:x} {}\n".format(offset, size).encode()
+        s.sendto(command, (RA_HOST, RA_PORT))
+        data, _ = s.recvfrom(4096)
+        parts = data.decode("ascii", "strict").strip().split()
+        if len(parts) != size + 2 or parts[:2] != ["READ_CORE_RAM", format(offset, "x")]:
+            return None
+        return bytes(int(value, 16) for value in parts[2:])
+    except (OSError, UnicodeError, ValueError):
+        return None
+    finally:
+        s.close()
+
+
+def read_stopwatch_seconds(content):
+    """Return the same elapsed seconds shown by the in-game Stopwatch."""
+    if not content:
+        return None
+    fname = content if content.lower().endswith((".sfc", ".smc")) else content + ".sfc"
+    for directory in SEEDS_DIRS:
+        path = os.path.join(directory, fname)
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, "rb") as rom:
+                rom.seek(OFF_TIMER_STYLE)
+                if rom.read(1) != b"\x02":
+                    return None
+        except OSError:
+            return None
+        timer_data = ra_read_core_ram(
+            WRAM_NMI_FRAMES,
+            WRAM_CHALLENGE_TIMER + 4 - WRAM_NMI_FRAMES,
+        )
+        if timer_data is None:
+            return None
+        nmi_frames = int.from_bytes(timer_data[:4], "little")
+        challenge_offset = WRAM_CHALLENGE_TIMER - WRAM_NMI_FRAMES
+        challenge_timer = int.from_bytes(
+            timer_data[challenge_offset:challenge_offset + 4],
+            "little",
+        )
+        return ((nmi_frames - challenge_timer) & 0xFFFFFFFF) // 60
+    return None
 
 
 def parse_seed(base):
@@ -110,22 +184,51 @@ def parse_seed(base):
 
 
 def read_spoiler_metadata(content):
-    """Read mode/logic/goal from the generated DR text spoiler, if present."""
+    """Read settings and dungeon prizes from the generated DR text spoiler."""
     base = os.path.basename(content)
     if base.lower().endswith((".sfc", ".smc")):
         base = base[:-4]
+    dungeon_names = {
+        "Eastern Palace": "ep",
+        "Desert Palace": "dp",
+        "Tower of Hera": "toh",
+        "Palace of Darkness": "pod",
+        "Thieves Town": "tt",
+        "Skull Woods": "sw",
+        "Swamp Palace": "sp",
+        "Ice Palace": "ip",
+        "Misery Mire": "mm",
+        "Turtle Rock": "tr",
+    }
     for directory in SEEDS_DIRS:
         path = os.path.join(directory, base + ".spoiler.txt")
         if not os.path.isfile(path):
             continue
         result = {}
+        prizes = {}
         try:
             for line in open(path, encoding="utf-8", errors="replace"):
                 match = re.match(r"^(Mode|Logic|Goal):\s+(.+?)\s*$", line)
                 if match:
                     result[match.group(1).lower()] = match.group(2)
+                    continue
+                match = re.match(r"^([^:]+):\s+(Crystal \d+|(?:Green|Red|Blue) Pendant)\s*$", line)
+                if not match or match.group(1) not in dungeon_names:
+                    continue
+                prize = match.group(2)
+                if prize in ("Crystal 5", "Crystal 6"):
+                    prize = "redcrystal"
+                elif prize.startswith("Crystal "):
+                    prize = "crystal"
+                elif prize == "Green Pendant":
+                    prize = "greenpendant"
+                else:
+                    prize = "pendant"
+                prizes[dungeon_names[match.group(1)]] = prize
         except OSError:
             pass
+        if prizes:
+            result["dungeon_prizes"] = prizes
         return result
     return {}
 
@@ -147,6 +250,8 @@ def seedinfo():
         info["state"] = spoiler.get("mode", info.get("state", ""))
         info["glitch"] = spoiler.get("logic", info.get("glitch", ""))
         info["goal"] = spoiler.get("goal", info.get("goal", ""))
+        if "dungeon_prizes" in spoiler:
+            info["dungeon_prizes"] = spoiler["dungeon_prizes"]
     info["running"] = True
     info["core"] = core
     info["content"] = content
@@ -154,6 +259,12 @@ def seedinfo():
     if gt is not None:
         info["gt_crystals"] = gt
         info["ganon_crystals"] = ga
+    seed_hash = read_seed_hash(content)
+    if seed_hash is not None:
+        info["seed_hash"] = seed_hash
+    stopwatch_seconds = read_stopwatch_seconds(content)
+    if stopwatch_seconds is not None:
+        info["stopwatch_seconds"] = stopwatch_seconds
     return info
 
 
