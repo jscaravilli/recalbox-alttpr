@@ -134,9 +134,11 @@ session). Reliable method:
   old base-patch Data Bank bug. Current Stopwatch ROMs mixed long WRAM reads with
   absolute `$BExx` writes in the routine at `$20:D85B`; with a non-$7E DB, its
   divide/subtract loop never updates WRAM and freezes. `alttpr-timerpatch.py`
-  retargets caller `$20:DB75` to a DB=$7E trampoline at `$37:FFF0`. The final
-  16 bytes of bank `$37` are reserved by a hard room-allocator bound, and exact
-  pre/post byte assertions prevent upstream changes from silently reclaiming it.
+  replaces the complete frame gate at `$20:DB73` with a jump to a DB=$7E
+  trampoline at `$37:FFE0`. The final 32 bytes of bank `$37` are reserved by a
+  hard room-allocator bound, and exact pre/post byte assertions prevent upstream
+  changes from silently reclaiming it. This supersedes an unsafe four-byte
+  patch that overwrote the original branch target.
 - **Custom menu organization/help**: nine nonselectable sections organize Seed
   Rules, Items & Progression, Entrances, Dungeon Doors, Overworld/Flute, Dungeon
   Items, Enemies/Bosses, Advanced Gameplay, and Cosmetics/Output. Navigation

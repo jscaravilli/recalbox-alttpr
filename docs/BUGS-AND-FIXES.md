@@ -24,23 +24,25 @@ wrong bank and can fail to terminate.
 
 ### Fix
 
-The terminal caller sequence at `$20:DB75`:
+The complete frame-gate sequence at `$20:DB73`:
 
 ```text
-20 5B D8 6B    JSR $D85B; RTL
+D0 03 20 5B D8 6B    BNE skip; JSR $D85B; skip: RTL
 ```
 
 is replaced with:
 
 ```text
-5C F0 FF 37    JML $37:FFF0
+5C E0 FF 37 EA EA    JML $37:FFE0; NOP; NOP
 ```
 
-The 16-byte trampoline saves DB, selects `$7E`, pushes a controlled return
-address, and jumps long to the original timer routine:
+The 32-byte reservation contains a trampoline that first preserves the original
+1-in-32-frame update gate. Calculation frames save DB, select `$7E`, push a
+controlled return address, and jump long to the original timer routine. Other
+frames return directly:
 
 ```text
-8B E2 20 A9 7E 48 AB C2 20 F4 D5 E4 5C 5B D8 20
+D0 10 8B E2 20 A9 7E 48 AB C2 20 F4 D5 E4 5C 5B D8 20 6B
 ```
 
 The original routine’s `RTS` lands on an existing, asserted `PLB; RTL` epilogue
@@ -49,14 +51,18 @@ return frame.
 
 ### Safety contract
 
-- `STOPWATCH_TRAMPOLINE_SNES = 0x37FFF0`
+- `STOPWATCH_TRAMPOLINE_SNES = 0x37FFE0`
 - `STOPWATCH_TRAMPOLINE_PC = snes_to_pc(STOPWATCH_TRAMPOLINE_SNES)`
-- `STOPWATCH_TRAMPOLINE_SIZE = 0x10`
+- `STOPWATCH_TRAMPOLINE_SIZE = 0x20`
 - The room-data allocator grows upward from `$37:8000` but may not advance past
-  `$37:FFF0`; therefore its last permitted byte is `$37:FFEF`.
-- The pristine reservation must be exactly 16 zero bytes.
+  `$37:FFE0`; therefore its last permitted byte is `$37:FFDF`.
+- The pristine reservation must be exactly 32 zero bytes.
 - The return epilogue must remain exactly `AB 6B`.
-- The patched reservation must exactly equal the 16-byte payload.
+- The patched reservation must exactly equal the payload plus zero padding.
+- The five bytes before the replaced frame gate must remain
+  `A5 1A 29 1F 00` (`LDA $1A; AND #$001F`).
+- The unsafe former `$37:FFF0` patch is recognized and migrated only when both
+  its caller and payload match exactly.
 - `DataTables.py` must match the pinned pristine or locally patched SHA-256.
 
 Any upstream drift fails generation rather than risking silent ROM corruption.
