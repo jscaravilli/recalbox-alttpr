@@ -101,7 +101,7 @@ session). Reliable method:
   cleanup no longer rewrite gamelists, create refresh flags, or restart ES.
   Legacy hooks on external storage are removed. The endgame hook retains only
   `setsid timeout 15 sync`, preserving the original storage-freeze mitigation.
-- **Expanded Python DR menu**: 66 rows now include entrance and door shuffle,
+- **Expanded Python DR menu**: 67 rows now include entrance and door shuffle,
   door intensity/types/traps/key logic, overworld shuffle/layout/crossing/
   terrain/mixed-world/whirlpools, flute spots, dungeon item/prize/counter
   placement, shops/followers/key drops, enemy logic, and related options.
@@ -142,7 +142,7 @@ session). Reliable method:
 - **Custom menu organization/help**: nine nonselectable sections organize Seed
   Rules, Items & Progression, Entrances, Dungeon Doors, Overworld/Flute, Dungeon
   Items, Enemies/Bosses, Advanced Gameplay, and Cosmetics/Output. Navigation
-  skips section headers. All 66 rows and 757 row/value combinations resolve to
+  skips section headers. All 67 rows and their row/value combinations resolve to
   curated help; generic fallback text was removed.
 - **Game audio fix**: the custom ALTTPR generator launched the nested SNES
   configgen without `XDG_RUNTIME_DIR`, so RetroArch could not find the running

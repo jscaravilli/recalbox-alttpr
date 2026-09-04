@@ -45,7 +45,8 @@ case "$MODE" in
     MIXED_TRAVEL=prevent
     KEYSHUFFLE=none BIGKEYSHUFFLE=none MAPSHUFFLE=none COMPASSSHUFFLE=none
     PRIZESHUFFLE=none DUNGEON_COUNTERS=default RESTRICT_BOSS_ITEMS=none
-    CRYSTALS_GANON=7 CRYSTALS_GT=7 SPRITE="(default)" HEARTCOLOR=red
+    CRYSTALS_GANON=7 CRYSTALS_GT=7 SPRITE="(default)"
+    HEARTBEEP=half HEARTCOLOR=red
     OW_SHUFFLE=vanilla OW_LAYOUT=vanilla OW_CROSSED=none
     OW_FLUTESHUFFLE=vanilla OW_UNPARALLEL=off OW_TERRAIN=off
     OW_KEEPSIMILAR=off OW_MIXED=off OW_WHIRLPOOL=off
@@ -114,6 +115,7 @@ case "$MODE" in
       EXTRA="$EXTRA --spoiler none"
     fi
     [ "$TIMER" = "stopwatch" ] && EXTRA="$EXTRA --timer display"
+    EXTRA="$EXTRA --heartbeep $HEARTBEEP"
     [ -n "$HEARTCOLOR" ] && [ "$HEARTCOLOR" != "red" ] && EXTRA="$EXTRA --heartcolor $HEARTCOLOR"
     if [ -n "$SPRITE" ] && [ "$SPRITE" != "(default)" ]; then
       SPR="$ENGINE/sprites/$SPRITE.zspr"

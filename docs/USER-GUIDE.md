@@ -13,7 +13,7 @@ Once installed, everything needed for normal play is available from the
 
 ![Controller-driven seed configuration](images/generate-custom-seed.png)
 
-The menu contains 66 options organized into:
+The menu contains 67 options organized into:
 
 - Seed Rules
 - Items & Progression
@@ -65,6 +65,12 @@ game HUD and counts upward throughout the run.
 ![HUD Stopwatch](images/hud-stopwatch.gif)
 
 The console applies its guarded Stopwatch compatibility patch automatically.
+
+## Adjust the low-health alert
+
+Use **Heart Speed** when generating a custom seed to control the low-health
+alert. **half** is the default. You can also select **normal**, **double**,
+**quarter**, or **off**.
 
 ## Add your own MSU-1 music
 

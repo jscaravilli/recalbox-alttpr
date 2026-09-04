@@ -346,6 +346,13 @@
     "yellow": "Draws the HUD heart meter in yellow. This is cosmetic and does not change health.",
     "random": "Chooses one supported heart-meter color when generating the ROM. The rolled color is cosmetic and does not change health."
   },
+  "HEARTBEEP": {
+    "half": "Plays the low-health alert at half the original rate. This is the default and reduces repetition while keeping the warning audible.",
+    "normal": "Uses the original game's low-health alert rate.",
+    "double": "Plays the low-health alert twice as fast as the original rate for a more urgent warning.",
+    "quarter": "Plays the low-health alert at one quarter of the original rate, producing the least frequent warning while keeping it enabled.",
+    "off": "Disables the low-health alert sound. The heart meter still shows Link's remaining health."
+  },
   "SPOILER": {
     "on": "Writes a full spoiler text file beside the generated ROM, including settings and item placements; it can be opened from View Spoiler Logs.",
     "off": "Writes no spoiler log beside the ROM. The seed remains playable, but its placements cannot be reviewed through the built-in spoiler browser."

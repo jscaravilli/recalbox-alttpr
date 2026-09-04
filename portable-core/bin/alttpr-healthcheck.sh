@@ -63,6 +63,13 @@ for path in \
   fi
 done
 
+if grep -q '"HEARTBEEP", "Heart Speed"' "$ENGINE/bin/alttpr-menu.py" &&
+   grep -q -- '--heartbeep \$HEARTBEEP' "$ENGINE/bin/alttpr-generate.sh"; then
+  pass "Heart Speed menu and generator integration"
+else
+  fail "Heart Speed menu and generator integration"
+fi
+
 if [ -d /recalbox/share/import/msu ] &&
    [ -f /recalbox/share/import/msu/README.txt ]; then
   pass "user MSU network drop folder"

@@ -271,6 +271,8 @@ def build_options(sprite_names=None, msu_names=None):
         ("QUICKSWAP", "Quickswap (L/R)", ["true", "false"], 0),
         ("TIMER", "HUD Timer", ["stopwatch", "disabled"], 0),
         ("SPRITE", "Link Sprite", sprites, 0),
+        ("HEARTBEEP", "Heart Speed",
+         ["half", "normal", "double", "quarter", "off"], 0),
         ("HEARTCOLOR", "Heart Color", ["red", "blue", "green", "yellow",
                                        "random"], 0),
         ("MSU", "MSU Music Pack", msus, 0),

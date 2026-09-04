@@ -13,7 +13,7 @@ A controller-first **A Link to the Past Randomizer** experience for Raspberry Pi
 ## Highlights
 - Single, microSD card (ext4) deployment; no USB or NVMe storage requirement.
 - Native Python Door/Overworld Randomizer integration with no PHP, box64, or x86 runtime dependencies.
-- Controller-driven configuration menu with 66 options covering items, entrances, dungeon doors, overworld layouts, enemies, bosses, cosmetics, accessibility, and more.
+- Controller-driven configuration menu with 67 options covering items, entrances, dungeon doors, overworld layouts, enemies, bosses, cosmetics, accessibility, and more.
 - Official sprite library with on-screen previews.
 - Import MSU-1 music packs.
 - Built-in browser-based live tracker available at `http://recalbox.local:8080/itemtracker.html`.
