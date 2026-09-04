@@ -106,8 +106,8 @@ tracker, and boss shuffle as causes. Stopwatch was the discriminating variable.
 ### Fix
 
 The `$20:E000` workaround was removed. New Stopwatch ROMs use the guarded
-`$37:FFF0-$37:FFFF` reservation described in BUG-001. Existing old seeds were
-intentionally not rewritten.
+`$37:FFE0-$37:FFFF` reservation described in BUG-001. ROMs carrying the exact
+unsafe `$37:FFF0` trampoline signature are migrated automatically.
 
 ## BUG-003 — Entrance generation can fail stochastically
 

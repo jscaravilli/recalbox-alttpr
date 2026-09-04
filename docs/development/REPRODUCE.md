@@ -103,7 +103,7 @@ Copy onto the Pi (strip CRLF, chmod +x):
 | `adapters/recalbox/userscripts/alttpr-refresh.sh` | `/recalbox/share/userscripts/` |
 
 Then run `bash /recalbox/share/alttpr/es/alttpr-install.sh` once. It:
-- installs a fail-closed `$37:FFF0-$37:FFFF` room-allocator reservation for the
+- installs a fail-closed `$37:FFE0-$37:FFFF` room-allocator reservation for the
   Stopwatch trampoline,
 - remounts `/` rw and installs the configgen generator at
   `configgen/generators/alttpr/`,

@@ -18,7 +18,7 @@ mkdir -p "$(dirname "$LOG")"
 rm -f /tmp/alttpr_refresh /tmp/alttpr_gamelist_pending
 rm -f "$ENGINE/bin/alttpr-refresh-worker.sh"
 
-# Reserve $37:FFF0-$37:FFFF before any seed can be generated. Fail closed if
+# Reserve $37:FFE0-$37:FFFF before any seed can be generated. Fail closed if
 # upstream DataTables.py changes and the allocator guard cannot be installed.
 DR="$ENGINE/ALttPDoorRandomizer-OverworldShuffle"
 if [ -d "$DR" ] && ! python3 "$ENGINE/bin/alttpr-enginepatch.py" "$DR" \
