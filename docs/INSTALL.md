@@ -3,6 +3,25 @@
 This procedure starts with a blank microSD card and does not require access to
 the original console. Read the whole guide before formatting the card.
 
+## Requirements
+
+- Raspberry Pi 5
+- Recalbox **10.0.8** for Raspberry Pi 5 (`rpi5_64`)
+- A2/U3/V30 microSD card (256 GB recommended)
+- PC with Raspberry Pi Imager, Git, SSH, and SCP
+- Network connection shared by the PC and Raspberry Pi
+- Legally obtained, unheadered Japanese v1.0 ALTTP ROM
+
+Recalbox 10.0.8 is the only supported release. Earlier versions are
+incompatible with the Python 3.11, configgen, and theme integration used by this
+build. Newer versions must be validated before use.
+
+The required base-ROM MD5 is:
+
+```text
+03a63945398191337e896e5771f77173
+```
+
 > **Destructive step:** converting SHARE to ext4 erases everything Recalbox
 > created on that partition. Do it only on the new card, immediately after its
 > first boot.
@@ -24,6 +43,33 @@ Clone this repository:
 git clone https://github.com/jscaravilli/recalbox-alttpr.git
 cd recalbox-alttpr
 ```
+
+## Installer modes
+
+The installer is read-only unless `--confirm-install` is supplied. Start with:
+
+```sh
+./install.sh --pi 192.168.1.50 --rom /path/to/alttp-jp10.sfc
+```
+
+A successful dry run reports the checks and planned actions without changing
+the PC, Recalbox settings, or files. To perform a clean installation:
+
+```sh
+./install.sh --confirm-install --pi 192.168.1.50 \
+  --rom /path/to/alttp-jp10.sfc
+```
+
+For repeated testing on a system whose SHARE partition is already ext4, preserve
+its contents and reinstall the remaining components:
+
+```sh
+./install.sh --confirm-install --skip-format --pi 192.168.1.50 \
+  --rom /path/to/alttp-jp10.sfc
+```
+
+`--skip-format` refuses to continue unless SHARE is already ext4. There is no
+`--dry-run` option because dry-run is the default.
 
 Have your legally obtained, unheadered Japanese v1.0 ROM available on the PC.
 This guide calls it `alttp-jp10.sfc`.
@@ -110,7 +156,7 @@ ssh root@$PI
 set -eu
 PART=/dev/mmcblk0p2
 test -b "$PART"
-test "$(blkid -s LABEL -o value "$PART")" = "SHARE"
+test "$(blkid "$PART" | sed -n 's/.* LABEL="\([^"]*\)".*/\1/p')" = "SHARE"
 MOUNTPOINT=$(awk -v part="$PART" '$1 == part { print $2; exit }' /proc/mounts)
 if [ -n "$MOUNTPOINT" ]; then
   umount "$MOUNTPOINT" || {
@@ -124,7 +170,7 @@ then
   exit 1
 fi
 mkfs.ext4 -F -L SHARE "$PART"
-U=$(blkid -s UUID -o value "$PART")
+U=$(blkid "$PART" | sed -n 's/.* UUID="\([^"]*\)".*/\1/p')
 test -n "$U"
 mount -o remount,rw /boot
 sed -i '/^sharedevice=/d' /boot/recalbox-boot.conf

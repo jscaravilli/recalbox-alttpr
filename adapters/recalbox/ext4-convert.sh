@@ -38,7 +38,7 @@ echo "share unmounted OK"
 # 3. reformat as ext4 (label SHARE preserved)
 echo "--- mkfs.ext4 ---"
 mkfs.ext4 -F -L SHARE "$SHARE_PART" || { echo "mkfs FAILED"; exit 1; }
-NEWUUID=$(blkid -s UUID -o value "$SHARE_PART")
+NEWUUID=$(blkid "$SHARE_PART" | sed -n 's/.* UUID="\([^"]*\)".*/\1/p')
 echo "new ext4 UUID=$NEWUUID"
 blkid "$SHARE_PART"
 
