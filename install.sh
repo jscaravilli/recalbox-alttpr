@@ -11,7 +11,7 @@ EXPECTED_ROM_MD5=03a63945398191337e896e5771f77173
 PI=recalbox.local
 ROM=
 CONFIRM=false
-SKIP_FORMAT=false
+CONFIRM_FORMAT=false
 REPO="$(cd "$(dirname "$0")" && pwd)"
 TMP=
 
@@ -20,14 +20,15 @@ usage() {
 Usage:
   ./install.sh --rom /path/to/alttp-jp10.sfc [--pi HOST]
   ./install.sh --confirm-install --rom /path/to/alttp-jp10.sfc [--pi HOST]
-               [--skip-format]
+  ./install.sh --confirm-install --confirm-format
+               --rom /path/to/alttp-jp10.sfc [--pi HOST]
 
 Modes:
   default             Read-only dry run. Validates the PC, ROM, Recalbox
                       version, architecture, Python, and SHARE filesystem.
-  --confirm-install   Perform the installation.
-  --skip-format       Preserve SHARE and skip its ext4 conversion. Installation
-                      proceeds only when SHARE is already ext4.
+  --confirm-install   Install or repair ALTTPR without formatting SHARE.
+  --confirm-format    Permit erasing and converting SHARE to ext4. This only
+                      takes effect together with --confirm-install.
 
 There is intentionally no --dry-run option: dry-run is the default.
 EOF
@@ -54,9 +55,12 @@ while [ "$#" -gt 0 ]; do
       CONFIRM=true
       shift
       ;;
-    --skip-format)
-      SKIP_FORMAT=true
+    --confirm-format)
+      CONFIRM_FORMAT=true
       shift
+      ;;
+    --skip-format)
+      die "--skip-format was removed because preserving SHARE is now the default"
       ;;
     --dry-run)
       die "--dry-run was removed because dry-run is now the default"
@@ -161,11 +165,8 @@ fact() {
   die "/dev/mmcblk0p2 is not labeled SHARE; refusing to continue"
 
 sharefs="$(fact sharefs)"
-if $SKIP_FORMAT && [ "$sharefs" != "ext4" ]; then
-  die "--skip-format requires SHARE to already be ext4 (found $sharefs)"
-fi
-if ! $SKIP_FORMAT && [ "$sharefs" = "ext4" ]; then
-  die "SHARE is already ext4; use --skip-format to preserve it"
+if ! $CONFIRM_FORMAT && [ "$sharefs" != "ext4" ]; then
+  die "SHARE is $sharefs; preserving SHARE requires ext4. Add --confirm-format to preview a clean install, then use it with --confirm-install to permit formatting."
 fi
 
 if ! $CONFIRM; then
@@ -175,8 +176,9 @@ DRY RUN PASSED
 No files or target settings were changed.
 
 Planned actions:
-  SHARE: $([ "$SKIP_FORMAT" = true ] && printf 'preserve existing ext4 filesystem' ||
-    printf 'erase and convert /dev/mmcblk0p2 to ext4')
+  SHARE: $([ "$CONFIRM_FORMAT" = true ] &&
+    printf 'ERASE and convert /dev/mmcblk0p2 to ext4' ||
+    printf 'preserve existing ext4 filesystem')
   Engine: install pinned Python Door Randomizer and hashed dependencies
   ROM: validate and install privately
   Content: deploy ALTTPR integration and official sprite library
@@ -187,7 +189,7 @@ EOF
   exit 0
 fi
 
-if ! $SKIP_FORMAT; then
+if $CONFIRM_FORMAT; then
   echo "== switching Recalbox to a temporary RAM share =="
   remote '
     set -eu

@@ -46,30 +46,40 @@ cd recalbox-alttpr
 
 ## Installer modes
 
-The installer is read-only unless `--confirm-install` is supplied. Start with:
+The installer is read-only unless `--confirm-install` is supplied. On an
+existing ext4 installation, start with:
 
 ```sh
 ./install.sh --pi 192.168.1.50 --rom /path/to/alttp-jp10.sfc
 ```
 
 A successful dry run reports the checks and planned actions without changing
-the PC, Recalbox settings, or files. To perform a clean installation:
+the PC, Recalbox settings, or files. To install or repair ALTTPR while preserving
+everything already on SHARE:
 
 ```sh
 ./install.sh --confirm-install --pi 192.168.1.50 \
   --rom /path/to/alttp-jp10.sfc
 ```
 
-For repeated testing on a system whose SHARE partition is already ext4, preserve
-its contents and reinstall the remaining components:
+Formatting requires a second, explicit confirmation. Preview a clean install
+with:
 
 ```sh
-./install.sh --confirm-install --skip-format --pi 192.168.1.50 \
+./install.sh --confirm-format --pi 192.168.1.50 \
   --rom /path/to/alttp-jp10.sfc
 ```
 
-`--skip-format` refuses to continue unless SHARE is already ext4. There is no
-`--dry-run` option because dry-run is the default.
+To perform the clean installation, supply both confirmations:
+
+```sh
+./install.sh --confirm-install --confirm-format --pi 192.168.1.50 \
+  --rom /path/to/alttp-jp10.sfc
+```
+
+`--confirm-install` alone never formats SHARE. A non-formatting installation
+requires SHARE to already be ext4. `--skip-format` and `--dry-run` were removed
+because preserving SHARE and dry-run are now the respective defaults.
 
 Have your legally obtained, unheadered Japanese v1.0 ROM available on the PC.
 This guide calls it `alttp-jp10.sfc`.
