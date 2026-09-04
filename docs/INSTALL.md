@@ -1,7 +1,7 @@
-# Install on a fresh Raspberry Pi 5
+# Install ALTTPR on Recalbox
 
-This procedure starts with a blank microSD card and does not require access to
-the original console. Read the whole guide before formatting the card.
+This guide covers clean installation and repair of an existing installation.
+Read the whole guide before formatting a card.
 
 ## Requirements
 
@@ -25,6 +25,26 @@ The required base-ROM MD5 is:
 > **Destructive step:** converting SHARE to ext4 erases everything Recalbox
 > created on that partition. Do it only on the new card, immediately after its
 > first boot.
+
+## Supported installation scenarios
+
+| Scenario | SHARE requirement | Data impact | Installation flags |
+|---|---|---|---|
+| Clean Recalbox installation | First-boot SHARE in its original format | Erases all SHARE data | `--confirm-install --confirm-format` |
+| Repair or update existing ALTTPR | SHARE is already ext4 | Preserves SHARE data | `--confirm-install` |
+| Add ALTTPR to another Recalbox system | SHARE is already ext4 | Preserves SHARE data | `--confirm-install` |
+| Preserve an existing non-ext4 SHARE | Unsupported | Back up SHARE before converting it | Not available |
+
+The installer runs from another computer over SSH while the microSD card remains
+in the Raspberry Pi. It does not install directly to a card connected to the PC.
+
+Every scenario requires the verified base ROM on the PC. During a repair, the
+installer revalidates that ROM and replaces the private copy while preserving
+generated seeds, saves, MSU packs, Recalbox settings, and other SHARE content.
+
+Run the installer without `--confirm-install` first. This is a read-only dry run.
+For a clean-install preview, include `--confirm-format`; formatting still cannot
+occur unless `--confirm-install` is also supplied.
 
 ## 1. Prepare the PC
 
