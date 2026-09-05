@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Install ALTTPR onto a clean, first-booted Recalbox 10.0.8 Raspberry Pi 5.
+# Install ALTTPR onto a clean, first-booted supported Recalbox Raspberry Pi 5.
 # Safe by default: without --confirm-install this performs read-only validation.
 set -euo pipefail
 
-EXPECTED_RECALBOX=10.0.8
+SUPPORTED_RECALBOX="10.0.8 10.1"
 EXPECTED_ARCH=aarch64
 EXPECTED_PYTHON="Python 3.11.8"
 EXPECTED_ROM_MD5=03a63945398191337e896e5771f77173
@@ -155,8 +155,11 @@ fact() {
   printf '%s\n' "$facts" | sed -n "s/^$1=//p" | head -1
 }
 
-[ "$(fact version)" = "$EXPECTED_RECALBOX" ] ||
-  die "Recalbox $(fact version) is unsupported; required $EXPECTED_RECALBOX"
+recalbox_version="$(fact version)"
+case " $SUPPORTED_RECALBOX " in
+  *" $recalbox_version "*) ;;
+  *) die "Recalbox $recalbox_version is unsupported; supported versions: $SUPPORTED_RECALBOX" ;;
+esac
 [ "$(fact arch)" = "$EXPECTED_ARCH" ] ||
   die "target architecture $(fact arch) is unsupported; required $EXPECTED_ARCH"
 [ "$(fact python)" = "$EXPECTED_PYTHON" ] ||

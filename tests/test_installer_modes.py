@@ -28,6 +28,11 @@ class InstallerModeTests(unittest.TestCase):
             self.script,
         )
 
+    def test_supported_recalbox_versions_are_explicit(self):
+        self.assertIn('SUPPORTED_RECALBOX="10.0.8 10.1"', self.script)
+        self.assertIn('case " $SUPPORTED_RECALBOX " in', self.script)
+        self.assertIn('*" $recalbox_version "*) ;;', self.script)
+
     def test_all_mutation_follows_install_confirmation(self):
         confirmation_gate = self.script.index("if ! $CONFIRM; then")
         first_remote_mutation = self.script.index(
