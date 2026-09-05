@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import os
 import pathlib
 import tempfile
@@ -46,6 +47,39 @@ class SpritePreviewTests(unittest.TestCase):
             download.assert_called_once_with(
                 [("https://assets/sprite.png", destination)],
                 workers=16, minbytes=40)
+
+    def test_offline_rebuild_preserves_cached_source_catalog(self):
+        entries = [{"name": "Link", "author": "Nintendo",
+                    "file": "https://assets/link.zspr",
+                    "preview": "https://assets/link.png"}]
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            sprite_dir = root / "sprites"
+            preview_dir = root / "previews"
+            manifest = root / "sprites.json"
+            source = root / "sprites.json.src"
+            sprite_dir.mkdir()
+            preview_dir.mkdir()
+            (sprite_dir / "link.zspr").write_bytes(b"sprite")
+            (preview_dir / "link.png").write_bytes(b"preview")
+            original = json.dumps(entries, indent=2) + "\n"
+            source.write_text(original, encoding="utf-8")
+
+            with mock.patch.object(
+                    SPRITES.argparse.ArgumentParser, "parse_args",
+                    return_value=SPRITES.argparse.Namespace(
+                        sprite_dir=str(sprite_dir),
+                        manifest=str(manifest),
+                        preview_dir=str(preview_dir),
+                        list_url=SPRITES.DEF_URL,
+                        no_previews=False,
+                        refresh_previews=False,
+                        offline=True)):
+                self.assertEqual(SPRITES.main(), 0)
+
+            self.assertEqual(source.read_text(encoding="utf-8"), original)
+            built = json.loads(manifest.read_text(encoding="utf-8"))
+            self.assertEqual(built[0]["preview"], "link.png")
 
 
 if __name__ == "__main__":

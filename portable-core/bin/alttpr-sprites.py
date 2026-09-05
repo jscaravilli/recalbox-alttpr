@@ -266,17 +266,19 @@ def main():
         # have one next to the manifest, else nothing to do.
         cache = args.manifest + ".src"
         if os.path.isfile(cache):
-            entries = json.load(open(cache, encoding="utf-8"))
+            with open(cache, encoding="utf-8") as source:
+                entries = json.load(source)
         else:
             sys.stderr.write("no sprite list available; nothing to do\n")
             return 1
 
-    # cache the raw list so a later --offline rebuild works
-    try:
-        with open(args.manifest + ".src", "w", encoding="utf-8") as f:
-            json.dump(entries, f)
-    except OSError:
-        pass
+    # Preserve the checksummed bundled catalog during offline rebuilds.
+    if not args.offline:
+        try:
+            with open(args.manifest + ".src", "w", encoding="utf-8") as f:
+                json.dump(entries, f)
+        except OSError:
+            pass
 
     if not args.offline:
         got, fail, miss = download_missing(entries, args.sprite_dir)
