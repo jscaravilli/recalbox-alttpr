@@ -77,6 +77,25 @@ else
   fail "MSU archive and compatibility validation"
 fi
 
+if grep -q -- '--refresh-previews' "$ENGINE/install-content.sh" &&
+   python3 - "$ENGINE/bin/data/sprites.json" \
+     "$ENGINE/bin/sprite-previews" <<'PY' >/dev/null 2>&1
+import json
+import os
+import sys
+
+entries = json.load(open(sys.argv[1], encoding="utf-8"))
+assert entries
+assert all(entry.get("preview") and
+           os.path.isfile(os.path.join(sys.argv[2], entry["preview"]))
+           for entry in entries)
+PY
+then
+  pass "official sprite preview catalog coverage"
+else
+  fail "official sprite preview catalog coverage"
+fi
+
 if [ -d /recalbox/share/import/msu ] &&
    [ -f /recalbox/share/import/msu/README.txt ]; then
   pass "user MSU network drop folder"

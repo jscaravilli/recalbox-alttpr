@@ -60,11 +60,12 @@ def _download_set(items, workers=16, minbytes=50):
     return ok[0], fail
 
 
-def download_previews(entries, preview_dir, workers=16):
+def download_previews(entries, preview_dir, workers=16, refresh=False):
     """Download each sprite's static preview PNG into preview_dir.
 
     Named <zspr-basename>.png (e.g. abigail.1.png) so the menu can find it from
-    the manifest's ``file`` field. Skips ones already present.
+    the manifest's ``file`` field. Skips ones already present unless refresh is
+    requested.
     """
     os.makedirs(preview_dir, exist_ok=True)
     todo = []
@@ -75,7 +76,7 @@ def download_previews(entries, preview_dir, workers=16):
         fn = basename(e["file"])
         stem = fn[:-5] if fn.endswith(".zspr") else fn
         dst = os.path.join(preview_dir, stem + ".png")
-        if not os.path.exists(dst):
+        if refresh or not os.path.exists(dst):
             todo.append((url, dst))
     got, fail = _download_set(todo, workers=workers, minbytes=40)
     return got, fail, len(todo)
@@ -248,6 +249,8 @@ def main():
     ap.add_argument("--list-url", default=DEF_URL)
     ap.add_argument("--no-previews", action="store_true",
                     help="skip downloading the static preview PNGs")
+    ap.add_argument("--refresh-previews", action="store_true",
+                    help="replace every cached preview from the official list")
     ap.add_argument("--offline", action="store_true",
                     help="skip download; just rebuild the manifest from disk")
     args = ap.parse_args()
@@ -282,7 +285,8 @@ def main():
         for fn, err in fail[:10]:
             print("  FAIL %s: %s" % (fn, err))
         if not args.no_previews:
-            pgot, pfail, pmiss = download_previews(entries, args.preview_dir)
+            pgot, pfail, pmiss = download_previews(
+                entries, args.preview_dir, refresh=args.refresh_previews)
             print("previews: %d missing, %d downloaded, %d failed"
                   % (pmiss, pgot, len(pfail)))
             for fn, err in pfail[:10]:

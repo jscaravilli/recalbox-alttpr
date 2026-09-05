@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install optional ALTTPR content after install-deps.sh and deploy.sh.
 # Usage: install-content.sh [all|sprites|msu] [exact MSU pack name]
-# Idempotent: existing sprites/previews/MSU packs are retained and skipped.
+# Idempotent: existing sprites/MSU packs are retained; official previews refresh.
 set -euo pipefail
 
 ENGINE=/recalbox/share/alttpr
@@ -10,7 +10,7 @@ MODE="${1:-all}"
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "sprites" ]; then
   echo "== official sprite library =="
-  python3 "$BIN/alttpr-sprites.py"
+  python3 "$BIN/alttpr-sprites.py" --refresh-previews
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "msu" ]; then
