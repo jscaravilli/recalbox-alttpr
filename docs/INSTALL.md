@@ -43,9 +43,7 @@ Every scenario requires the verified base ROM on the PC. During a repair, the
 installer revalidates that ROM and replaces the private copy while preserving
 generated seeds, saves, MSU packs, Recalbox settings, and other SHARE content.
 
-Run the installer without `--confirm-install` first. This is a read-only dry run.
-For a clean-install preview, include `--confirm-format`; formatting still cannot
-occur unless `--confirm-install` is also supplied.
+Running the installer without `--confirm-install` AND `--confirm-format` performs a read-only validation check.
 
 ## 1. Prepare the PC
 
