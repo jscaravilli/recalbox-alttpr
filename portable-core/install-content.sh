@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install optional ALTTPR content after install-deps.sh and deploy.sh.
-# Usage: install-content.sh [all|sprites|msu] [exact MSU pack name]
-# Idempotent: existing sprites/MSU packs are retained; official previews refresh.
+# Usage: install-content.sh [all|sprites|refresh-sprites|msu] [exact MSU name]
+# Normal sprite installation is offline from the bundled catalog and assets.
 set -euo pipefail
 
 ENGINE=/recalbox/share/alttpr
@@ -9,7 +9,12 @@ BIN="$ENGINE/bin"
 MODE="${1:-all}"
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "sprites" ]; then
-  echo "== official sprite library =="
+  echo "== bundled official sprite library =="
+  python3 "$BIN/alttpr-sprites.py" --offline
+fi
+
+if [ "$MODE" = "refresh-sprites" ]; then
+  echo "== refreshing official sprite library from alttpr.com =="
   python3 "$BIN/alttpr-sprites.py" --refresh-previews
 fi
 
@@ -26,6 +31,6 @@ if [ "$MODE" = "all" ] || [ "$MODE" = "msu" ]; then
 fi
 
 case "$MODE" in
-  all|sprites|msu) ;;
-  *) echo "usage: $0 [all|sprites|msu] [exact MSU pack name]" >&2; exit 2 ;;
+  all|sprites|refresh-sprites|msu) ;;
+  *) echo "usage: $0 [all|sprites|refresh-sprites|msu] [exact MSU pack name]" >&2; exit 2 ;;
 esac

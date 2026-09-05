@@ -278,7 +278,7 @@ chmod +x portable-core/deploy.sh
 ./portable-core/deploy.sh "$PI"
 ```
 
-Install the official sprite library:
+Verify/rebuild the bundled official sprite manifest (no network download):
 
 ```sh
 ssh root@$PI "/recalbox/share/alttpr/install-content.sh sprites"

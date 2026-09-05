@@ -118,11 +118,12 @@ unclean shutdown.
 
 ## 5. Install sprites and curated MSU packs
 
-Run `portable-core/install-content.sh` on the Pi after deployment. It downloads
-the current official `.zspr` library from `alttpr.com/sprites`, uses the committed
-catalog snapshot if the API is unavailable, and installs only the curated MSU
-selection in `portable-core/bin/data/msu-packs.json`. The pinned official ARM64
-`7zz` extractor supports ZIP, 7Z, and RAR packs.
+Deployment installs the committed official `.zspr` library and preview snapshot
+without network access. `portable-core/install-content.sh refresh-sprites` is an
+explicit maintainer action for refreshing that snapshot from
+`alttpr.com/sprites`. Optional curated MSU downloads remain defined in
+`portable-core/bin/data/msu-packs.json`. The pinned official ARM64 `7zz`
+extractor supports ZIP, 7Z, and RAR packs.
 
 ## 6. Endgame hook (freeze fix)
 

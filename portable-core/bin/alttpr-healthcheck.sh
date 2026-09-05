@@ -77,7 +77,9 @@ else
   fail "MSU archive and compatibility validation"
 fi
 
-if grep -q -- '--refresh-previews' "$ENGINE/install-content.sh" &&
+if grep -q -- 'alttpr-sprites.py" --offline' "$ENGINE/install-content.sh" &&
+   [ -f "$ENGINE/sprite-assets.sha256" ] &&
+   (cd "$ENGINE" && sha256sum -c sprite-assets.sha256 >/dev/null 2>&1) &&
    python3 - "$ENGINE/bin/data/sprites.json" \
      "$ENGINE/bin/sprite-previews" <<'PY' >/dev/null 2>&1
 import json

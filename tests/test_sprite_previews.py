@@ -15,9 +15,10 @@ SPEC.loader.exec_module(SPRITES)
 
 
 class SpritePreviewTests(unittest.TestCase):
-    def test_content_installer_refreshes_official_previews(self):
+    def test_content_installer_uses_bundled_previews_by_default(self):
         script = INSTALL_CONTENT.read_text(encoding="utf-8")
-        self.assertIn('alttpr-sprites.py" --refresh-previews', script)
+        self.assertIn('alttpr-sprites.py" --offline', script)
+        self.assertIn('if [ "$MODE" = "refresh-sprites" ]', script)
 
     def test_default_download_skips_cached_preview(self):
         entries = [{"file": "https://assets/sprite.zspr",

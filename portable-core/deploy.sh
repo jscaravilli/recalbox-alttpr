@@ -23,6 +23,30 @@ echo "== creating target dirs =="
 echo "== copying engine bin =="
 "${SCP[@]}" -r "$REPO"/portable-core/bin/* "$TARGET:/recalbox/share/alttpr/bin/"
 
+echo "== installing bundled official sprite assets =="
+"${SSH[@]}" "$TARGET" \
+  "rm -rf /recalbox/share/alttpr/.content-stage; \
+   mkdir -p /recalbox/share/alttpr/.content-stage"
+"${SCP[@]}" -r "$REPO"/portable-core/content/* \
+  "$TARGET:/recalbox/share/alttpr/.content-stage/"
+"${SSH[@]}" "$TARGET" \
+  "set -e; \
+   ENGINE=/recalbox/share/alttpr; \
+   STAGE=\$ENGINE/.content-stage; \
+   cd \"\$STAGE\"; \
+   sha256sum -c SHA256SUMS >/dev/null; \
+   rm -rf \"\$ENGINE/sprites\" \"\$ENGINE/bin/sprite-previews\"; \
+   mv \"\$STAGE/sprites\" \"\$ENGINE/sprites\"; \
+   mv \"\$STAGE/bin/sprite-previews\" \"\$ENGINE/bin/sprite-previews\"; \
+   install -m 0644 \"\$STAGE/bin/data/sprites.json.src\" \
+     \"\$ENGINE/bin/data/sprites.json.src\"; \
+   install -m 0644 \"\$STAGE/SHA256SUMS\" \
+     \"\$ENGINE/sprite-assets.sha256\"; \
+   install -m 0644 \"\$STAGE/THIRD-PARTY-NOTICES.txt\" \
+     \"\$ENGINE/THIRD-PARTY-NOTICES.txt\"; \
+   rm -rf \"\$STAGE\"; \
+   python3 \"\$ENGINE/bin/alttpr-sprites.py\" --offline"
+
 echo "== copying phone autotracker web app =="
 "${SCP[@]}" -r "$REPO"/portable-core/tracker/* "$TARGET:/recalbox/share/alttpr/tracker/"
 
