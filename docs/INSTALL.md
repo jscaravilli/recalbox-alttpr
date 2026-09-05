@@ -24,7 +24,7 @@ The required base-ROM MD5 is:
 
 > [!CAUTION]
 > **Destructive step:** the installer converts the file system of the SHARE partition to ext4.
-> this erases everything on that partition. Do it only on the new card, immediately after its
+> This erases everything on that partition. Do it only on the new card, immediately after its
 > first boot. Run the installer before adding ROMs and BIOS files to the SD CARD.
 > If your ROMs and BIOS files are on a USB drive, they should be fine.
 
