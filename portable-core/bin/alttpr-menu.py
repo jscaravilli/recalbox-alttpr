@@ -662,10 +662,15 @@ class Menu:
                 raw = raw.convert_alpha()
             except Exception:
                 pass  # no display yet (e.g. headless) — use unconverted surface
+            bounds = raw.get_bounding_rect(min_alpha=1)
+            if bounds.width and bounds.height:
+                raw = raw.subsurface(bounds).copy()
             sw = raw.get_width() or 16
-            scale = max(1, int(target_w // sw))
+            sh = raw.get_height() or 24
+            target_h = int(target_w * 1.5)
+            scale = max(1, min(target_w // sw, target_h // sh))
             surf = pygame.transform.scale(
-                raw, (sw * scale, raw.get_height() * scale))
+                raw, (sw * scale, sh * scale))
         except Exception:
             surf = None
         self._preview_cache[key] = surf
@@ -698,9 +703,27 @@ class Menu:
             target_w = int((px1 - px0) * 0.105)
             img = self._load_preview(prev, target_w)
             if img is not None:
+                card_w = target_w + 8
+                card_h = int(target_w * 1.5) + 8
+                card_x = px0 + (px1 - px0 - card_w) // 2
+                card_y = body_top + pad
+                tile = max(4, card_w // 6)
+                for y in range(card_y, card_y + card_h, tile):
+                    for x in range(card_x, card_x + card_w, tile):
+                        color = ((78, 74, 92) if
+                                 ((x - card_x) // tile +
+                                  (y - card_y) // tile) % 2 == 0
+                                 else (126, 120, 140))
+                        pygame.draw.rect(
+                            self.screen, color,
+                            (x, y, min(tile, card_x + card_w - x),
+                             min(tile, card_y + card_h - y)))
+                pygame.draw.rect(self.screen, HILITE,
+                                 (card_x, card_y, card_w, card_h), 1)
                 ix = px0 + (px1 - px0 - img.get_width()) // 2
-                self.screen.blit(img, (ix, body_top + pad))
-                body_top = body_top + pad + img.get_height() + pad
+                iy = card_y + (card_h - img.get_height()) // 2
+                self.screen.blit(img, (ix, iy))
+                body_top = card_y + card_h + pad
         # body (clipped, auto-scrolling)
         maxw = px1 - px0 - 2 * pad
         line_h = int(self.font_sm.get_height() * 1.12)

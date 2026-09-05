@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Import user-owned MSU-1 packs from SHARE/import/msu."""
 import argparse
+import hashlib
 import importlib.util
 import json
 import os
@@ -17,8 +18,15 @@ DROP_DIR = "/recalbox/share/import/msu"
 PROCESSED_DIR = DROP_DIR + "/processed"
 MSU_DIR = ENGINE + "/msu"
 USER_METADATA = MSU_DIR + "/user-packs.json"
+SEEDS_DIR = "/recalbox/share/roms/alttpr/SEEDS"
 ARCHIVE_SUFFIXES = (".zip", ".7z", ".rar")
 FREE_SPACE_MARGIN = 64 << 20
+INCOMPATIBLE_PCM = {
+    # 16BitMovieMusic track 3 is a captured rain/game-sound placeholder with a
+    # persistent tone. Omitting it lets the randomizer use normal SPC fallback.
+    "bac4dd42944041d7cc593be0c25a67b46b065486572dd50a4f1853a419e5e5a8":
+        "captured rain/game-sound placeholder",
+}
 
 
 def load_msu_module():
@@ -111,12 +119,7 @@ def directory_size(path):
     return total
 
 
-def validate_7zz_archive(path, msu_module):
-    msu_module.ensure_7zz()
-    output = msu_module.subprocess.check_output(
-        [msu_module.SEVENZR, "l", "-slt", path],
-        stderr=msu_module.subprocess.STDOUT,
-        timeout=120).decode("utf-8", "replace")
+def inspect_7zz_listing(output):
     members = output.split("----------", 1)
     if len(members) != 2:
         raise RuntimeError("could not inspect archive members")
@@ -129,7 +132,8 @@ def validate_7zz_archive(path, msu_module):
                     or ".." in parts):
                 raise RuntimeError("archive contains an unsafe path")
         elif line.startswith(("Symbolic Link = ", "Hard Link = ")):
-            raise RuntimeError("archive contains a link")
+            if line.partition("=")[2].strip():
+                raise RuntimeError("archive contains a link")
         elif line.startswith("Attributes = ") and line[13:].startswith("l"):
             raise RuntimeError("archive contains a symbolic link")
         elif line.startswith("Size = "):
@@ -137,6 +141,16 @@ def validate_7zz_archive(path, msu_module):
                 total += int(line[7:])
             except ValueError:
                 raise RuntimeError("archive contains an invalid size")
+    return total
+
+
+def validate_7zz_archive(path, msu_module):
+    msu_module.ensure_7zz()
+    output = msu_module.subprocess.check_output(
+        [msu_module.SEVENZR, "l", "-slt", path],
+        stderr=msu_module.subprocess.STDOUT,
+        timeout=120).decode("utf-8", "replace")
+    total = inspect_7zz_listing(output)
     ensure_staging_space(total, copies=2)
 
 
@@ -195,8 +209,30 @@ def find_payload(stage):
         if signature != b"MSU1" or size <= 8 or (size - 8) % 4:
             raise RuntimeError("empty or invalid PCM track: " +
                                os.path.basename(path))
-    tracks.sort()
-    return markers.get(key), tracks, tracks[0][2]
+    compatible = []
+    skipped = []
+    for track in tracks:
+        digest = sha256_file(track[1])
+        if digest in INCOMPATIBLE_PCM:
+            skipped.append((track[0], os.path.basename(track[1]),
+                            INCOMPATIBLE_PCM[digest]))
+        else:
+            compatible.append(track)
+    if not compatible:
+        raise RuntimeError("all PCM tracks are incompatible")
+    compatible.sort()
+    return markers.get(key), compatible, compatible[0][2], skipped
+
+
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as source:
+        while True:
+            block = source.read(1 << 20)
+            if not block:
+                break
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def install(path, replace=False):
@@ -215,7 +251,9 @@ def install(path, replace=False):
     old_entries = load_metadata()
     try:
         stage_source(path, stage, msu_module)
-        marker, tracks, _source_base = find_payload(stage)
+        marker, tracks, _source_base, skipped = find_payload(stage)
+        for _number, filename, reason in skipped:
+            print("SKIPPED:%s:%s" % (filename, reason))
         base = slug
         required = sum(os.path.getsize(track) for _n, track, _b in tracks)
         required += os.path.getsize(marker) if marker else 0
@@ -291,6 +329,32 @@ def delete(slug):
         msu_module.build_manifest()
         raise
     shutil.rmtree(deleting)
+    remove_seed_links(destination)
+
+
+def remove_seed_links(destination):
+    removed = 0
+    try:
+        names = os.listdir(SEEDS_DIR)
+    except OSError:
+        return removed
+    destination = os.path.normpath(destination)
+    for name in names:
+        path = os.path.join(SEEDS_DIR, name)
+        if not os.path.islink(path):
+            continue
+        target = os.readlink(path)
+        if not os.path.isabs(target):
+            target = os.path.join(os.path.dirname(path), target)
+        target = os.path.normpath(target)
+        try:
+            belongs = os.path.commonpath((target, destination)) == destination
+        except ValueError:
+            belongs = False
+        if belongs:
+            os.unlink(path)
+            removed += 1
+    return removed
 
 
 def main():

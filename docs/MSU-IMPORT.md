@@ -60,8 +60,10 @@ has been tested.
 
 The importer:
 
-- rejects archive path traversal and symbolic links;
+- rejects archive path traversal and real symbolic or hard links;
 - rejects empty PCM tracks, duplicate track numbers, and mixed PCM sets;
+- omits exact known placeholder tracks that would prevent original-audio
+  fallback;
 - checks staging and installation disk space with a 64 MiB safety margin;
 - installs into a temporary directory and switches it into place atomically;
 - namespaces user packs with `user-` so curated updates cannot overwrite them;
@@ -77,9 +79,9 @@ Open **Manage MSU Music**, highlight a `User:` row, and press A/B twice.
 Only user-imported packs can be removed from this screen. Curated packs and the
 original SNES soundtrack are protected.
 
-Removing a pack does not modify existing ROMs. Existing seeds may retain broken
-symlinks to the removed music and will fall back according to emulator behavior;
-choose **Default** or another installed pack for future seeds.
+Removing a pack does not modify existing ROMs. Its seed-side music links are
+removed so those seeds can fall back to original game audio; choose **Default**
+or another installed pack for future seeds.
 
 ## Command-line operations
 

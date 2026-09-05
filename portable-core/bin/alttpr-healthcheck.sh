@@ -70,6 +70,13 @@ else
   fail "Heart Speed menu and generator integration"
 fi
 
+if grep -q 'inspect_7zz_listing' "$ENGINE/bin/alttpr-msu-import.py" &&
+   grep -q 'INCOMPATIBLE_PCM' "$ENGINE/bin/alttpr-msu-import.py"; then
+  pass "MSU archive and compatibility validation"
+else
+  fail "MSU archive and compatibility validation"
+fi
+
 if [ -d /recalbox/share/import/msu ] &&
    [ -f /recalbox/share/import/msu/README.txt ]; then
   pass "user MSU network drop folder"
