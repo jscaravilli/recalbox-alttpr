@@ -22,6 +22,7 @@ The required base-ROM MD5 is:
 03a63945398191337e896e5771f77173
 ```
 
+> [!CAUTION]
 > **Destructive step:** converting SHARE to ext4 erases everything Recalbox
 > created on that partition. Do it only on the new card, immediately after its
 > first boot. Run the installer before adding ROMs and BIOS files to the SD CARD.
