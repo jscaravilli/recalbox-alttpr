@@ -30,11 +30,11 @@ The required base-ROM MD5 is:
 
 ## Supported installation scenarios
 
-| Scenario | SHARE requirement | Data impact | Installation flags |
+| Scenario | Supported | SHARE requirement | Data impact | Installation flags |
 |---|---|---|---|
-| Clean Recalbox installation | Recalbox has completed first boot and created SHARE as exFAT | Erases all SHARE data and recreates it as ext4 | `--confirm-install`<br>`--confirm-format` |
-| Repair or update existing ALTTPR | SHARE is already ext4 | Preserves SHARE data | `--confirm-install` |
-| Install ALTTPR on an existing Recalbox system, which is already loaded with ROMs/BIOS | Unsupported | DELETES SHARE DATA; MOVE SHARE DATA TO EXTERNAL USB BEFORE RUNNING the CLEAN INSTALL mode | N/A |
+| Clean Recalbox installation | Supported | Recalbox has completed first boot and created SHARE as exFAT | Erases all SHARE data and recreates it as ext4 | `--confirm-install`<br>`--confirm-format` |
+| Repair or update existing ALTTPR | Supported | SHARE is already ext4 | Preserves SHARE data | `--confirm-install` |
+| Install ALTTPR on an existing Recalbox system, which is already loaded with ROMs/BIOS | Unsupported | N/A | DELETES SHARE DATA; MOVE SHARE DATA TO EXTERNAL USB BEFORE RUNNING the CLEAN INSTALL mode | N/A |
 
 The installer runs from another computer over SSH while the microSD card remains
 in the Raspberry Pi. It does not install directly to a card connected to the PC.
