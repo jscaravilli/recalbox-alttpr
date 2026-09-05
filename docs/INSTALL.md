@@ -1,135 +1,158 @@
-# Install ALTTPR on Recalbox
+# Install ALTTPR on a New Recalbox SD Card
 
-This guide covers clean installation and repair of an existing installation.
-Read the whole guide before formatting a card.
+This runbook installs ALTTPR on a clean Raspberry Pi 5 running Recalbox
+10.0.8. The supported path uses `install.sh` from another computer. The script
+validates the target before making changes, converts only the new card's SHARE
+partition to ext4, installs the pinned randomizer, copies the private base ROM,
+deploys the offline sprite bundle, runs the health check, and reboots.
+
+Read the entire guide before starting. Do not add ROMs, BIOS files, saves, or
+other content to the new card until installation is complete.
+
+## Installation summary
+
+| Phase | Where | Result |
+|---|---|---|
+| Flash | PC | Recalbox 10.0.8 is written to the new card |
+| First boot | Raspberry Pi | Recalbox expands the card and joins the network |
+| Dry run | PC | Hardware, software, ROM, and SHARE are validated read-only |
+| Install | PC controlling Pi over SSH | SHARE is reformatted as ext4 and ALTTPR is installed |
+| Validate | Pi, TV, and browser | Health check, seed generation, sprites, gameplay, and tracker pass |
+
+The clean installation normally takes two commands after Recalbox has completed
+its first boot:
+
+```sh
+./install.sh --confirm-format --pi "$PI" --rom "$ROM"
+./install.sh --confirm-install --confirm-format --pi "$PI" --rom "$ROM"
+```
+
+The first command is a read-only preview. The second performs the installation.
 
 ## Requirements
 
+### Hardware
+
 - Raspberry Pi 5
+- Raspberry Pi power supply suitable for the Pi 5
+- A2/U3/V30 microSD card; 256 GB is recommended and tested
+- Display, controller, and network connection
+- Another computer on the same network
+
+Use Ethernet for the first installation when possible. Wi-Fi works, but the Pi
+reboots twice while SHARE is converted and must reconnect each time.
+
+### Software and files
+
 - Recalbox **10.0.8** for Raspberry Pi 5 (`rpi5_64`)
-- A2/U3/V30 microSD card (256 GB recommended)
-- PC with Raspberry Pi Imager, Git, SSH, and SCP
-- Network connection shared by the PC and Raspberry Pi
-- Legally obtained, unheadered Japanese v1.0 ALTTP ROM
+- Raspberry Pi Imager
+- Git
+- Git Bash on Windows, or a POSIX-compatible terminal on macOS/Linux
+- `ssh`, `scp`, and an MD5 utility
+- A legally obtained, unheadered Japanese v1.0 ALTTP ROM
 
-Recalbox 10.0.8 is the only supported release. Earlier versions are
-incompatible with the Python 3.11, configgen, and theme integration used by this
-build. Newer versions must be validated before use.
+Recalbox 10.0.8 is the only supported release. The installer requires:
 
-The required base-ROM MD5 is:
+| Component | Required value |
+|---|---|
+| Recalbox | `10.0.8` |
+| Architecture | `aarch64` |
+| Python | `Python 3.11.8` |
+| SHARE partition | `/dev/mmcblk0p2`, label `SHARE` |
+| Base-ROM MD5 | `03a63945398191337e896e5771f77173` |
 
-```text
-03a63945398191337e896e5771f77173
-```
+The base ROM is not included, downloaded, or distributed by this project.
 
 > [!CAUTION]
-> **Destructive step:** the installer converts the file system of the SHARE partition to ext4.
-> This erases everything on that partition. Do it only on the new card, immediately after its
-> first boot. Run the installer before adding ROMs and BIOS files to the SD CARD.
-> If your ROMs and BIOS files are on a USB drive, they should be fine.
-
-## Supported installation scenarios
-
-| Scenario | Supported | SHARE requirement | Data impact | Installation flags |
-|---|---|---|---|---|
-| Recalbox first-run installation | Supported | Recalbox has completed first boot and created SHARE as exFAT | Erases all SHARE data and recreates it as ext4 | `--confirm-install`<br>`--confirm-format` |
-| Repair or update existing ALTTPR | Supported | SHARE is already ext4 | Preserves SHARE data | `--confirm-install` |
-| Install ALTTPR on an existing Recalbox system, which is already loaded with ROMs/BIOS | Unsupported | N/A | DELETES SHARE DATA; MOVE SHARE DATA TO EXTERNAL USB BEFORE RUNNING the CLEAN INSTALL mode | N/A |
-
-The installer runs from another computer over SSH while the microSD card remains
-in the Raspberry Pi. It does not install directly to a card connected to the PC.
-
-Every scenario requires the verified base ROM on the PC. During a repair, the
-installer revalidates that ROM and replaces the private copy while preserving
-generated seeds, saves, MSU packs, Recalbox settings, and other SHARE content.
-
-Running the installer without `--confirm-install` performs a read-only validation check.
+> A clean installation erases **only the SHARE partition on the target
+> microSD card** and recreates it as ext4. Use a new or expendable card.
+> Confirm the Pi is booting from that card and do not use clean-install mode on
+> a Recalbox card containing data you need.
 
 ## 1. Prepare the PC
 
-Install:
+Install Raspberry Pi Imager, Git, and an SSH client.
 
-- [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
-- Git
-- An SSH client (`ssh` and `scp`)
+### Windows
 
-Windows users can run the repository shell scripts from **Git Bash**. macOS and
-Linux already provide a compatible shell and SSH client.
+Install [Git for Windows](https://git-scm.com/download/win), which provides Git
+Bash, `ssh`, `scp`, and `md5sum`. Run all shell commands in this guide from
+**Git Bash**, not PowerShell or Command Prompt.
 
-Clone this repository:
+### macOS or Linux
+
+Use the normal Terminal application. Ensure `git`, `ssh`, and `scp` are
+available.
+
+Clone the current repository:
 
 ```sh
 git clone https://github.com/jscaravilli/recalbox-alttpr.git
 cd recalbox-alttpr
+git pull --ff-only
 ```
 
-## Installer modes
-
-The installer is read-only unless `--confirm-install` is supplied. On an
-existing ext4 installation, start with:
+Confirm that the corrected offline sprite bundle is present:
 
 ```sh
-./install.sh --pi 192.168.1.50 --rom /path/to/alttp-jp10.sfc
+git log -1 --oneline
+find portable-core/content/sprites -maxdepth 1 -name '*.zspr' | wc -l
+find portable-core/content/bin/sprite-previews -maxdepth 1 -name '*.png' | wc -l
 ```
 
-A successful dry run reports the checks and planned actions without changing
-the PC, Recalbox settings, or files. To install or repair ALTTPR while preserving
-everything already on SHARE:
+Both file counts must be `513`. The repository revision should be
+`040e29b` or newer.
+
+## 2. Verify the base ROM
+
+Place the legally obtained ROM somewhere accessible from the terminal. This
+guide uses `alttp-jp10.sfc` as an example.
 
 ```sh
-./install.sh --confirm-install --pi 192.168.1.50 \
-  --rom /path/to/alttp-jp10.sfc
-```
-
-Formatting requires a second, explicit confirmation. Preview a clean install
-with:
-
-```sh
-./install.sh --confirm-format --pi 192.168.1.50 \
-  --rom /path/to/alttp-jp10.sfc
-```
-
-To perform the clean installation, supply both confirmations:
-
-```sh
-./install.sh --confirm-install --confirm-format --pi 192.168.1.50 \
-  --rom /path/to/alttp-jp10.sfc
-```
-
-`--confirm-install` alone never formats SHARE. A non-formatting installation
-requires SHARE to already be ext4. `--skip-format` and `--dry-run` were removed
-because preserving SHARE and dry-run are now the respective defaults.
-
-Have your legally obtained, unheadered Japanese v1.0 ROM available on the PC.
-This guide calls it `alttp-jp10.sfc`.
-
-Verify it before continuing:
-
-```sh
-# Linux
-md5sum alttp-jp10.sfc
+# Windows Git Bash or Linux
+md5sum /path/to/alttp-jp10.sfc
 
 # macOS
-md5 alttp-jp10.sfc
-
-# Windows PowerShell
-Get-FileHash .\alttp-jp10.sfc -Algorithm MD5
+md5 /path/to/alttp-jp10.sfc
 ```
 
-The result must be:
+The result must be exactly:
 
 ```text
 03a63945398191337e896e5771f77173
 ```
 
-## 2. Flash and boot Recalbox
+Do not continue with a headered ROM, another region, or another revision. The
+installer independently verifies the checksum and refuses an incorrect file.
 
-1. In Raspberry Pi Imager, select **Recalbox 10.0.8 for Raspberry Pi 5
-   (`rpi5_64`)**.
-2. Write it to the new microSD card.
-3. Insert the card, connect the Pi to Ethernet or Wi-Fi, and power it on.
-4. Wait for the first-boot expansion and automatic reboot to finish.
-5. In Recalbox, enable SSH and note the IP address.
+## 3. Flash Recalbox
+
+1. Insert the new microSD card into the PC.
+2. Open Raspberry Pi Imager.
+3. Select Recalbox 10.0.8 for Raspberry Pi 5 (`rpi5_64`).
+4. Select the new microSD card as the target.
+5. Verify the target drive carefully.
+6. Write the image and allow the imager to verify it.
+7. Safely eject the card.
+
+The validated Recalbox image filename is `recalbox-rpi5_64.img.xz`, with SHA-1:
+
+```text
+1eb7892530927cc868b08b07e68ca006f8c0e8b2
+```
+
+## 4. Complete Recalbox first boot
+
+1. Insert the card into the Raspberry Pi 5.
+2. Connect Ethernet if available.
+3. Connect the display, controller, and power.
+4. Wait for Recalbox to expand the card and complete any automatic reboot.
+5. Finish the initial controller and network setup.
+6. Enable SSH in the Recalbox network/system settings.
+7. Note the Pi's IP address.
+
+Do not start the ALTTPR installation while Recalbox is still expanding the card
+or rebooting.
 
 The default SSH credentials are:
 
@@ -138,183 +161,123 @@ user: root
 password: recalboxroot
 ```
 
-The validated image filename is `recalbox-rpi5_64.img.xz`; its SHA-1 is
-`1eb7892530927cc868b08b07e68ca006f8c0e8b2`.
+## 5. Confirm connectivity
 
-Set a shell variable on the PC for the remaining examples:
+Return to the repository directory on the PC and define variables for the Pi
+and ROM. Replace both example values:
 
 ```sh
-PI=192.168.1.50       # replace with the Pi's actual address
-ssh root@$PI
+PI=192.168.1.50
+ROM=/path/to/alttp-jp10.sfc
 ```
 
-Accept the SSH host key when prompted, then exit back to the PC:
+An IP address is more reliable during installation than `recalbox.local`.
+
+Test SSH:
 
 ```sh
-exit
+ssh root@"$PI"
 ```
 
-## 3. Convert only SHARE to ext4
-
-**On the PC**, connect over SSH:
-
-```sh
-ssh root@$PI
-```
-
-**On the Pi**, run:
+Accept the host key and enter `recalboxroot` when prompted. At the Pi prompt,
+check the Recalbox version:
 
 ```sh
-mount -o remount,rw /boot
-sed -i 's/^;*sharedevice=.*/sharedevice=RAM/' /boot/recalbox-boot.conf
-sync
-reboot -f
-```
-
-Wait for the Pi to return. **On the PC**, remove the old host key if SSH reports
-that it changed, then reconnect:
-
-```sh
-ssh-keygen -R "$PI"
-ssh root@$PI
-```
-
-**On the Pi**, verify the target and format it as one guarded operation:
-
-```sh
-set -eu
-PART=/dev/mmcblk0p2
-test -b "$PART"
-test "$(blkid "$PART" | sed -n 's/.* LABEL="\([^"]*\)".*/\1/p')" = "SHARE"
-MOUNTPOINT=$(awk -v part="$PART" '$1 == part { print $2; exit }' /proc/mounts)
-if [ -n "$MOUNTPOINT" ]; then
-  umount "$MOUNTPOINT" || {
-    echo "ERROR: normal unmount failed; refusing to format." >&2
-    exit 1
-  }
-fi
-if awk -v part="$PART" '$1 == part { found=1 } END { exit !found }' /proc/mounts
-then
-  echo "ERROR: $PART is still mounted; refusing to format." >&2
-  exit 1
-fi
-mkfs.ext4 -F -L SHARE "$PART"
-U=$(blkid "$PART" | sed -n 's/.* UUID="\([^"]*\)".*/\1/p')
-test -n "$U"
-mount -o remount,rw /boot
-sed -i '/^sharedevice=/d' /boot/recalbox-boot.conf
-echo "sharedevice=DEV $U" >> /boot/recalbox-boot.conf
-sync
-reboot -f
-```
-
-Wait for the Pi to return. **On the PC**, clear the old key again if SSH reports
-a change, reconnect, and verify:
-
-```sh
-ssh-keygen -R "$PI"
-ssh root@$PI
-```
-
-**On the Pi**, run:
-
-```sh
-awk '$2 == "/recalbox/share" { print $3 }' /proc/mounts
+cat /recalbox/recalbox.version 2>/dev/null || cat /etc/recalbox.version
+uname -m
+python3 --version
 ```
 
 Expected output:
 
 ```text
-ext4
+10.0.8
+aarch64
+Python 3.11.8
 ```
 
-## 4. Install the pinned randomizer engine
-
-From the repository root on the PC:
+Exit back to the PC:
 
 ```sh
-scp portable-core/install-deps.sh portable-core/requirements-recalbox.txt \
-  root@$PI:/tmp/
-ssh root@$PI "sed -i 's/\r$//' /tmp/install-deps.sh &&
-  chmod +x /tmp/install-deps.sh &&
-  /tmp/install-deps.sh"
+exit
 ```
 
-This installs upstream commit
-`7e14fddab00b847d6eccf0931b365a5774c5476a` and Python dependencies under
-`/recalbox/share/alttpr`.
+## 6. Run the clean-install dry run
 
-## 5. Install the private base ROM
-
-Upload the verified ROM:
+The installer is read-only unless `--confirm-install` is present. Preview the
+clean installation:
 
 ```sh
-scp alttp-jp10.sfc root@$PI:/tmp/alttp-jp10.sfc
+./install.sh --confirm-format --pi "$PI" --rom "$ROM"
 ```
 
-Install it outside both visible ROM and engine directories:
+Enter the Recalbox root password if prompted. A successful dry run prints the
+detected facts and ends with:
 
-```sh
-ssh root@$PI '
-  set -e
-  PRIVATE=/recalbox/share/system/.alttpr-private
-  DEST=$PRIVATE/base/alttp-jp10.sfc
-  mkdir -p "$PRIVATE/base"
-  chmod 700 "$PRIVATE" "$PRIVATE/base"
-  test "$(md5sum /tmp/alttp-jp10.sfc | cut -d" " -f1)" = \
-    "03a63945398191337e896e5771f77173"
-  install -o root -g root -m 0400 /tmp/alttp-jp10.sfc "$DEST"
-  rm -f /tmp/alttp-jp10.sfc
-  chattr +i "$DEST"
-'
+```text
+DRY RUN PASSED
+No files or target settings were changed.
 ```
 
-## 6. Deploy the console integration
+Review the planned SHARE action. It must say:
 
-From the repository root on the PC:
-
-```sh
-chmod +x portable-core/deploy.sh
-./portable-core/deploy.sh "$PI"
+```text
+ERASE and convert /dev/mmcblk0p2 to ext4
 ```
 
-Verify/rebuild the bundled official sprite manifest (no network download):
+The dry run must identify all of these correctly:
+
+- Recalbox `10.0.8`
+- Architecture `aarch64`
+- Python `3.11.8`
+- SHARE label `SHARE`
+- The intended Pi address
+- The correct base-ROM MD5
+
+Stop if any value is unexpected. Do not bypass an installer check.
+
+## 7. Perform the clean installation
+
+Run the same command with the install confirmation:
 
 ```sh
-ssh root@$PI "/recalbox/share/alttpr/install-content.sh sprites"
+./install.sh --confirm-install --confirm-format --pi "$PI" --rom "$ROM"
 ```
 
-MSU downloads are optional and can be large. Install one named pack:
+The command performs these stages:
 
-```sh
-ssh root@$PI \
-  "/recalbox/share/alttpr/install-content.sh msu 'A Link to the Past Enhanced'"
+1. Switches Recalbox temporarily to a RAM-backed SHARE and reboots.
+2. Verifies `/dev/mmcblk0p2` is the partition labeled `SHARE`.
+3. Unmounts and reformats only that partition as ext4.
+4. Configures Recalbox to mount the new ext4 SHARE and reboots.
+5. Installs the pinned Python Door/Overworld Randomizer and dependencies.
+6. Revalidates and privately installs the base ROM.
+7. Deploys the Recalbox menu, theme integration, tracker, and boot repair hook.
+8. Validates and installs 513 bundled ZSPR files and 513 bundled previews.
+9. Rebuilds the sprite menu manifest locally without downloading sprite art.
+10. Runs `/recalbox/share/alttpr/bin/alttpr-healthcheck.sh`.
+11. Reboots into the completed installation.
+
+The two intermediate reboots are expected. The installer waits for the required
+filesystem after each reboot. Do not power off the Pi or close the terminal.
+
+The complete sprite bundle is about 15 MB, so the deployment may pause briefly
+while many small files are copied.
+
+The final successful output includes:
+
+```text
+ALTTPR health check passed.
+== installation complete; rebooting Recalbox ==
 ```
 
-Or install every curated pack:
+## 8. Validate after the final reboot
+
+Wait until the Recalbox interface is responsive, then run the health check again
+from the PC:
 
 ```sh
-ssh root@$PI "/recalbox/share/alttpr/install-content.sh msu"
-```
-
-One unavailable third-party pack does not affect the original SNES soundtrack
-or packs already installed.
-
-Users can later add their own legally obtained packs over the network without
-SSH. See [MSU-IMPORT.md](MSU-IMPORT.md).
-
-Reboot:
-
-```sh
-ssh root@$PI "sync; reboot"
-```
-
-## 7. Validate the installation
-
-After the Pi returns:
-
-```sh
-ssh root@$PI /recalbox/share/alttpr/bin/alttpr-healthcheck.sh
+ssh root@"$PI" /recalbox/share/alttpr/bin/alttpr-healthcheck.sh
 ```
 
 Every required check must report `PASS`, ending with:
@@ -323,57 +286,191 @@ Every required check must report `PASS`, ending with:
 ALTTPR health check passed.
 ```
 
-Continue with the [user guide](USER-GUIDE.md).
+Confirm the installed asset counts:
 
-On the television:
+```sh
+ssh root@"$PI" '
+  printf "ZSPR files: "
+  find /recalbox/share/alttpr/sprites -maxdepth 1 -type f -name "*.zspr" | wc -l
+  printf "Preview files: "
+  find /recalbox/share/alttpr/bin/sprite-previews \
+    -maxdepth 1 -type f -name "*.png" | wc -l
+'
+```
+
+Both counts must be `513`.
+
+Confirm the deployed bundle checksums:
+
+```sh
+ssh root@"$PI" '
+  cd /recalbox/share/alttpr
+  sha256sum -c sprite-assets.sha256
+'
+```
+
+All entries must report `OK`.
+
+## 9. Run the functional acceptance test
+
+### Recalbox menu
 
 1. Confirm **ALTTPR - Link to the Past Randomizer** appears as a system.
-2. Open **Generate Custom Seed**.
-3. Leave the defaults and choose **Generate & Play**.
-4. Confirm the generated seed launches with sound.
-5. On another device, open
-   `http://recalbox.local:8080/itemtracker.html`.
+2. Open it and select **Generate Custom Seed**.
+3. Confirm the configuration menu opens and responds to the controller.
 
-## 8. Secure the finished console
+### Sprite previews
 
-The default SSH password is public knowledge. After validation, disable SSH in
-the Recalbox network/system settings. The tracker does not require SSH.
+1. Open the sprite selection.
+2. Scroll through several sprites and confirm each preview is transparent,
+   centered, and recognizable.
+3. Specifically inspect **Bavarian Link**; it must show Link wearing Bavarian
+   clothing, not an unrelated purple character.
+4. Inspect several other fallback previews, such as Agrias, Axolotl, Isabelle,
+   Lugia, Stitch, and Tunic.
+5. Select a non-default sprite for the gameplay test.
 
-For a later update, temporarily enable SSH, deploy the update, verify it, and
-disable SSH again. Do not leave a finished console listening with the default
-root password.
+### Generate and play
 
-## Updating this installation
+1. Leave gameplay settings at their defaults.
+2. Choose **Generate & Play**.
+3. Wait for generation to complete.
+4. Confirm the generated seed launches in Snes9x/RetroArch.
+5. Confirm video, controller input, and sound work.
+6. Confirm the selected sprite appears in game.
+7. Save and exit normally to verify Recalbox returns to the ALTTPR system.
 
-Temporarily enable SSH in Recalbox. Pull the new repository version on the PC
-and deploy it:
+### Live tracker
+
+From a phone, tablet, or computer on the same network, open:
+
+```text
+http://recalbox.local:8080/itemtracker.html
+```
+
+If mDNS is unavailable, use the Pi address:
+
+```text
+http://192.168.1.50:8080/itemtracker.html
+```
+
+Confirm the tracker loads and updates while the generated seed is running.
+
+## 10. Capture diagnostics if a test fails
+
+Do not rerun the destructive format for an application-level failure. Capture
+the health check and logs first:
+
+```sh
+ssh root@"$PI" '
+  /recalbox/share/alttpr/bin/alttpr-healthcheck.sh
+  echo "===== custom.log ====="
+  tail -n 200 /recalbox/share/system/logs/alttpr-custom.log 2>/dev/null || true
+  echo "===== filesystem ====="
+  awk '"'"'$2 == "/recalbox/share" { print }'"'"' /proc/mounts
+  echo "===== disk space ====="
+  df -h /recalbox/share
+'
+```
+
+For a missing ALTTPR system, rerun only the deployment:
+
+```sh
+./portable-core/deploy.sh "$PI"
+ssh root@"$PI" "sync; reboot"
+```
+
+For a sprite-menu issue, rebuild the manifest from the already deployed offline
+assets:
+
+```sh
+ssh root@"$PI" "/recalbox/share/alttpr/install-content.sh sprites"
+```
+
+This command does not download sprite art.
+
+## Installer modes
+
+| Command | SHARE effect | Use |
+|---|---|---|
+| `./install.sh --rom "$ROM" --pi "$PI"` | None | Validate an existing ext4 installation |
+| `./install.sh --confirm-format --rom "$ROM" --pi "$PI"` | None | Preview a clean install |
+| `./install.sh --confirm-install --rom "$ROM" --pi "$PI"` | Preserve ext4 SHARE | Install or repair without formatting |
+| `./install.sh --confirm-install --confirm-format --rom "$ROM" --pi "$PI"` | Erase and recreate SHARE | Install on a new Recalbox card |
+
+`--confirm-install` alone never formats SHARE. A non-formatting installation
+requires SHARE to already be ext4. Dry-run and preservation are defaults;
+therefore, the old `--dry-run` and `--skip-format` flags are intentionally
+rejected.
+
+## Optional MSU music
+
+MSU music is not required for the initial acceptance test. Test the original
+SNES soundtrack first.
+
+After the base installation is stable, install one curated pack:
+
+```sh
+ssh root@"$PI" \
+  "/recalbox/share/alttpr/install-content.sh msu 'A Link to the Past Enhanced'"
+```
+
+Install every curated pack:
+
+```sh
+ssh root@"$PI" "/recalbox/share/alttpr/install-content.sh msu"
+```
+
+These optional downloads can be large. One unavailable third-party pack does
+not affect the original soundtrack or packs already installed. Users can also
+import legally obtained packs later; see [MSU-IMPORT.md](MSU-IMPORT.md).
+
+## Secure and preserve the finished console
+
+The default Recalbox SSH password is public knowledge. After validation:
+
+1. Disable SSH in Recalbox settings.
+2. Shut down Recalbox cleanly.
+3. Remove the card and create a full-card image on the PC.
+4. Label the image with the repository commit and test date.
+
+The full-card image is the fastest recovery method. This repository and guide
+remain the reproducible clean-build source.
+
+## Updating or repairing later
+
+Enable SSH temporarily, update the repository, run a dry run, then install
+without `--confirm-format`:
 
 ```sh
 git pull --ff-only
-./portable-core/deploy.sh "$PI"
-ssh root@$PI "sync; reboot"
+./install.sh --pi "$PI" --rom "$ROM"
+./install.sh --confirm-install --pi "$PI" --rom "$ROM"
 ```
 
-After validation, disable SSH again.
+This preserves the ext4 SHARE, generated seeds, saves, imported MSU packs,
+Recalbox settings, and other content.
 
-Do not replace the pinned randomizer source independently. The Stopwatch safety
-patch verifies exact upstream source and ROM contracts and intentionally fails
-closed if they change.
+Do not replace the pinned randomizer source independently. The safety patches
+verify exact upstream source and ROM contracts and intentionally fail closed if
+those inputs change.
 
 ## Troubleshooting
 
 | Symptom | Action |
 |---|---|
-| SSH host-key warning after formatting | Run `ssh-keygen -R "$PI"` once, then reconnect. |
-| Health check says SHARE is not ext4 | Repeat step 3; do not continue on exFAT. |
-| Base-ROM checksum fails | Verify the ROM is unheadered Japanese v1.0. No other revision is accepted. |
-| Engine provenance check fails | Remove only `/recalbox/share/alttpr/ALttPDoorRandomizer-OverworldShuffle`, then repeat steps 4 and 6. |
-| ALTTPR system is absent | Run `./portable-core/deploy.sh "$PI"`, reboot, then rerun the health check. |
-| Tracker ports fail | Reboot once; inspect `/recalbox/share/system/logs/alttpr-custom.log`. |
-| Seed generation reports a reservation error | Do not bypass it. The pinned engine or ROM layout changed and requires code review. |
+| `Permission denied` from SSH | Use user `root` and the current Recalbox root password. |
+| `recalbox.local` does not resolve | Use the IP address displayed by Recalbox. |
+| SSH host-key warning after a reinstall | Run `ssh-keygen -R "$PI"` on the PC, then reconnect. |
+| Installer cannot reconnect after a reboot | Wait for the Recalbox UI and network, verify the IP, then rerun the dry run. |
+| Recalbox version, architecture, or Python check fails | Stop; flash the supported Recalbox 10.0.8 Pi 5 image. |
+| SHARE label check fails | Stop; confirm the Pi booted from the intended new microSD card. |
+| SHARE is exFAT during a repair | Use clean-install mode only if erasing SHARE is acceptable. |
+| Base-ROM checksum fails | Use the unheadered Japanese v1.0 ROM; no other revision is accepted. |
+| Engine provenance check fails | Remove only `/recalbox/share/alttpr/ALttPDoorRandomizer-OverworldShuffle`, then rerun the non-formatting installer. |
+| ALTTPR system is absent | Redeploy, reboot, and rerun the health check. |
+| Sprite count or checksum fails | Rerun `portable-core/deploy.sh`; do not fetch replacement art manually. |
+| Tracker ports fail | Reboot once, then inspect `/recalbox/share/system/logs/alttpr-custom.log`. |
+| Seed generation reports a reservation error | Do not bypass it; the pinned engine or ROM layout requires review. |
 
-## Recovery
-
-Once installation and gameplay are confirmed, shut down Recalbox and image the
-entire microSD card. A full-card image is the fastest recovery path; this guide
-remains the source-controlled clean-build path.
+After all checks pass, continue with the [user guide](USER-GUIDE.md).
