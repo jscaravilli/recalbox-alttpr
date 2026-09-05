@@ -32,7 +32,7 @@ The required base-ROM MD5 is:
 
 | Scenario | Supported | SHARE requirement | Data impact | Installation flags |
 |---|---|---|---|---|
-| Clean Recalbox installation | Supported | Recalbox has completed first boot and created SHARE as exFAT | Erases all SHARE data and recreates it as ext4 | `--confirm-install`<br>`--confirm-format` |
+| Recalbox first-run installation | Supported | Recalbox has completed first boot and created SHARE as exFAT | Erases all SHARE data and recreates it as ext4 | `--confirm-install`<br>`--confirm-format` |
 | Repair or update existing ALTTPR | Supported | SHARE is already ext4 | Preserves SHARE data | `--confirm-install` |
 | Install ALTTPR on an existing Recalbox system, which is already loaded with ROMs/BIOS | Unsupported | N/A | DELETES SHARE DATA; MOVE SHARE DATA TO EXTERNAL USB BEFORE RUNNING the CLEAN INSTALL mode | N/A |
 
