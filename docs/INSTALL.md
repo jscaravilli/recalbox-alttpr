@@ -1,7 +1,7 @@
 # Install ALTTPR on a New Recalbox SD Card
 
-This runbook installs ALTTPR on a clean Raspberry Pi 5 running Recalbox
-10.0.8. The supported path uses `install.sh` from another computer. The script
+This runbook installs ALTTPR on a clean Raspberry Pi 5 running Recalbox 10.0.8
+or 10.1. The supported path uses `install.sh` from another computer. The script
 validates the target before making changes, converts only the new card's SHARE
 partition to ext4, installs the pinned randomizer, copies the private base ROM,
 deploys the offline sprite bundle, runs the health check, and reboots.
@@ -13,7 +13,7 @@ other content to the new card until installation is complete.
 
 | Phase | Where | Result |
 |---|---|---|
-| Flash | PC | Recalbox 10.0.8 is written to the new card |
+| Flash | PC | A supported Recalbox release is written to the new card |
 | First boot | Raspberry Pi | Recalbox expands the card and joins the network |
 | Dry run | PC | Hardware, software, ROM, and SHARE are validated read-only |
 | Install | PC controlling Pi over SSH | SHARE is reformatted as ext4 and ALTTPR is installed |
@@ -39,23 +39,25 @@ The first command is a read-only preview. The second performs the installation.
 - Display, controller, and network connection
 - Another computer on the same network
 
-Use Ethernet for the first installation when possible. Wi-Fi works, but the Pi
-reboots twice while SHARE is converted and must reconnect each time.
+Use Ethernet for the first installation when possible. Clean-install mode erases
+SHARE, where Recalbox stores its network configuration. A Wi-Fi-only Pi may
+therefore lose connectivity when SHARE is recreated and require manual network
+setup before installation can continue.
 
 ### Software and files
 
-- Recalbox **10.0.8** for Raspberry Pi 5 (`rpi5_64`)
+- Recalbox **10.0.8 or 10.1** for Raspberry Pi 5 (`rpi5_64`)
 - Raspberry Pi Imager
 - Git
 - Git Bash on Windows, or a POSIX-compatible terminal on macOS/Linux
 - `ssh`, `scp`, and an MD5 utility
 - A legally obtained, unheadered Japanese v1.0 ALTTP ROM
 
-Recalbox 10.0.8 is the only supported release. The installer requires:
+The installer requires:
 
 | Component | Required value |
 |---|---|
-| Recalbox | `10.0.8` |
+| Recalbox | `10.0.8` or `10.1` |
 | Architecture | `aarch64` |
 | Python | `Python 3.11.8` |
 | SHARE partition | `/dev/mmcblk0p2`, label `SHARE` |
@@ -129,13 +131,15 @@ installer independently verifies the checksum and refuses an incorrect file.
 
 1. Insert the new microSD card into the PC.
 2. Open Raspberry Pi Imager.
-3. Select Recalbox 10.0.8 for Raspberry Pi 5 (`rpi5_64`).
+3. Select Recalbox 10.1 for Raspberry Pi 5 (`rpi5_64`). Recalbox 10.0.8 is
+   also supported when using an existing verified image.
 4. Select the new microSD card as the target.
 5. Verify the target drive carefully.
 6. Write the image and allow the imager to verify it.
 7. Safely eject the card.
 
-The validated Recalbox image filename is `recalbox-rpi5_64.img.xz`, with SHA-1:
+For reference, the previously validated Recalbox 10.0.8 image filename was
+`recalbox-rpi5_64.img.xz`, with SHA-1:
 
 ```text
 1eb7892530927cc868b08b07e68ca006f8c0e8b2
@@ -188,10 +192,10 @@ uname -m
 python3 --version
 ```
 
-Expected output:
+Expected output (the first line may be either supported release):
 
 ```text
-10.0.8
+10.1
 aarch64
 Python 3.11.8
 ```
@@ -227,7 +231,7 @@ ERASE and convert /dev/mmcblk0p2 to ext4
 
 The dry run must identify all of these correctly:
 
-- Recalbox `10.0.8`
+- Recalbox `10.0.8` or `10.1`
 - Architecture `aarch64`
 - Python `3.11.8`
 - SHARE label `SHARE`
@@ -260,6 +264,15 @@ The command performs these stages:
 
 The two intermediate reboots are expected. The installer waits for the required
 filesystem after each reboot. Do not power off the Pi or close the terminal.
+
+> [!IMPORTANT]
+> Recalbox 10.1 may present its first boot from the recreated ext4 SHARE as a
+> fresh setup. This is expected because clean-install mode erased the original
+> SHARE, including first-boot and Wi-Fi settings; it does not mean the system
+> partition was reflashed. With Ethernet, the installer should reconnect
+> automatically. With Wi-Fi, reconnect the Pi from the Recalbox interface and
+> note its current IP address. If the installer has timed out, use the
+> non-formatting recovery procedure below. Never repeat `--confirm-format`.
 
 The complete sprite bundle is about 15 MB, so the deployment may pause briefly
 while many small files are copied.
@@ -380,6 +393,31 @@ For a missing ALTTPR system, rerun only the deployment:
 ssh root@"$PI" "sync; reboot"
 ```
 
+If a Recalbox 10.1 clean install stopped after SHARE was recreated, first finish
+the on-screen network setup and confirm that SHARE is ext4:
+
+```sh
+ssh root@"$PI" \
+  "awk '\$2 == \"/recalbox/share\" { print \$1, \$3 }' /proc/mounts"
+```
+
+Remove the stale SSH key if the Pi reports a changed host key:
+
+```sh
+ssh-keygen -R "$PI"
+```
+
+Then resume safely without formatting:
+
+```sh
+./install.sh --confirm-install --pi "$PI" --rom "$ROM"
+```
+
+This preserves the ext4 SHARE and repeats the engine, private-ROM, integration,
+sprite, and health-check stages idempotently. If those prerequisites already
+pass and only the ALTTPR menu, theme, tracker, or boot hook is missing, the
+deployment-only commands above are sufficient.
+
 For a sprite-menu issue, rebuild the manifest from the already deployed offline
 assets:
 
@@ -461,9 +499,10 @@ those inputs change.
 |---|---|
 | `Permission denied` from SSH | Use user `root` and the current Recalbox root password. |
 | `recalbox.local` does not resolve | Use the IP address displayed by Recalbox. |
-| SSH host-key warning after a reinstall | Run `ssh-keygen -R "$PI"` on the PC, then reconnect. |
-| Installer cannot reconnect after a reboot | Wait for the Recalbox UI and network, verify the IP, then rerun the dry run. |
-| Recalbox version, architecture, or Python check fails | Stop; flash the supported Recalbox 10.0.8 Pi 5 image. |
+| SSH host-key warning after SHARE reinitialization or a reinstall | Run `ssh-keygen -R "$PI"` on the PC, then reconnect and verify the host is the intended Pi. |
+| Recalbox 10.1 appears factory-reset after SHARE conversion | Complete the on-screen setup and reconnect the network. This is expected after erasing SHARE; do not format again. Resume with `--confirm-install` and no `--confirm-format`. |
+| Installer cannot reconnect after a reboot | Wait for the Recalbox UI, restore Wi-Fi if necessary, verify the current IP, then use the non-formatting recovery procedure. |
+| Recalbox version, architecture, or Python check fails | Stop; use Recalbox 10.0.8 or 10.1 for Raspberry Pi 5 and do not bypass the check. |
 | SHARE label check fails | Stop; confirm the Pi booted from the intended new microSD card. |
 | SHARE is exFAT during a repair | Use clean-install mode only if erasing SHARE is acceptable. |
 | Base-ROM checksum fails | Use the unheadered Japanese v1.0 ROM; no other revision is accepted. |
